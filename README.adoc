@@ -45,11 +45,11 @@ The https://opendap.github.io site is populated with HTML and PDF
 documents that are automatically built any time an AsciiDoc file in
 the documentation repo is updated on the master branch.
 
-This page comes from the _github.com/OPeNDAP/documentation_ repoitory,
-but it contains links to other pages from other OPeNDAP github
-documentation repositories (e.g., hyrax_guide). To add new documention
-from a new repo, arrange to publish its content via _gh-pages_ and
-_github.io_ and then link those pages here. See the
+This page comes from the _github.com/OPeNDAP/documentation_
+repository, but it contains links to other pages from other OPeNDAP
+github documentation repositories (e.g., _hyrax\_guide_). To add new
+documention from a new repo, first arrange to publish its content via
+_gh-pages_ and _github.io_ and then link those pages here. See the
 _github.com/OPeNDAP/hyrax_guide_ repo and the entry above for
 _Master_Hyrax_Guide.html/pdf_ for an example.
 
