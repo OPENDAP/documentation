@@ -28,6 +28,14 @@ will find a description of the server's featrues and all of its
 configuration parameters. Also described in teh guide are other web
 services that Hyrax provides, including WMS and WCS.
 
+== Libdap library documentation
+The link:https://opendap.github.io/libdap4/html/[libdap library documentation] provides reference information for our
+implementation of DAP2 and DAP4.
+
+== BES data server framework
+The link:https://opendap.github.io/bes/html/[Back End Server (BES)] is the modular framework used to build the data
+access and manipulation layer of the Hyrax data server.
+
 == Notes about this repository
 
 === Building CommonMark from AsciiDoc
