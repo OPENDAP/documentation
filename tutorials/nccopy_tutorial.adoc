@@ -24,7 +24,7 @@ If you have not done that yet, go do that now!
 
 
 == Overview
-The ``nccopy`` application is a command line tool that can be used to:
+The `nccopy` application is a command line tool that can be used to:
 
 * Build a custom netcdf file from an existing netcdf file.
 * Build a custom netcdf file from a remote DAP2 or DAP4 data service.
@@ -99,7 +99,7 @@ https://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules
 by Hyrax in NGAP
 
 This is a DAP4 dataset: It contains a Group named Grid which contains all the
-other components of the dataset. Because of this we need to tell the nccopy
+other components of the dataset. Because of this we need to tell the `nccopy`
 software to use the DAP4 protocol to access the data. We do this by changing
 the `https://` at the begining of the dataset URL to `dap4://`
 
@@ -113,8 +113,8 @@ dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/
 ----
 
 == Examples
-Since nccopy is a linux command line tool, I have written the examples in the
-bash shell.
+_Since `nccopy` is a linux command line tool, I have written the examples in the
+bash shell._
 
 === Full Granule Rewrite
 In which we retrieve all the data from a remote DAP4 serviced granule with
@@ -134,18 +134,18 @@ nccopy -4 ${d4_url} foo.nc4
 
 === Inventory Sub-setting
 
-There are two ways to perform inventory sub-setting with nccopy. The nccopy way,
-and the DAP way. The nccopy application has options that allow you to select
+There are two ways to perform inventory sub-setting with `nccopy`. The `nccopy` way,
+and the DAP way. The `nccopy` application has options that allow you to select
 one or more variables and/or Groups (and their children) so that the resulting
 local netcdf file created by nccopy contains only the desired data.
 
 ==== The nccopy way
-Returning to our dataset we'll form a nccopy command in which we will use the
-`-V` option to request the
-domain variables for time, latitude, and longitude, and the range variables
-precipitationCal and IRprecipitation. Because each of these variables is a
-member of the Group Grid, we must include this in the Fully Qualifed Name (FQN)
-of each item requested.
+Returning to our example dataset we'll form an `nccopy` command in which we
+will utilize the `-V` option to request the
+domain variables for _time_, _latitude_, and _longitude_, and the range variables
+_precipitationCal_ and _IRprecipitation_. Because each of these variables is a
+member of the Group Grid, we must include the Group's name in the Fully
+Qualified Name (FQN)  of each item requested.
 ----
 # The DAP4 protocol endpoint URL for granule
 d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
