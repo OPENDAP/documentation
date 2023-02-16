@@ -27,7 +27,7 @@ after_failure:
 # hyrax_guide repo. jhrg 10/11/17
 
 after_success:      
-  - cd output ; mv README.html index.html ; cp -R ../images images
+  - cd output ; mv README.html index.html ; ls -l ; cp -R ../images images
   - git init
   - git config user.name "${GH_USER_NAME}"
   - git config user.email "{GH_USER_EMAIL}"
