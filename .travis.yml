@@ -12,8 +12,8 @@ before_install:
 # its own project. jhrg 1/11/17
 
 script:
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
 
 after_error: 
   - docker logs asciidoc-to-html
