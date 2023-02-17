@@ -128,7 +128,7 @@ a Group hierarchy.
 # these servers the DAP2 and DAP4 endpoints are the same.
 #
 # When we invoke nccopy we use the "-4" option to tell nccopy to make a
-# netcdf-4 file. This is important because netcdf-3 )classic) does not support
+# netcdf-4 file. This is important because netcdf-3 (classic) does not support
 # Groups and we want to preserve them.
 #
 
@@ -155,11 +155,11 @@ nccopy -4 ${test_d4_url} test_coads.nc4
 # these servers the DAP2 and DAP4 endpoints are the same.
 #
 # When we invoke nccopy we use the "-4" option to tell nccopy to make a
-# netcdf-4 file. This is important because netcdf-3 )classic) does not support
+# netcdf-4 file. This is important because netcdf-3 (classic) does not support
 # Groups and we want to preserve them.
 
 #
-# This is the precipitation granule hosted at at earthdata.nasa.gov,
+# This is the precipitation granule hosted at earthdata.nasa.gov,
 # NASA EDL authentication mandatory.
 
 ngap_d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
