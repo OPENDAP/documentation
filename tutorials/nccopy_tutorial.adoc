@@ -93,7 +93,7 @@ both ncdump and nccopy from any terminal window.
 
 In these examples will use the following remote datasets:
 
-* http://test.opendap.org/opendap/fan/OMI-Aura_L2-OMAERO_2004m1001t0003-o01132_v003-2009m0108t180405.he5[A NASA Ozone Monitoring Instrument swath data granule] Hosted at _test.opendap.org_, no authentication required for access.
+* http://test.opendap.org/opendap/data/nc/coads_climatology.nc[COADS Climatology data] hosted at _test.opendap.org_, no authentication required for access.
 * https://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5[A NASA GPM IMERG Final Precipitation Level 3 (L3) granule] served by Hyrax in
 NASA's NGAP project.
 
@@ -103,11 +103,11 @@ beginning of the dataset URL to `dap4://`
 
 This dataset Url:
 ----
-https://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5
+http://test.opendap.org/opendap/data/nc/coads_climatology.nc
 ----
 Becomes this DAP4 URL:
 ----
-dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5
+dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc
 ----
 
 == Examples
@@ -117,6 +117,8 @@ bash shell._
 === Full Granule Rewrite
 In which we retrieve all the data from a remote DAP4 serviced granule with
 a Group hierarchy.
+
+==== COADS Climatology (No Authentication))
 
 [source,ruby]
 ----
@@ -130,23 +132,42 @@ a Group hierarchy.
 # Groups and we want to preserve them.
 #
 
-# This is the URL of the ozone data granule hosted at test.opendap.org, no
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
 # authentication required for data access
-test_d4_url="http://test.opendap.org/opendap/fan/OMI-Aura_L2-OMAERO_2004m1001t0003-o01132_v003-2009m0108t180405.he5"
+
+test_d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
 
 #
-# Get the entire ozone data granule, using the DAP4 protocol, and save it
-# to test_ozone.nc4
-nccopy -4 ${test_d4_url} test_ozone.nc4
+# Get the entire COADS data granule, using the DAP4 protocol, and save it
+# to test_coads.nc4
+
+nccopy -4 ${test_d4_url} test_coads.nc4
+
+# fini
+----
+
+==== NGAP Precipitation Data (EDL Authentication)
+[source,ruby]
+----
+#!/bin/bash
+#
+# The dataset URLs should dereference to DAP service endpoint. In the case of
+# these servers the DAP2 and DAP4 endpoints are the same.
+#
+# When we invoke nccopy we use the "-4" option to tell nccopy to make a
+# netcdf-4 file. This is important because netcdf-3 )classic) does not support
+# Groups and we want to preserve them.
 
 #
 # This is the precipitation granule hosted at at earthdata.nasa.gov,
 # NASA EDL authentication mandatory.
+
 ngap_d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
 
 #
 # Get the entire precipitaion granule using the DAP4 protocol, and save it
 # to ngap_precip.nc4
+
 nccopy -4 ${ngap_d4_url} ngap_precip.nc4
 
 # fini
@@ -160,41 +181,139 @@ one or more variables and/or Groups (and their children) so that the resulting
 local netcdf file created by nccopy contains only the desired data.
 
 ==== The nccopy way
-Returning to our example dataset we'll form an `nccopy` command in which we
-will utilize the `-V` option to request the
-domain variables for _time_, _latitude_, and _longitude_, and the range variables
-_precipitationCal_ and _IRprecipitation_. Because each of these variables is a
-member of the Group Grid, we must include the Group's name in the Fully
-Qualified Name (FQN)  of each item requested.
+
+Returning to our example datasets we'll form an `nccopy` command in which we
+will utilize the `-V` option to request a subset of the variables held in each
+dataset to be saved to a local netcdf-4 file.
+
+===== COADS Climatology Data (No Authentication)
+In which we request the domain coordinates _TIME_, _COADSX_, and _COADSY_ along
+with the range variable _SST_ (sea surface temperature).
+
 [source,ruby]
 ----
 #!/bin/bash
 #
-# The DAP4 protocol endpoint URL for granule
-d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
 
-# We use the "-4" option to tell nccopy to make a netcdf-4 file. This is
-# important because netcdf-3 does not support Groups
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
+# authentication required for data access
+test_d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
+
+#
+# !! DAP4 FQNs did not work for this for this, I had to use the unadorned names.
+# FQNs do work on the other NGAP example (there are Groups)
+# !! I think that's a bug in nccopy !!
+
+request_vars="TIME,COADSX,COADSY,SST"
+
+#
+# We use the "-4" option to tell nccopy to make a netcdf-4 file.
 # We use the "-V" option to specify what to get.
-nccopy -4 -V /Grid/time,/Grid/lat,/Grid/lon,/Grid/precipitationCal,/Grid/IRprecipitation ${d4_url} foo.nc4
+
+nccopy -4 -V "${request_vars}" ${test_d4_url} coads_subset_1.nc4
 
 # fini
 ----
+
+===== NGAP Precipitation Data (EDL Authentication)
+
+In which we request the domain variables for _time_, _latitude_, and
+_longitude_, and the range variables _precipitationCal_ and _IRprecipitation_.
+Because each of these variables is a member of the Group named "Grid", we must
+include the Group's name in the Fully Qualified Name (FQN) of each item requested:
+
+ /Grid/time,/Grid/lat,/Grid/lon,/Grid/precipitationCal,/Grid/IRprecipitation
+
+[source,ruby]
+----
+#!/bin/bash
+#
+# This is the precipitation granule hosted at at earthdata.nasa.gov,
+# NASA EDL authentication mandatory.
+
+ngap_d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
+
+#
+# Because this is a DAP4 transaction the name of each variable in the list of
+# requested variables submitted to nccopy must be expressed as a Fully Qualified
+# Name (FQN). And because each variable in this example is a member of the Group
+# named "Grid" each requested variables name is prefixed with "/Grid/" as below:
+
+request_vars="/Grid/time,/Grid/lat,/Grid/lon,/Grid/precipitationCal,/Grid/IRprecipitation"
+
+#
+# We use the "-4" option to tell nccopy to make a netcdf-4 file. This is
+# important because netcdf-3 does not support Groups
+# We use the "-V" option to specify what to get.
+
+nccopy -4 -V "${request_vars}" ${ngap_d4_url} ngap_precip_subset_1.nc4
+
+# fini
+----
+
 ==== The DAP4 Way
 The DAP4 way means using a DAP4 constraint expression (d4_ce) to tell the
 server which things to get. The difference is subtle, and this example may seem
 redundant, but this technique can be used in other contexts.
+
+ /TIME;/COADSX;/COADSY;/SST
+
+===== COADS Climatology Data (No Authentication)
+In which we request the domain coordinates _TIME_, _COADSX_, and _COADSY_ along
+with the range variable _SST_ (sea surface temperature).
+
 [source,ruby]
 ----
 #!/bin/bash
 #
-# The DAP4 protocol endpoint URL for the test granule
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
+# authentication required for data access
+d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
+
+#
+# The DAP4 constraint expression to use with the request (not the FQNs are
+# separated by ";" and not "," like in the argument to nccopy's "-V" option.
+
+d4_ce="dap4.ce=/TIME;/COADSX;/COADSY;/SST"
+
+#
+# We use the "-4" option to tell nccopy to make a netcdf-4 file.
+# We use the "-V" option to specify what to get.
+
+nccopy -4 "${d4_url}?${d4_ce}" coads_subset_2.nc4
+
+# fini
+----
+
+===== NGAP Precipitation Data (EDL Authentication)
+
+In which we request the domain variables for _time_, _latitude_, and
+_longitude_, and the range variables _precipitationCal_ and _IRprecipitation_.
+Because each of these variables is a member of the Group named "Grid", we must
+include the Group's name in the Fully Qualified Name (FQN) of each item requested:
+
+ /Grid/time;/Grid/lat;/Grid/lon;/Grid/precipitationCal;/Grid/IRprecipitation
+
+[source,ruby]
+----
+#!/bin/bash
+#
+# This is the precipitation granule hosted at at earthdata.nasa.gov,
+# NASA EDL authentication mandatory.
+
 d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
 
-# The DAP4 constraint expression to use with the request
+#
+# The DAP4 constraint expression to use with the request (not the FQNs are
+# separated by ";" and not "," like in the argument to nccopy's "-V" option.
+
 d4_ce="dap4.ce=/Grid/time;/Grid/lat;/Grid/lon;/Grid/precipitationCal;/Grid/IRprecipitation"
 
-nccopy -4 "${d4_url}?{d4_ce}" foo.nc4
+#
+# And we apply the dap4 constraint to the URL we submit to nccopy and the
+# subsetting just happens :)
+
+nccopy -4 "${d4_url}?${d4_ce}" ngap_precip_subset_2.nc4
 
 # fini
 ----
