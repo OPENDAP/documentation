@@ -40,5 +40,5 @@ after_success:
   - git config --global user.email "npotter@opendap.org"
   - git add . ; git commit -m "Deploy to GitHub Pages"
   - git branch
-  - git push --force --verbose "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation" master:gh-pages
+  - git push --force --quiet "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation" master:gh-pages
   - git status
