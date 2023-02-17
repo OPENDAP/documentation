@@ -11,6 +11,17 @@ before_install:
 # 'documentation' project. Removed the Hyrax Guide since it is nowin
 # its own project. jhrg 1/11/17
 
+env:
+  global:
+    # GIT_UID
+    - secure: "NSLxyaP/KhSg7JlxPtH1S/3uYampzUFs9T09ZLuhaznHENeRrRU2/6THZUB4X62yHPh2YpH9W/AKQNiC+gBju+hZNyCK3JjXn40qxDKWSGQ+KM0jXQvTlnsnT+DWFR0bmLhA6QTP4lXOrywufFhJy9dNuD+gRrbr94vS7hop3EWTBqb1DH2pAS4XSbwNZjUj3U/oxQ9OKROuCy3y1ecyITz79DG2GVn9hXEM52kts7Xvw/kszPbzkJbs/eZLhdOVVWnYJi2oqbPxgcnCNstG4RD1jfbcy2pb64Xe6cXjKT3QkeiMGL4BD+e8j/eGRbfpeavkZpfQ2Z+cmW/hs/xK9d1CpourBpW5faFnYq9WMwe3FxSDmN6uK3mFTC9lNdw4r+L3bdm3K778l2YhRlmtvGDRcuCOJ7BTleL0BSDPSEELrQNrHYKyWK0fuMGM3IVyHsz//GJ6uYk4ht2fCS36dCPsPiKLkQvda8HSs5Qa0F3Mw8eAmzOYAQxexJS3CkPTRt5+hbQvDajzG6hC8x0DO4gnp0SUWOpSJhlcFl1SxSyE4GiAjczEFPAcCX225LfZ88tg1H34RNtTT6FuieAHXWkB02G6J/io4iTzbIGnlsfXE3FFZEMQiGrO+PxQ/CpCBl7p5zO9DWLRCDRCkHOlr6lVzAV9FcoZJ+C19Mo8pIU="
+
+    # GIT_TOKEN
+    - secure: "CPhBixx7F+ntnbu911hNKJvux5TB290E0Y5cwvzwWL9OFszRgxrXVsqfRRjXEHAqL4TBHOtOrwoq7uORRjHDtl0xB/NMEmC+OrkxW2cjRja4c9RJbptDrauFRnMzh1C7hpyuLl7TbAvS/H3UiKSlV2+fO2cXbZE/YhiVY2YRNRQMF47IEhOmc8WkEEM+XD29f876/q6D86+eZoXjIZfQxtX0HBPQ1b7zEwqn9icoVyuphE47u2xEftUqXFLq4xCg94T9m66KRXUWCviQmcEXGlB0Q0ZhrYLJeRLgbPobsTtZ2Ry3Pr+w4gke3Q2jkThe8hHa5KQ2u1gNS2gOPhBixv6nzKozN1hwo9fd8MHwWEYB9D5XP6nduSYH2zVKyDknRLQ+8YBxGOpi140na99vSbCEIZJ7Po2cTn1Erh2MBAtrl8rQOBbrPCfmC7RxLom4tRQjzulHjo7UNlqtQyL4LhF14gsx3Jkv8AO0cNm0UaM3nliozcYLq59aybsp0ty/4TUyIk6IP3doMfA3FSZ7K2C569jZbEhGKVOy+ybRErNg96MfUHOSiHqyRwkMQZVm1+49DPQNy9OZYthyqc4ztoBXVUEaZQXXnRSktoWnKmNnspliNPS+40W5I62R4KR+/GjRnSQCLdwI+Nrth0N5fHJazdUQ9XZOPYfgI4dullU="
+
+
+
+
 script:
   - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
   - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
@@ -29,7 +40,7 @@ after_failure:
 after_success:      
   - cd output ; mv README.html index.html ; ls -l ; cp -R ../images images
   - git init
-  - git config user.name "${GH_USER_NAME}"
-  - git config user.email "{GH_USER_EMAIL}"
+  - git config --global user.name "The-Robot-Travis"
+  - git config --global user.email "npotter@opendap.org"
   - git add . ; git commit -m "Deploy to GitHub Pages"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
+  - git push --force --quiet "https://${GIT_UID}:${GIT_PSWD}" master:gh-pages
