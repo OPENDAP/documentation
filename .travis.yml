@@ -35,8 +35,8 @@ after_failure:
 
 after_success:      
   - cd output ; mv README.html index.html ; ls -l ; cp -R ../images images
-  - echo " GIT_UID - ${GIT_UID}"
-  - echo "GIT_PSWD - ${GIT_PSWD}"
+  - echo "  GIT_UID - ${GIT_UID}"
+  - echo "GIT_TOKEN - ${GIT_TOKEN}"
   - git init
   - git config --global user.name "The-Robot-Travis"
   - git config --global user.email "npotter@opendap.org"
