@@ -16,7 +16,7 @@ env:
     # GIT_UID
     - secure: "fKuotqHaud7u7IRbYyuKVEg+JFdPpu6N1D8hZ4Bv8+xxTzWlIz49daDG5sp8D+D2GzfV3z3dVlxk/KTSd1uX0/d2I+7Cy7R/Pobo8s5EvH9K26C6H5sX7smEe1ogjcZKtn3lhzetcJdIcG78CZ9SO/7AktJ26L8iupBZIN2tOMiNH2iip9vaBJnfqg8woPVSHXkdwn+WVIDmKzrIQeXMu8wuUsyz9gmj/iriv+JoWkx0JJc4O5Jt51S8N0Q2ySno7WnB6sz9d5Hdkh0DyV0DLtdO3a9P8zPeA9bDMPDTndfbkP1HlfcnKtAZtlx9l/a2GAhEAizpwlEx7kp2ryheR3WHOJwfpb8AiETfDQ69gHvWwRs0cnOdWX8a8BIzu1vbQAVInvcMi15vv6DAeX4pYGZHe00evI9FT0KYZfj5ZJFF77un/obrYCLM74cO4RsMunWNqleSAMJnvbzaRjYSpPFQyHVAFxG3dxTbzl95zjb4ydY4eJ446xIBcFAsfmz8Ky6adpXFQZEzPmJABtqF151dC1fU00+0V4l6dhLNsoY6EsuSnaHbYi9Jesy6ddtHLOo8M/i0mngCyW0CHfB4eWsPF9vjIzRwvTvWNJIXT9J40jWd2f3MASmReyJ+caj/ya1cRbeU9Hmkd/MTTiM+kiaeYcZ1LrV0cHOdeVbHYA8="
     # GIT_TOKEN
-    - secure: "d6jogpDILMCQk+6PAthWga1Nb9AAv8LrsQ/XyQuFAKSmqgYb1AZNR8InYBuqstMfnzKlwVMWD+zmFms8/ObQEFQwGyL9mxYyVp2JwwtgqaYPEwLd52YHhfBcJ7bi5fET+2rhWA9LIjOffkPSGJAI9GMZ0iAVnZVGCke1wCPZyYeAMtMJQqUz3tE/V7rSH0lO366hTLoPzI9XfM1yUyK2HoLa9lTFDl6TSPI2m8JcQib/AmBHAx2r3ZE2PaUgOmBHyHWitjSTHaDnBO0Ove8Eosubr1RusZH7eoU5E0p8r0/XU+zNjYtBT+qS/lOIzG4L6SjFnb8ivebWv5mwJ55f5eaN1MqVzQmHudFogm1QRQcqXKeioxgLRp4/QHBNeLdkgxqyEkLTZzQ06qNDUh0/a+likUt/dx0a8Jx+RtNqPijexdMfgK1BtD0gNt2tdJC1omLY7+XV3VB9SGLkOaW/j1UHxyY4kSwSijcZ1YJSi8V5m/KVsMSIbCUkKg2dBrhCfCwpccdDYPlHauqaVmZnh+398B5y+qo5DtV4+KXO6LIq3gG6NjhEoKaOIluZ5FKdacupVus7gJupZo2JWPkCXLMrIt0nekPNSawzJvL0MvbcWYEHNFxFPON1n9kA2v8u3iZVKgmQFKjsCye3b+MLvEy9b4Fte+xxzSUD6KfoS9k="
+    - secure: "KjvDUfRB8EREnAWMMPu06B2TbR+ewVPjcwYP5znh6I7kQwrPpaaxiga9NfT97U+rGqm2s7ECMK+JeGM3QDxNTJ3Lw1sIcvlJPcXW9Bd84Q1R7o2wS41s/OPN/U6Kt4k29WypbB/IJQCvdfcVNuQBYLFkF281np+naWQH1TvVlB8cg0kfq5EcQQrKkZO1G4hpA3oYb83aBWwgV9F6UYZudpSCnRhbduU11HHWZnPRhqIlY6OIZiy0zq/h+Gui1gz7Sg801s4LlJxnCsiiCmUpfctmGJczBOOLG9pPiaMkCC+Axv3HqYL6CpGsHH0DALSp5FGABBia4KMykx1cksj2b+M1xRkRH5N86CeZJa15tHtc5OfkQ/MZ9vN1WfDC37N3hmJeoGdzEsrWEGXqtCQGkY2xrkF/iVZnxLOFbkxLPx2eBBIfbe86jlBLsfe9TjErINYNVQrAUNW0r9QCDt6okpTewgL0U1ocvjvOJj1vZy+h81XZ0f0VQrI26HP1W41GN2udAAGgxCzaQ+dXnT6aRbuHGutWa/EDBlMO4LfLFuV4TuL2k0YO+2MwoLoBdwozuNn/NAKNQBN/rVkO9nL0y2DFKkWijGkrFhwAf0qsDfjvEG2iIgwXnuMvzjyFX+HpT8II1BGvMSJFpr8lASwWSx+A4vaMxJc7BgM7krAAwFA="
 
 script:
   - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
@@ -44,5 +44,5 @@ after_success:
   - git branch
   - git push --verbose "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation" master:gh-pages
   - git status
-  - 
+  -
   # - git push "https://${GIT_UID}:${GIT_PSWD}@github.com/OPENDAP/bes" --all;
