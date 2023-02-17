@@ -39,5 +39,5 @@ after_success:
   - git config --global user.name "The-Robot-Travis"
   - git config --global user.email "npotter@opendap.org"
   - git add . ; git commit -m "Deploy to GitHub Pages"
-  - git push --force --quiet "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation" master:gh-pages
+  - git push --force --verbose "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation" master:gh-pages
   # - git push "https://${GIT_UID}:${GIT_PSWD}@github.com/OPENDAP/bes" --all;
