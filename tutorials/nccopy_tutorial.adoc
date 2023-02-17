@@ -120,6 +120,8 @@ bash shell._
 In which we retrieve all the data from a remote DAP4 serviced granule with
 a Group hierarchy.
 ----
+#!/bin/bash
+#
 # The dataset_url is the DAP service endpoint. In the case of this server the
 # DAP2 and DAP4 endpoints are the same.
 
@@ -147,6 +149,8 @@ _precipitationCal_ and _IRprecipitation_. Because each of these variables is a
 member of the Group Grid, we must include the Group's name in the Fully
 Qualified Name (FQN)  of each item requested.
 ----
+#!/bin/bash
+#
 # The DAP4 protocol endpoint URL for granule
 d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
 
@@ -154,12 +158,16 @@ d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/g
 # important because netcdf-3 does not support Groups
 # We use the "-V" option to specify what to get.
 nccopy -4 -V /Grid/time,/Grid/lat,/Grid/lon,/Grid/precipitationCal,/Grid/IRprecipitation ${d4_url} foo.nc4
+
+# fini
 ----
 ==== The DAP4 Way
 The DAP4 way means using a DAP4 constraint expression (d4_ce) to tell the
 server which things to get. The difference is subtle, and this example may seem
 redundant, but this technique can be used in other contexts.
 ----
+#!/bin/bash
+#
 # The DAP4 protocol endpoint URL for the test granule
 d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
 
@@ -167,4 +175,6 @@ d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/g
 d4_ce="dap4.ce=/Grid/time;/Grid/lat;/Grid/lon;/Grid/precipitationCal;/Grid/IRprecipitation"
 
 nccopy -4 "${d4_url}?{d4_ce}" foo.nc4
+
+# fini
 ----
