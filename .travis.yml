@@ -11,9 +11,16 @@ before_install:
 # 'documentation' project. Removed the Hyrax Guide since it is nowin
 # its own project. jhrg 1/11/17
 
+env:
+  global:
+    # GIT_UID
+    - secure: "fKuotqHaud7u7IRbYyuKVEg+JFdPpu6N1D8hZ4Bv8+xxTzWlIz49daDG5sp8D+D2GzfV3z3dVlxk/KTSd1uX0/d2I+7Cy7R/Pobo8s5EvH9K26C6H5sX7smEe1ogjcZKtn3lhzetcJdIcG78CZ9SO/7AktJ26L8iupBZIN2tOMiNH2iip9vaBJnfqg8woPVSHXkdwn+WVIDmKzrIQeXMu8wuUsyz9gmj/iriv+JoWkx0JJc4O5Jt51S8N0Q2ySno7WnB6sz9d5Hdkh0DyV0DLtdO3a9P8zPeA9bDMPDTndfbkP1HlfcnKtAZtlx9l/a2GAhEAizpwlEx7kp2ryheR3WHOJwfpb8AiETfDQ69gHvWwRs0cnOdWX8a8BIzu1vbQAVInvcMi15vv6DAeX4pYGZHe00evI9FT0KYZfj5ZJFF77un/obrYCLM74cO4RsMunWNqleSAMJnvbzaRjYSpPFQyHVAFxG3dxTbzl95zjb4ydY4eJ446xIBcFAsfmz8Ky6adpXFQZEzPmJABtqF151dC1fU00+0V4l6dhLNsoY6EsuSnaHbYi9Jesy6ddtHLOo8M/i0mngCyW0CHfB4eWsPF9vjIzRwvTvWNJIXT9J40jWd2f3MASmReyJ+caj/ya1cRbeU9Hmkd/MTTiM+kiaeYcZ1LrV0cHOdeVbHYA8="
+    # GIT_TOKEN
+    - secure: "KjvDUfRB8EREnAWMMPu06B2TbR+ewVPjcwYP5znh6I7kQwrPpaaxiga9NfT97U+rGqm2s7ECMK+JeGM3QDxNTJ3Lw1sIcvlJPcXW9Bd84Q1R7o2wS41s/OPN/U6Kt4k29WypbB/IJQCvdfcVNuQBYLFkF281np+naWQH1TvVlB8cg0kfq5EcQQrKkZO1G4hpA3oYb83aBWwgV9F6UYZudpSCnRhbduU11HHWZnPRhqIlY6OIZiy0zq/h+Gui1gz7Sg801s4LlJxnCsiiCmUpfctmGJczBOOLG9pPiaMkCC+Axv3HqYL6CpGsHH0DALSp5FGABBia4KMykx1cksj2b+M1xRkRH5N86CeZJa15tHtc5OfkQ/MZ9vN1WfDC37N3hmJeoGdzEsrWEGXqtCQGkY2xrkF/iVZnxLOFbkxLPx2eBBIfbe86jlBLsfe9TjErINYNVQrAUNW0r9QCDt6okpTewgL0U1ocvjvOJj1vZy+h81XZ0f0VQrI26HP1W41GN2udAAGgxCzaQ+dXnT6aRbuHGutWa/EDBlMO4LfLFuV4TuL2k0YO+2MwoLoBdwozuNn/NAKNQBN/rVkO9nL0y2DFKkWijGkrFhwAf0qsDfjvEG2iIgwXnuMvzjyFX+HpT8II1BGvMSJFpr8lASwWSx+A4vaMxJc7BgM7krAAwFA="
+
 script:
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
 
 after_error: 
   - docker logs asciidoc-to-html
@@ -27,9 +34,11 @@ after_failure:
 # hyrax_guide repo. jhrg 10/11/17
 
 after_success:      
-  - cd output ; mv README.html index.html ; cp -R ../images images
+  - cd output ; mv README.html index.html ; ls -l ; cp -R ../images images
   - git init
-  - git config user.name "${GH_USER_NAME}"
-  - git config user.email "{GH_USER_EMAIL}"
+  - git config --global user.name "The-Robot-Travis"
+  - git config --global user.email "npotter@opendap.org"
   - git add . ; git commit -m "Deploy to GitHub Pages"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
+  - git branch
+  - git push --force --quiet "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation" master:gh-pages
+  - git status
