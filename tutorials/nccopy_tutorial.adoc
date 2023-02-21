@@ -25,16 +25,16 @@ in shell scripting environment to:
 * *_Build a custom netcdf file locally from a remote DAP2 or DAP4 data service._*
 * Fine tune the compression and chunking parameters in the resulting file.
 
-When `nccopy` and `ncdump` access remote data via the DAP2 and DAP4 protocol the server
-is able to stream the response back. Data transmission begins almost immediately.
-In contrast, when a user asks the server to return a response encoded as a
-netcdf-3 or netcdf-4 file, the server cannot stream the response because of the
-way the netcdf-4 is structured: bytes at the beginning of the file are modified
-when the file is closed after creation. This means that there can be a lengthy
-delay before the server can begin transmitting the netcdf-4 result. The delay
-can be lengthy enough that the request will fail due to a timeout condition. When
-`nccopy` is used the delay is eliminated and the result is also a netcdf-4 file
-on local disk. ohsnap.
+When `nccopy` and `ncdump` access remote data via the DAP2 and DAP4 protocol the
+server is able to stream the response back. Data transmission begins almost
+immediately. In contrast, when a user asks the server to return a response
+encoded as a netcdf-3 or netcdf-4 file, the server cannot stream the response
+because of the way the netcdf-4 is structured: bytes at the beginning of the
+file are modified when the file is closed after creation. This means that there
+can be a lengthy delay before the server can begin transmitting the netcdf-4
+result. The delay can be lengthy enough that the request will fail due to a
+timeout condition. When `nccopy` is used the delay is eliminated and the result
+is also a netcdf-4 file on local disk. ohsnap.
 
 In this tutorial we will work with the retrieval of remote data.
 
@@ -110,19 +110,22 @@ library version 4.9.0 or newer is recommended. This tutorial was developed using
 _netcdf library version 4.9.0 of Feb 13 2023 10:14:14 $_
 
 With netcdf-c library installed on your system you should be able to run
-both ncdump and nccopy from any terminal window.
+both `ncdump` and `nccopy` from any terminal window.
 
 === The Data
 
 In these examples will use the following remote datasets:
 
-* http://test.opendap.org/opendap/data/nc/coads_climatology.nc[COADS Climatology data] hosted at _test.opendap.org_, no authentication required for access.
-* https://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5[A NASA GPM IMERG Final Precipitation Level 3 (L3) granule] served by Hyrax in
+* http://test.opendap.org/opendap/data/nc/coads_climatology.nc[
+COADS Climatology data] hosted at _test.opendap.org_, no authentication required for access.
+* https://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5[
+A NASA GPM IMERG Final Precipitation Level 3 (L3) granule] served by Hyrax in
 NASA's NGAP project.
 
-Both of the example granules are DAP4 datasets: They both contain one or more Group. Because of this we will need to
-tell the `nccopy` software to use the DAP4 protocol to access the data. We do this by changing  the `https://` at the
-beginning of the dataset URL to `dap4://`
+Both of the example granules are DAP datasets: The precipitation dataset
+contains one or more Groups. Because of this we will need to tell the `nccopy`
+software to use the DAP4 protocol to access the data. We do this by changing
+the `https://` at the beginning of the dataset URL to `dap4://`
 
 This dataset Url:
 ----
@@ -155,8 +158,8 @@ remote DAP4 serviced granules, one of which contains a Group hierarchy.
 # Groups and we want to preserve them.
 #
 
-# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
-# authentication required for data access
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org,
+# no authentication required for data access
 
 test_d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
 
