@@ -33,7 +33,7 @@ their client applications to authenticate with the NASA EDL OAuth2 service.
 Since the authentication setup is complex, yet similar for many clients. We
 have covered it in a separate document.
 
-**TODO: _LINK TO CLIENT AUTHENTICATION DOCUMENTS HERE_**
+* **link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[Client Authentication Tutorial]**
 
 If you have not done that yet, go do that now!
 
@@ -417,7 +417,7 @@ dataset to be saved to a local netcdf-4 file.
 In which we request the domain coordinates _TIME_, _COADSX_, and _COADSY_ along
 with the range variable _SST_ (sea surface temperature).
 
-[source,s]
+[,shell]
 ----
 #!/bin/bash
 #
