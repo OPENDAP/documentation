@@ -19,8 +19,10 @@ env:
     - secure: "KjvDUfRB8EREnAWMMPu06B2TbR+ewVPjcwYP5znh6I7kQwrPpaaxiga9NfT97U+rGqm2s7ECMK+JeGM3QDxNTJ3Lw1sIcvlJPcXW9Bd84Q1R7o2wS41s/OPN/U6Kt4k29WypbB/IJQCvdfcVNuQBYLFkF281np+naWQH1TvVlB8cg0kfq5EcQQrKkZO1G4hpA3oYb83aBWwgV9F6UYZudpSCnRhbduU11HHWZnPRhqIlY6OIZiy0zq/h+Gui1gz7Sg801s4LlJxnCsiiCmUpfctmGJczBOOLG9pPiaMkCC+Axv3HqYL6CpGsHH0DALSp5FGABBia4KMykx1cksj2b+M1xRkRH5N86CeZJa15tHtc5OfkQ/MZ9vN1WfDC37N3hmJeoGdzEsrWEGXqtCQGkY2xrkF/iVZnxLOFbkxLPx2eBBIfbe86jlBLsfe9TjErINYNVQrAUNW0r9QCDt6okpTewgL0U1ocvjvOJj1vZy+h81XZ0f0VQrI26HP1W41GN2udAAGgxCzaQ+dXnT6aRbuHGutWa/EDBlMO4LfLFuV4TuL2k0YO+2MwoLoBdwozuNn/NAKNQBN/rVkO9nL0y2DFKkWijGkrFhwAf0qsDfjvEG2iIgwXnuMvzjyFX+HpT8II1BGvMSJFpr8lASwWSx+A4vaMxJc7BgM7krAAwFA="
 
 script:
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc tutorials/*.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor     asciidoctor -D /documents/output/tutorials tutorials/*.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name  asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output/tutorials tutorials/*.adoc
 
 after_error: 
   - docker logs asciidoc-to-html
