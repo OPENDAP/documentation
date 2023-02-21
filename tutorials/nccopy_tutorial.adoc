@@ -1,5 +1,8 @@
-
 = Data Access With _nccopy_
+{docdate}
+:numbered:
+:toc:
+:imagesdir:
 
 
 == Overview
