@@ -124,7 +124,7 @@ a Group hierarchy.
 
 ==== COADS Climatology (No Authentication))
 
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
@@ -151,7 +151,7 @@ nccopy -4 ${test_d4_url} test_coads.nc4
 ----
 
 ==== NGAP Precipitation Data (EDL Authentication)
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
@@ -196,7 +196,7 @@ ncdump -h dap4_url
 ----
 
 For the COADS dataset on test.opendap.org
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
@@ -259,7 +259,7 @@ variables:
 ----
 
 For the precipitation dataset at earthdata.nasa.gov:
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
@@ -451,7 +451,7 @@ include the Group's name in the Fully Qualified Name (FQN) of each item requeste
 
  /Grid/time,/Grid/lat,/Grid/lon,/Grid/precipitationCal,/Grid/IRprecipitation
 
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
@@ -489,7 +489,7 @@ redundant, but this technique can be used in other contexts.
 In which we request the domain coordinates _TIME_, _COADSX_, and _COADSY_ along
 with the range variable _SST_ (sea surface temperature).
 
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
@@ -520,7 +520,7 @@ include the Group's name in the Fully Qualified Name (FQN) of each item requeste
 
  /Grid/time;/Grid/lat;/Grid/lon;/Grid/precipitationCal;/Grid/IRprecipitation
 
-[source,ruby]
+[,shell]
 ----
 #!/bin/bash
 #
