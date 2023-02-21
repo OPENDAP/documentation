@@ -5,22 +5,36 @@
 :imagesdir:
 
 == Overview
-The `nccopy` application is a command line tool that can be used in shell
-scripting environment to:
+
+Who Is This Tutorial For?::
+Many people that use OPeNDAP services have a workflow that relies on the data
+being held in local netcdf files. Many of these users come to an OPeNDAP service
+endpoint for a data granule, and they ask the server to "rewrite" the entire
+granule as a netcdf-3 or netcdf-4 files. If you are one of these people then this
+tutorial is for you!
+
+Tutorial Examples Language::
+The examples are written as bash scripts.
+
+*Why _nccopy_ and _ncdump_?*
+
+The `nccopy` and `ncdump` applications are command line tools that can be used
+in shell scripting environment to:
 
 * Build a custom netcdf file locally from an existing local netcdf file.
-* Build a custom netcdf file locally from a remote DAP2 or DAP4 data service.
+* *_Build a custom netcdf file locally from a remote DAP2 or DAP4 data service._*
 * Fine tune the compression and chunking parameters in the resulting file.
 
-When `nccopy` accesses remote data via the DAP2 and DAP4 protocol the server
+When `nccopy` and `ncdump` access remote data via the DAP2 and DAP4 protocol the server
 is able to stream the response back. Data transmission begins almost immediately.
 In contrast, when a user asks the server to return a response encoded as a
-netcdf-4 file, the server cannot stream the response because of the way the
-netcdf-4 is structured: bytes at the beginning of the file are modified when the
-file is closed after creation. This means that there can be a lengthy delay
-before the server can begin transmitting the netcdf-4 result. When `nccopy` is
-used the delay is eliminated and the result is also a netcdf-4 file on local
-disk. Oh Snap.
+netcdf-3 or netcdf-4 file, the server cannot stream the response because of the
+way the netcdf-4 is structured: bytes at the beginning of the file are modified
+when the file is closed after creation. This means that there can be a lengthy
+delay before the server can begin transmitting the netcdf-4 result. The delay
+can be lengthy enough that the request will fail due to a timeout condition. When
+`nccopy` is used the delay is eliminated and the result is also a netcdf-4 file
+on local disk. ohsnap.
 
 In this tutorial we will work with the retrieval of remote data.
 
@@ -34,9 +48,15 @@ have covered it in a separate document.
 
 * **link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[Client Authentication Tutorial]**
 
-If you have not done that yet, go do that now!
+NOTE: Both the `nccopy` and the `ncdump` applications discussed in this tutorial need
+to be configured to authenticate with EDL in order to work some of these tutorial
+examples.
 
-=== nccopy
+**link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[
+_If you have not configured EDL authentication for nccopy and ncdump yet, please
+go do that now!_]**
+
+=== nccopy details
 
 The `nccopy` application is a linux command line program that is typically
 installed with the netcdf-c libraries (and often can be acquired from a package
@@ -419,8 +439,8 @@ with the range variable _SST_ (sea surface temperature).
 #!/bin/bash
 #
 
-# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
-# authentication required for data access
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org,
+# authentication is not required for data access
 test_d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
 
 #
@@ -490,12 +510,12 @@ with the range variable _SST_ (sea surface temperature).
 ----
 #!/bin/bash
 #
-# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
-# authentication required for data access
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org,
+# authentication is not required for data access
 d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
 
 #
-# The DAP4 constraint expression to use with the request (not the FQNs are
+# The DAP4 constraint expression to use with the request (Note: the FQNs are
 # separated by ";" and not "," like in the argument to nccopy's "-V" option.
 
 d4_ce="dap4.ce=/TIME;/COADSX;/COADSY;/SST"
@@ -527,7 +547,7 @@ include the Group's name in the Fully Qualified Name (FQN) of each item requeste
 d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
 
 #
-# The DAP4 constraint expression to use with the request (not the FQNs are
+# The DAP4 constraint expression to use with the request (Note: the FQNs are
 # separated by ";" and not "," like in the argument to nccopy's "-V" option.
 
 d4_ce="dap4.ce=/Grid/time;/Grid/lat;/Grid/lon;/Grid/precipitationCal;/Grid/IRprecipitation"
