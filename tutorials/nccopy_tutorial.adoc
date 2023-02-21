@@ -1,6 +1,7 @@
 
 = Data Access With _nccopy_
 
+
 == Overview
 The `nccopy` application is a command line tool that can be used in shell
 scripting environment to:
@@ -16,7 +17,7 @@ netcdf-4 file, the server cannot stream the response because of the way the
 netcdf-4 is structured: bytes at the beginning of the file are modified when the
 file is closed after creation. This means that there can be a lengthy delay
 before the server can begin transmitting the netcdf-4 result. When `nccopy` is
-used the delay is eliminated and the result is also a netcdf04 file on local
+used the delay is eliminated and the result is also a netcdf-4 file on local
 disk. Oh Snap.
 
 In this tutorial we will work with the retrieval of remote data.
@@ -173,12 +174,235 @@ nccopy -4 ${ngap_d4_url} ngap_precip.nc4
 # fini
 ----
 
+=== Remote Inventory Inspection
+_How do we see an inventory of the variables in a remote dataset?_
+
+In preparation for performing an inventory sub-setting example we need to
+inspect the remote dataset to see what variables it may contain.
+The `nccopy` command comes bundled with a sibling command, `ncdump`. The
+`ncdump` command allows you to inspect the contents of the remote dataset, and
+to make a complete Common Data Language (CDL) version, including data values,
+of the remote dataset.
+
+For sub-setting we are more interested in the inspection aspect of `ncdump`.
+
+==== Using ncdump to view remote Dataset inventory
+The usage is:
+----
+ncdump -h dap4_url
+----
+
+For the COADS dataset on test.opendap.org
+[source,ruby]
+----
+#!/bin/bash
+#
+
+# This is the URL of the COADS Climatology data granule hosted at test.opendap.org, no
+# authentication required for data access
+test_d4_url="dap4://test.opendap.org/opendap/data/nc/coads_climatology.nc"
+
+ncdump -h "${test_d4_url}"
+----
+Which returns:
+[source,c]
+----
+netcdf coads_climatology {
+dimensions:
+	COADSX = 180 ;
+	COADSY = 90 ;
+	TIME = 12 ;
+variables:
+	double COADSX(COADSX) ;
+		string COADSX:units = "degrees_east" ;
+		string COADSX:modulo = " " ;
+		string COADSX:point_spacing = "even" ;
+	double COADSY(COADSY) ;
+		string COADSY:units = "degrees_north" ;
+		string COADSY:point_spacing = "even" ;
+	double TIME(TIME) ;
+		string TIME:units = "hour since 0000-01-01 00:00:00" ;
+		string TIME:time_origin = "1-JAN-0000 00:00:00" ;
+		string TIME:modulo = " " ;
+	float SST(TIME, COADSY, COADSX) ;
+		SST:missing_value = -1.e+34f ;
+		SST:_FillValue = -1.e+34f ;
+		string SST:long_name = "SEA SURFACE TEMPERATURE" ;
+		string SST:history = "From coads_climatology" ;
+		string SST:units = "Deg C" ;
+		string SST:_edu.ucar.maps = "/TIME", "/COADSY", "/COADSX" ;
+	float AIRT(TIME, COADSY, COADSX) ;
+		AIRT:missing_value = -1.e+34f ;
+		AIRT:_FillValue = -1.e+34f ;
+		string AIRT:long_name = "AIR TEMPERATURE" ;
+		string AIRT:history = "From coads_climatology" ;
+		string AIRT:units = "DEG C" ;
+		string AIRT:_edu.ucar.maps = "/TIME", "/COADSY", "/COADSX" ;
+	float UWND(TIME, COADSY, COADSX) ;
+		UWND:missing_value = -1.e+34f ;
+		UWND:_FillValue = -1.e+34f ;
+		string UWND:long_name = "ZONAL WIND" ;
+		string UWND:history = "From coads_climatology" ;
+		string UWND:units = "M/S" ;
+		string UWND:_edu.ucar.maps = "/TIME", "/COADSY", "/COADSX" ;
+	float VWND(TIME, COADSY, COADSX) ;
+		VWND:missing_value = -1.e+34f ;
+		VWND:_FillValue = -1.e+34f ;
+		string VWND:long_name = "MERIDIONAL WIND" ;
+		string VWND:history = "From coads_climatology" ;
+		string VWND:units = "M/S" ;
+		string VWND:_edu.ucar.maps = "/TIME", "/COADSY", "/COADSX" ;
+}
+----
+
+For the precipitation dataset at earthdata.nasa.gov:
+[source,ruby]
+----
+#!/bin/bash
+#
+
+# This is the precipitation granule hosted at at earthdata.nasa.gov,
+# NASA EDL authentication mandatory.
+ngap_d4_url="dap4://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5"
+
+ncdump -h "${ngap_d4_url}"
+----
+Which returns the follow CDL:
+[source,c]
+----
+netcdf GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B {
+
+// global attributes:
+		string :FileHeader = "DOI=10.5067/GPM/IMERG/3B-HH/06;\nDOIauthority=http://dx.doi.org/;\nDOIshortName=3IMERGHH;\nAlgorithmID=3IMERGHH;\nAlgorithmVersion=3IMERGH_6.3;\nFileName=3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5;\nSatelliteName=MULTI;\nInstrumentName=MERGED;\nGenerationDateTime=2020-05-04T06:20:10.000Z;\nStartGranuleDateTime=2020-01-01T00:00:00.000Z;\nStopGranuleDateTime=2020-01-01T00:29:59.999Z;\nGranuleNumber=;\nNumberOfSwaths=0;\nNumberOfGrids=1;\nGranuleStart=;\nTimeInterval=HALF_HOUR;\nProcessingSystem=PPS;\nProductVersion=V06B;\nEmptyGranule=NOT_EMPTY;\nMissingData=;\n" ;
+		string :FileInfo = "DataFormatVersion=6a;\nTKCodeBuildVersion=0;\nMetadataVersion=6a;\nFormatPackage=HDF5-1.8.9;\nBlueprintFilename=GPM.V6.3IMERGHH.blueprint.xml;\nBlueprintVersion=BV_62;\nTKIOVersion=3.93;\nMetadataStyle=PVL;\nEndianType=LITTLE_ENDIAN;\n" ;
+
+group: Grid {
+  dimensions:
+  	time = 1 ;
+  	lon = 3600 ;
+  	lat = 1800 ;
+  	latv = 2 ;
+  	lonv = 2 ;
+  	nv = 2 ;
+  variables:
+  	float precipitationQualityIndex(time, lon, lat) ;
+  		string precipitationQualityIndex:DimensionNames = "time,lon,lat" ;
+  		string precipitationQualityIndex:coordinates = "time lon lat" ;
+  		precipitationQualityIndex:_FillValue = -9999.904f ;
+  		string precipitationQualityIndex:CodeMissingValue = "-9999.9" ;
+  	short IRkalmanFilterWeight(time, lon, lat) ;
+  		string IRkalmanFilterWeight:DimensionNames = "time,lon,lat" ;
+  		string IRkalmanFilterWeight:coordinates = "time lon lat" ;
+  		IRkalmanFilterWeight:_FillValue = -9999s ;
+  		string IRkalmanFilterWeight:CodeMissingValue = "-9999" ;
+  	short HQprecipSource(time, lon, lat) ;
+  		string HQprecipSource:DimensionNames = "time,lon,lat" ;
+  		string HQprecipSource:coordinates = "time lon lat" ;
+  		HQprecipSource:_FillValue = -9999s ;
+  		string HQprecipSource:CodeMissingValue = "-9999" ;
+  	float lon(lon) ;
+  		string lon:DimensionNames = "lon" ;
+  		string lon:Units = "degrees_east" ;
+  		string lon:units = "degrees_east" ;
+  		string lon:standard_name = "longitude" ;
+  		string lon:LongName = "Longitude at the center of\n\t\t\t0.10 degree grid intervals of longitude \n\t\t\tfrom -180 to 180." ;
+  		string lon:bounds = "lon_bnds" ;
+  		string lon:axis = "X" ;
+  	float precipitationCal(time, lon, lat) ;
+  		string precipitationCal:DimensionNames = "time,lon,lat" ;
+  		string precipitationCal:Units = "mm/hr" ;
+  		string precipitationCal:units = "mm/hr" ;
+  		string precipitationCal:coordinates = "time lon lat" ;
+  		precipitationCal:_FillValue = -9999.904f ;
+  		string precipitationCal:CodeMissingValue = "-9999.9" ;
+  	int time(time) ;
+  		string time:DimensionNames = "time" ;
+  		string time:Units = "seconds since 1970-01-01 00:00:00 UTC" ;
+  		string time:units = "seconds since 1970-01-01 00:00:00 UTC" ;
+  		string time:standard_name = "time" ;
+  		string time:LongName = "Representative time of data in \n\t\t\tseconds since 1970-01-01 00:00:00 UTC." ;
+  		string time:bounds = "time_bnds" ;
+  		string time:axis = "T" ;
+  		string time:calendar = "julian" ;
+  	float lat_bnds(lat, latv) ;
+  		string lat_bnds:DimensionNames = "lat,latv" ;
+  		string lat_bnds:Units = "degrees_north" ;
+  		string lat_bnds:units = "degrees_north" ;
+  		string lat_bnds:coordinates = "lat latv" ;
+  	float precipitationUncal(time, lon, lat) ;
+  		string precipitationUncal:DimensionNames = "time,lon,lat" ;
+  		string precipitationUncal:Units = "mm/hr" ;
+  		string precipitationUncal:units = "mm/hr" ;
+  		string precipitationUncal:coordinates = "time lon lat" ;
+  		precipitationUncal:_FillValue = -9999.904f ;
+  		string precipitationUncal:CodeMissingValue = "-9999.9" ;
+  	float lat(lat) ;
+  		string lat:DimensionNames = "lat" ;
+  		string lat:Units = "degrees_north" ;
+  		string lat:units = "degrees_north" ;
+  		string lat:standard_name = "latitude" ;
+  		string lat:LongName = "Latitude at the center of\n\t\t\t0.10 degree grid intervals of latitude\n\t\t\tfrom -90 to 90." ;
+  		string lat:bounds = "lat_bnds" ;
+  		string lat:axis = "Y" ;
+  	float HQprecipitation(time, lon, lat) ;
+  		string HQprecipitation:DimensionNames = "time,lon,lat" ;
+  		string HQprecipitation:Units = "mm/hr" ;
+  		string HQprecipitation:units = "mm/hr" ;
+  		string HQprecipitation:coordinates = "time lon lat" ;
+  		HQprecipitation:_FillValue = -9999.904f ;
+  		string HQprecipitation:CodeMissingValue = "-9999.9" ;
+  	short probabilityLiquidPrecipitation(time, lon, lat) ;
+  		string probabilityLiquidPrecipitation:DimensionNames = "time,lon,lat" ;
+  		string probabilityLiquidPrecipitation:Units = "percent" ;
+  		string probabilityLiquidPrecipitation:units = "percent" ;
+  		string probabilityLiquidPrecipitation:coordinates = "time lon lat" ;
+  		probabilityLiquidPrecipitation:_FillValue = -9999s ;
+  		string probabilityLiquidPrecipitation:CodeMissingValue = "-9999" ;
+  	short HQobservationTime(time, lon, lat) ;
+  		string HQobservationTime:DimensionNames = "time,lon,lat" ;
+  		string HQobservationTime:Units = "minutes" ;
+  		string HQobservationTime:units = "minutes" ;
+  		string HQobservationTime:coordinates = "time lon lat" ;
+  		HQobservationTime:_FillValue = -9999s ;
+  		string HQobservationTime:CodeMissingValue = "-9999" ;
+  	float randomError(time, lon, lat) ;
+  		string randomError:DimensionNames = "time,lon,lat" ;
+  		string randomError:Units = "mm/hr" ;
+  		string randomError:units = "mm/hr" ;
+  		string randomError:coordinates = "time lon lat" ;
+  		randomError:_FillValue = -9999.904f ;
+  		string randomError:CodeMissingValue = "-9999.9" ;
+  	int time_bnds(time, nv) ;
+  		string time_bnds:DimensionNames = "time,nv" ;
+  		string time_bnds:Units = "seconds since 1970-01-01 00:00:00 UTC" ;
+  		string time_bnds:units = "seconds since 1970-01-01 00:00:00 UTC" ;
+  		string time_bnds:coordinates = "time nv" ;
+  	float IRprecipitation(time, lon, lat) ;
+  		string IRprecipitation:DimensionNames = "time,lon,lat" ;
+  		string IRprecipitation:Units = "mm/hr" ;
+  		string IRprecipitation:units = "mm/hr" ;
+  		string IRprecipitation:coordinates = "time lon lat" ;
+  		IRprecipitation:_FillValue = -9999.904f ;
+  		string IRprecipitation:CodeMissingValue = "-9999.9" ;
+  	float lon_bnds(lon, lonv) ;
+  		string lon_bnds:DimensionNames = "lon,lonv" ;
+  		string lon_bnds:Units = "degrees_east" ;
+  		string lon_bnds:units = "degrees_east" ;
+  		string lon_bnds:coordinates = "lon lonv" ;
+
+  // group attributes:
+  		string :GridHeader = "BinMethod=ARITHMETIC_MEAN;\nRegistration=CENTER;\nLatitudeResolution=0.1;\nLongitudeResolution=0.1;\nNorthBoundingCoordinate=90;\nSouthBoundingCoordinate=-90;\nEastBoundingCoordinate=180;\nWestBoundingCoordinate=-180;\nOrigin=SOUTHWEST;\n" ;
+  } // group Grid
+}
+----
+
 === Inventory Sub-setting
 
 There are two ways to perform inventory sub-setting with `nccopy`. The `nccopy` way,
 and the DAP way. The `nccopy` application has options that allow you to select
 one or more variables and/or Groups (and their children) so that the resulting
 local netcdf file created by nccopy contains only the desired data.
+
 
 ==== The nccopy way
 
@@ -190,7 +414,7 @@ dataset to be saved to a local netcdf-4 file.
 In which we request the domain coordinates _TIME_, _COADSX_, and _COADSY_ along
 with the range variable _SST_ (sea surface temperature).
 
-[source,ruby]
+[source,s]
 ----
 #!/bin/bash
 #
