@@ -17,7 +17,7 @@ Earthdata Login is a NASA run Single Sign-On service. In order to access NASA he
 2. _Approve_ the DAP server application that is serving the data you want. as described in the following section.
 3. Use this guide to configure your DAP client of choice (_curl_, browser, etc.) to utilize these credentials.
 
-NOTE: Throughout this document NASA's Earthdata Login is referred to as and is synonymous with *URS* (NASA changed the name of this service shortly before it's use became mandatory for all data access requests.)
+NOTE: Throughout this document NASA's Earthdata Login is referred to as and is synonymous with *EDL* (NASA changed the name of this service shortly before it's use became mandatory for all data access requests.)
 
 === Acquire Earthdata Login credentials
 Registering with Earthdata Login and getting a
@@ -41,7 +41,8 @@ image::../images/UrsApplicationSearch.png[Earthdata Login Approve Applications P
 
 * Enter some or all of the name you picked (which became the UID) of your new application and click the *Search For Applications* button, this will bring you to the Earthdata Login Application Approval page:
 
-image::../images/UrsApproveApplication.png[Earthdata Login Application Approval Page]
+image::../images/EDL-Approve-Applications.png[Earthdata Login Application Approval Page, 640,480,pdfwidth=50%,scaledwidth=50%]
+
 
 
 * Select your new application and click the _Approve Selected Applications_ button.
@@ -51,22 +52,22 @@ image::../images/UrsApprovedApplicationList.png[Earthdata Login Approved Applica
 
 NOTE: The application named *tesy_tesy* used in this example does not really exist and is for educational puspose only.
 
-== _curl_ (a.k.a. _lib_curl_) ==
+== _cURL_ (a.k.a. _lib_curl_ or _curl_) ==
 
-=== URS ===
+=== Earthdata Login ===
 
-I was able to use command line _curl_ to retrieve URS authenticated  resources using the following technique.
+I was able to use command line _curl_ to retrieve EDL authenticated  resources using the following technique.
 
 First in my home directory I created a _.netrc_ file and set its file permissions to read only for owner:
 [source,sh]
 ----
-[spooky:~] ndp% touch .netrc
-[spooky:~] ndp% chmod 600 .netrc
-[spooky:~] ndp% ls -l .netrc
+[argon:~] ndp% touch .netrc
+[argon:~] ndp% chmod 600 .netrc
+[argon:~] ndp% ls -l .netrc
 -rw-------@ 1 ndp  staff  92 Nov 13 06:08 .netrc
 ----
 
-Then I edited the _.netrc_ file and associated my URS credentials with the URS IdP instance utilized by my target DAP server:
+Then I edited the _.netrc_ file and associated my EDL credentials with the EDL IdP instance utilized by my target DAP server:
 
 [source,apache]
 ----
@@ -75,7 +76,7 @@ machine urs.earthdata.nasa.gov
 	password your_urs_password
 ----
 
-I could then retrieve a DDS object in the URS authentication enabled Hyrax server with the following _curl_ command:
+I could then retrieve a DDS object in the EDL authentication enabled Hyrax server with the following _curl_ command:
 
 [source,sh]
 ----
@@ -83,33 +84,34 @@ curl -k -n -c ursCookies -b ursCookies -L --url https://54.172.97.47/opendap/dat
 ----
 What is happening here?
 
--k:: This tells _curl_ to accept self-signed certificates. This is ok for working with trusted (as in your own) "test" services but should be removed for working with production systems. Because: Security, Chain-Of-Trust, etc.
+-k:: This tells _cURL_ to accept self-signed certificates. This is ok for working with trusted (as in your own) "test" services but should be removed for working with production systems. Because: Security, Chain-Of-Trust, etc.
 
--n:: This tells _curl_ to use that _~/.netrc_ file I created.
+-n:: This tells _cURL_ to use that _~/.netrc_ file I created.
 
--c ursCookies:: This tells _curl_ to stash cookies in the file _ursCookies_
+-c ursCookies:: This tells _cURL_ to stash cookies in the file _ursCookies_
 
--b ursCookies:: This tells _curl_ to read cookies from the file _ursCookies_
+-b ursCookies:: This tells _cURL_ to read cookies from the file _ursCookies_
 
--L:: Also known as _--location_, this option tells _curl_ to follow redirects, which is a must for any OAuth2 flow.
+-L:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
+must for any Single Sign On (SSO) authentication flow, such as OAuth2.
 
-NOTE: The ``--location-trusted`` option should not be used as it will cause _curl_ to spread user credentials to servers other than to which they were associated._
+NOTE: The ``--location-trusted`` option should not be used as it will cause _cURL_ to spread user credentials to servers other than to which they were associated.
 
 --url https://54.172.97.47/opendap:: The desired URL, protected by the Earthdata Login authentication flow.
 
-In order to retrieve multiple URLs with out reauthenticating you can use multiple instances of the _--url_ parameter:
+In order to retrieve multiple URLs without re-authenticating you can use multiple instances of the _--url_ parameter:
 
 [source,sh]
 ----
 curl -k -n -c ursCookies -b ursCookies -L --url https://54.172.97.47/opendap --url https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds --url https://54.172.97.47/opendap/data/nc/coads_climatology.nc.dds
 ----
 
-Or, since _curl_ is actually pretty smart about using cookies and such you can also make multiple _curl_ requests with the same cookies and it won't have to reauthenticate with URS once it's authenticated the first time:
+Or, since _cURL_ is actually pretty smart about using cookies and such you can also make multiple _curl_ requests with the same cookies, and it won't have to reauthenticate with EDL once it's authenticated the first time:
 
 ----
-curl -k -n -c ursCookies -b ursCookies -L --url https://54.172.97.47/opendap
-curl -k -n -c ursCookies -b ursCookies -L --url https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds
-curl -k -n -c ursCookies -b ursCookies -L --url https://54.172.97.47/opendap/data/nc/coads_climatology.nc.dds
+curl -k -n -c ursCookies -b ursCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/
+curl -k -n -c ursCookies -b ursCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+curl -k -n -c ursCookies -b ursCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
 ----
 
 === LDAP
@@ -156,7 +158,7 @@ Note that the credentials are sent with every request so secure transport is a m
 
 ==== .netrc ====
 
-I was not able to use command line _curl_ to retrieve Shibboleth authentication resources using the _.netrc_ technique described in the LDAP and URS sections.
+I was not able to use command line _curl_ to retrieve Shibboleth authentication resources using the _.netrc_ technique described in the LDAP and EDL sections.
 
 Analysis of the HTTP conversation between the idp.testshib.org  server and _curl_ shows that curl correctly follows the series of 302 redirects issued to it, first by the Apache service bound to the Hyrax server and then from the idp.testshib.org server. In every request to the idp.testshib.org server the _curl_ client correctly offers the credentials via the HTTP Authorization header:
 
@@ -179,7 +181,7 @@ But the Shibboleth system doesn't respond to them. This may be a simple configur
 
 == _wget_ ==
 
-=== URS ===
+=== Earthdata Login ===
 
 The _wget_ documentation indicates that _wget_ understands to use the _.netrc_ file that we created for _curl_, and happily it appears to work, as long as other things are in place.
 Consider this _wget_ command:
@@ -246,7 +248,7 @@ Dataset {
 
 ----
 
-It appears that _wget_ correctly followed the first redirect to ``uat.urs.earthdata.nasa.gov``, where the URS server responded with a "401 Unauthorized" (thanks to the the app_type=401 query parameter in the redirect URL provided by mod_auth_urs). After getting the 401 _wget_ resubmits the request with the authentication credentials and the URS server accepts them and redirects _wget_ back to the _mod_auth_urs_ server to complete the request.
+It appears that _wget_ correctly followed the first redirect to ``uat.urs.earthdata.nasa.gov``, where the EDL server responded with a "401 Unauthorized" (thanks to the the app_type=401 query parameter in the redirect URL provided by mod_auth_urs). After getting the 401 _wget_ resubmits the request with the authentication credentials and the EDL server accepts them and redirects _wget_ back to the _mod_auth_urs_ server to complete the request.
 
 === LDAP ===
 === Shibboleth ===
@@ -254,7 +256,7 @@ It appears that _wget_ correctly followed the first redirect to ``uat.urs.earthd
 == _ncdump_ ==
 ncdump utilizes the NetCDF-C library to access DAP resources so ncdump is a litmus test for any command line application that uses the netCDF C library. Because the netCDF C library is the software component that is performing the authentication, the configuration steps outlined here should directly translate to any application that uses netCDF C. Note, however, that these steps were tested against the version of netCDF C retrieved from GitHub on 1 May 2105. That software likely corresponds to netCDF version 4.3.3.1 or later. Contact Unidata for the latest information.
 
-=== Earth Data Login (URS)  ===
+=== Earth Data Login (EDL)  ===
 
 The following works with the ncdump (and oc client) code bundled with NetCDF-4.3.3.1 Previous versions including 4.3.2 and 4.3.1 will not work.
 
@@ -313,7 +315,7 @@ HTTP.NETRC=/Users/jimg/.netrc
 ----
 
 === LDAP ===
-To configure ncdump (and thus just about every client application that uses netCDF C) for LDAP-back HTTP/S-Basic authentication, follow the same exact procedure as outline above for URS, except that in the _.netrc_ file, use the OpenDAP server's machine name or IP number in place of the URS authentication site. Here's a summary, with an example:
+To configure ncdump (and thus just about every client application that uses netCDF C) for LDAP-back HTTP/S-Basic authentication, follow the same exact procedure as outline above for EDL, except that in the _.netrc_ file, use the OpenDAP server's machine name or IP number in place of the EDL authentication site. Here's a summary, with an example:
 
 Edit (create as needed) the file _.netrc_ in your HOME directory, and set its file permissions to read only for owner:
 
@@ -354,9 +356,9 @@ Since IDV utilizes the Java-NetCDF library to access DAP resources then in theor
 
 I http://www.unidata.ucar.edu/downloads/idv/current/index.jsp[downloaded the latest version of IDV] (5.0u2 on 11/19/14) and installed it on my local system.
 
-=== URS ===
+=== Earthdata Login ===
 
-For URS testing I utilized my AWS test service, configured to require URS authentication for all access of Hyrax.
+For EDL testing I utilized my AWS test service, configured to require EDL authentication for all access of Hyrax.
 
 In IDV I attempted to choose a new dataset by starting with the "Data" menu: Data > Choose Data > From A Web Server
 
@@ -366,7 +368,7 @@ https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) IDV popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials:
 
-image::../images/IDVAuthDialog.png[IDV URS Authentication Dialog]
+image::../images/IDVAuthDialog.png[IDV EDL Authentication Dialog]
 
 I entered them, clicked the save password check box, and clicked the _OK_ button. IDV was then able to access the requested resource. After the first successful access other resources at the AWS server were also available, but without an additional authentication challenge being presented to the user.
 
@@ -412,10 +414,10 @@ I ftp://ftp.unidata.ucar.edu/pub/netcdf-java/v4.5/toolsUI-4.5.jar[downloaded the
 java -Xmx1g -jar toolsUI-4.5.jar
 ----
 
-=== URS ===
+=== Earthdata Login ===
 _Summary: Authentication Successful_
 
-For testing I utilized my AWS test service, configured to require URS authentication for all access of Hyrax.
+For testing I utilized my AWS test service, configured to require EDL authentication for all access of Hyrax.
 
 In ToolsUI selected the _Viewer_ tab, and entered the AWS test service URL for our friend _coads_climatology.nc_:
 
@@ -423,7 +425,7 @@ https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
 
-image::../images/ToolsUIAuthDialog.png[ToolsUI URS Authentication Dialog]
+image::../images/ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
 
 I entered them and clicked the _OK_ button. ToolsUI was then able to access the requested resource.
 
@@ -460,10 +462,10 @@ The Panoply application is a sophisticated GUI driven data client that is based 
 
 I http://www.giss.nasa.gov/tools/panoply/download_mac.html[downloaded the latest version of Panoply] (4.0.5 on 11/20/14) and installed it on my local system. I launched Panoply (clicking it's icon in my Applications folder)
 
-=== URS ===
+=== Earthdata Login ===
 _Summary: Authentication Successful_
 
-For testing I utilized my AWS test service, configured to require URS authentication for all access of Hyrax.
+For testing I utilized my AWS test service, configured to require EDL authentication for all access of Hyrax.
 
 From the _File_ menu, I selected "Open Remote Dataset.." and in the pop dialog I entered the URL for our friend _coads_climatology.nc_:
 
@@ -471,7 +473,7 @@ https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
 
-image::../images/PanoplyAuthDialog.png[Panoply URS Authentication Dialog]
+image::../images/PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
 
 I entered them, clicked the save password check box, and clicked the _OK_ button. Panoply was then able to access the requested resource.
 

@@ -505,7 +505,6 @@ d4_ce="dap4.ce=/TIME;/COADSX;/COADSY;/SST"
 
 #
 # We use the "-4" option to tell nccopy to make a netcdf-4 file.
-# We use the "-V" option to specify what to get.
 
 nccopy -4 "${d4_url}?${d4_ce}" coads_subset_2.nc4
 
