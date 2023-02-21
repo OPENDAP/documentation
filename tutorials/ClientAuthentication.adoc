@@ -23,34 +23,42 @@ NOTE: Throughout this document NASA's Earthdata Login is referred to as and is s
 Registering with Earthdata Login and getting a
 user account is free. Point you browser at the https://urs.earthdata.nasa.gov/users/new[Earthdata Login New User] page and do the stuff that needs the doing.
 
-=== Approving The DAP Server Application
+=== Approving The Hyrax OPeNDAP Service Application
 
-Regardless of which software client you decide to employ, before you can access any new Earthdata Login authenticated server you must first add that sever to the list of *Approved Applications* in your Earthdata Login profile.
+Regardless of which software client you decide to employ, before you can access
+any new Earthdata Login authenticated server you must first add that sever to
+the list of *Approved Applications* in your Earthdata Login profile.
 
-To do this you will need the Earthdata Login Application name (aka UID) under which the DAP server is registered with Earthdata Login and your Earthdata Login credentials.
+To do this you will need the Earthdata Login Application name (aka UID) under
+which the DAP server is registered with Earthdata Login and your Earthdata
+Login credentials.
 
-* With your browser, navigate to your https://urs.earthdata.nasa.gov/profile[Earthdata Login profile page.]
-* Click the *My Applications* tab.
+* With your browser, navigate to your
+https://urs.earthdata.nasa.gov/profile[Earthdata Login profile page.]
+* Click the *Applications* tab and select *Authorized Applications* from the
+pull down menu.This will take you to the *Approved Applications* page.
 
-On the *My Applications* page:
+image::../images/EDL-Approved-Apps.png[Earthdata Login Approve Applications Page,640,480,pdfwidth=50%,scaledwidth=50%]
 
-* Click the *Approve More Applications* button.
-This will display the application search page:
+On the *Approved Applications* page:
 
-image::../images/UrsApplicationSearch.png[Earthdata Login Approve Applications Page]
+* At the bottom of the page click the *Approve More Applications* button.
+This will display the *Approve Applications* page.
 
-* Enter some or all of the name you picked (which became the UID) of your new application and click the *Search For Applications* button, this will bring you to the Earthdata Login Application Approval page:
+image::../images/EDL-Approve-Apps-Application-Search.png[Earthdata Login Approve Applications Page,  640,480,pdfwidth=50%,scaledwidth=50%]
 
-image::../images/EDL-Approve-Applications.png[Earthdata Login Application Approval Page, 640,480,pdfwidth=50%,scaledwidth=50%]
+In the search bar at the top of the page enter the name of the Hyrax OPeNDAP service application, *_Hyrax in the cloud_* and then click the *Search* button, this will bring you to the Earthdata Login Application Approval page:
 
+image::../images/EDL-Approve-Apps-Application-Authorize.png[Earthdata Login Application Approval Page, 640,480,pdfwidth=50%,scaledwidth=50%]
 
-
-* Select your new application and click the _Approve Selected Applications_ button.
+* Click the _Authorize_ button associated with thhe *Hyrax in the cloud_* service.
 You will be returned to the *My Applications* page where you should now see your new application on the list of _Approved Applications_.
 
-image::../images/UrsApprovedApplicationList.png[Earthdata Login Approved Applications]
-
-NOTE: The application named *tesy_tesy* used in this example does not really exist and is for educational puspose only.
+NOTE: The application named *Hyrax in the cloud* used in this example is the only
+OPeNDAP service application running in the NGAP cloud. There are many other
+applications deployed in NGAP and to use any of them with your EDL user account
+you will have to authorize each application service in a similar manner
+to *_Hyrax in the cloud_*
 
 == _cURL_ (a.k.a. _lib_curl_ or _curl_) ==
 
