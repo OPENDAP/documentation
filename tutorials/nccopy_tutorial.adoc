@@ -9,7 +9,7 @@
 Who Is This Tutorial For?::
 Many people that use OPeNDAP services have a workflow that relies on the data
 being held in local netcdf files. Many of these users come to an OPeNDAP service
-endpoint for a data granule, and they ask the server to "rewrite" the entire
+endpoint for some data granule, and they ask the server to "rewrite" the entire
 granule as a netcdf-3 or netcdf-4 files. If you are one of these people then this
 tutorial is for you!
 
@@ -36,7 +36,8 @@ result. The delay can be lengthy enough that the request will fail due to a
 timeout condition. When `nccopy` is used the delay is eliminated and the result
 is also a netcdf-4 file on local disk. ohsnap.
 
-In this tutorial we will work with the retrieval of remote data.
+In this tutorial we will work with the retrieval of remote data from a DAP4
+data service.
 
 This tutorial assumes that the reader has a basic grasp of bash shell
 programming.
