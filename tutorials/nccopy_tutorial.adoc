@@ -38,13 +38,13 @@ is also a netcdf-4 file on local disk. ohsnap.
 
 In this tutorial we will work with the retrieval of remote data.
 
-This tutorial assumes that the reader has a good grasp of bash shell
+This tutorial assumes that the reader has a basic grasp of bash shell
 programming.
 
 The NASA examples in this document will require that the user configure
 their client applications to authenticate with the NASA EDL OAuth2 service.
-Since the authentication setup is complex, yet similar for many clients. We
-have covered it in a separate document.
+Since the authentication setup is complex, yet similar for many clients,
+we have covered it in a separate document
 
 * **link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[Client Authentication Tutorial]**
 
@@ -59,13 +59,13 @@ go do that now!_]**
 === nccopy details
 
 The `nccopy` application is a linux command line program that is typically
-installed with the netcdf-c libraries (and often can be acquired from a package
-manager such as _brew/yum/dnf/apt-get_. It allows the user to rewrite netcdf
-files on the local disk, and using the DAP2 and DAP4 protocols it can also
-rewrite remote datasets with a DAP access url and store the results on local
-disk. It provides options for output file format, customizing the internal
-data compression, chunk sizes, and selecting data and/or definitions so that
-not everything is brought from the source dataset.
+installed with the netcdf-c libraries which can typically be acquired from a
+package manager such as _brew_/_yum_/_dnf_/_apt-get_. The `nccopy` application allows
+the user to rewrite netcdf files on the local disk, and using the DAP2 and DAP4
+protocols it can also rewrite remote datasets with a DAP access url and store
+the results on local disk. It provides options for output file format,
+customizing the internal data compression, chunk sizes, and selecting data
+and/or definitions so that not everything is brought from the source dataset.
 
 In this tutorial we will focus on the remote data access aspects of nccopy. We
 leave the nuances of the compression and chunking controls to you, the capable
@@ -120,6 +120,8 @@ In these examples will use the following remote datasets:
 COADS Climatology data] hosted at _test.opendap.org_, no authentication required for access.
 * https://opendap.uat.earthdata.nasa.gov/collections/C1225808238-GES_DISC/granules/GPM_3IMERGHH.06%3A3B-HHR.MS.MRG.3IMERG.20200101-S000000-E002959.0000.V06B.HDF5[
 A NASA GPM IMERG Final Precipitation Level 3 (L3) granule] served by Hyrax in
+NASA's NGAP project.
+* https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20230211090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1[GHRSST Global High Resolution Sea Surface Temperature Data] served by Hyrax in
 NASA's NGAP project.
 
 Both of the example granules are DAP datasets: The precipitation dataset
