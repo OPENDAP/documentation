@@ -9,9 +9,9 @@
 Who Is This Tutorial For?::
 Many people that use OPeNDAP services have a workflow that relies on the data
 being held in local netcdf files. Many of these users come to an OPeNDAP service
-endpoint for some data granule, and they ask the server to "rewrite" the entire
-granule as a netcdf-3 or netcdf-4 files. If you are one of these people then this
-tutorial is for you!
+endpoint for a particular data granule, and then they ask the server to
+"rewrite" the entire granule as a netcdf-3 or netcdf-4 files. If you are one of
+these people then this tutorial is for you!
 
 Tutorial Examples Language::
 The examples are written as bash scripts.
