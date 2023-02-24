@@ -21,8 +21,8 @@ env:
 script:
   - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor      asciidoctor -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
   - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name  asciidoc-to-pdf asciidoctor/docker-asciidoctor  asciidoctor-pdf -D /documents/output README.adoc UserGuideComprehensive.adoc QuickStart.adoc
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name tutorials-to-html asciidoctor/docker-asciidoctor     asciidoctor -D /documents/output/tutorials tutorials/*.adoc
-  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name  tutorials-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output/tutorials tutorials/*.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name tutorials-to-html asciidoctor/docker-asciidoctor     asciidoctor -a toc=left -a docinfo=shared -D /documents/output/tutorials tutorials/*.adoc
+  - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name  tutorials-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -a toc=left -a docinfo=shared -D /documents/output/tutorials tutorials/*.adoc
 
 after_error: 
   - docker logs asciidoc-to-html
