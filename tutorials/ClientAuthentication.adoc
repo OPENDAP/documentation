@@ -1,8 +1,11 @@
 = Authentication For DAP Clients
 {docdate}
+:imagesdir: ../images
+:source-highlighter: rouge
+:toc: left
+:toclevels: 3
 :numbered:
-:toc:
-:imagesdir:
+:docinfo: shared
 
 == Overview
 Many users access DAP servers using a browser as their primary software
@@ -53,20 +56,20 @@ https://urs.earthdata.nasa.gov/profile[Earthdata Login profile page.]
 * Click the *Applications* tab and select *Authorized Applications* from the
 pull down menu.This will take you to the *Approved Applications* page.
 
-image::../images/EDL-Approved-Apps.png[Earthdata Login Approve Applications Page,640,480,pdfwidth=50%,scaledwidth=50%]
+image::EDL-Approved-Apps.png[Earthdata Login Approve Applications Page,640,480,pdfwidth=50%,scaledwidth=50%]
 
 On the *Approved Applications* page:
 
 * At the bottom of the page click the *Approve More Applications* button.
 This will display the *Approve Applications* page.
 
-image::../images/EDL-Approve-Apps-Application-Search.png[Earthdata Login Approve Applications Page,  640,480,pdfwidth=50%,scaledwidth=50%]
+image::EDL-Approve-Apps-Application-Search.png[Earthdata Login Approve Applications Page,  640,480,pdfwidth=50%,scaledwidth=50%]
 
 In the search bar at the top of the page enter the name of the Hyrax OPeNDAP
 service application, *_Hyrax in the cloud_* and then click the *Search* button,
 this will bring you to the Earthdata Login Application Approval page:
 
-image::../images/EDL-Approve-Apps-Application-Authorize.png[Earthdata Login Application Approval Page, 640,480,pdfwidth=50%,scaledwidth=50%]
+image::EDL-Approve-Apps-Application-Authorize.png[Earthdata Login Application Approval Page, 640,480,pdfwidth=50%,scaledwidth=50%]
 
 * Click the _Authorize_ button associated with thhe *Hyrax in the cloud_* service.
 You will be returned to the *My Applications* page where you should now see your
@@ -432,7 +435,7 @@ https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 When I committed the edit (aka hit Enter) IDV popped up a dialog box that
 indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials:
 
-image::../images/IDVAuthDialog.png[IDV EDL Authentication Dialog]
+image::IDVAuthDialog.png[IDV EDL Authentication Dialog]
 
 I entered them, clicked the save password check box, and clicked the _OK_
 button. IDV was then able to access the requested resource. After the first
@@ -454,7 +457,7 @@ https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) IDV popped up a dialog box that indicated that the _130.56.244.153_ server wanted my credentials:
 
-image::../images/IDV-LDAP.png[IDV LDAP Authentication Dialog]
+image::IDV-LDAP.png[IDV LDAP Authentication Dialog]
 
 I entered them, clicked the save password check box, and clicked the _OK_ button. IDV was then able to access the requested resource.
 
@@ -471,7 +474,7 @@ https://54.174.13.127/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) IDV popped up a dialog box that indicated that there was an error loading the data:
 
-image::../images/IDV-Shibboleth.png[IDV Shibboleth Authentication Failure Dialog]
+image::IDV-Shibboleth.png[IDV Shibboleth Authentication Failure Dialog]
 
 == _ToolsUI_ ==
 
@@ -495,7 +498,7 @@ https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
 
-image::../images/ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
+image::ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
 
 I entered them and clicked the _OK_ button. ToolsUI was then able to access the requested resource.
 
@@ -510,7 +513,7 @@ https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
 
-image::../images/ToolsUI-LDAP.png[ToolsUI LDAP Authentication Dialog]
+image::ToolsUI-LDAP.png[ToolsUI LDAP Authentication Dialog]
 
 I entered them and clicked the _OK_ button. ToolsUI was then able to access the requested resource.
 
@@ -525,7 +528,7 @@ https://54.174.13.127/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that there was an error loading the data:
 
-image::../images/ToolsUI-Shibboleth.png[ToolsUI Shibboleth Authentication Failure]
+image::ToolsUI-Shibboleth.png[ToolsUI Shibboleth Authentication Failure]
 
 == _Panoply_ ==
 The Panoply application is a sophisticated GUI driven data client that is based around the CDM/NetCDF data model and utilizes that NetCDF-Java (and thus the Java DAP implementation) to access remote DAP datasets. Because it has a GUI it can retrieve (and cache for later) users credentials directly from the user.
@@ -543,7 +546,7 @@ https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
 
-image::../images/PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
+image::PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
 
 I entered them, clicked the save password check box, and clicked the _OK_ button. Panoply was then able to access the requested resource.
 
@@ -558,7 +561,7 @@ https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
 
-image::../images/Panoply-LDAP.png[Panoply LDAP Authentication Dialog]
+image::Panoply-LDAP.png[Panoply LDAP Authentication Dialog]
 
 I entered them, clicked the save password check box, and clicked the _OK_ button. Panoply was then able to access the requested resource.
 
@@ -573,7 +576,7 @@ https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that indicated that there was an error loading the data:
 
-image::../images/Panoply-Shibboleth.png[Panoply Shibboleth Authentication Failure]
+image::Panoply-Shibboleth.png[Panoply Shibboleth Authentication Failure]
 
 == _Matlab, Ferret, Other applications that use NetCDF C_ ==
 Check the version of the netCDF C library that the application uses; once they have updated to 4.3.3.1 or later, authentication configuration should be the same as the _ncdump_ example above. That is, both URS and LDAP-backed HTTP/S-Basic authentication should work by reading credentials from the _.netrc_ file given that the _.dodsrc_ file is set to point to them.
