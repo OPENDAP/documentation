@@ -1,11 +1,11 @@
 = Authentication For DAP Clients
 {docdate}
 :imagesdir: ../images
-:docinfo: shared
 :source-highlighter: rouge
-:numbered:
 :toc: left
-:toclevels: 2
+:toclevels: 3
+:numbered:
+:docinfo: shared
 
 == Overview
 Many users access DAP servers using a browser as their primary software
