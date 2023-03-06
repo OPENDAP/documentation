@@ -19,7 +19,7 @@ versions of the Data Access Protocol (DAP) and information about
 access to remote data made available using DAP.
 
 == Data Access Tutorials
-The link:https://opendap.github.io/documentation/DataAccessTutorials.html[Data Access Tutorials]
+The link:https://opendap.github.io/documentation/tutorials/DataAccessTutorials.html[Data Access Tutorials]
 show how to use various software clients to access data using the DAP web API.
 
 == Hyrax Installation and Configuration Guide
