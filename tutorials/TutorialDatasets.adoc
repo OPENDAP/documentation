@@ -20,8 +20,11 @@ Temperature (GHRSST) Level 3 Collated (L3C) dataset covering the America Region
 based on retrievals from the Advanced Baseline Imager (ABI) on board the
 Geostationary Operational Environmental Satellite-16 (GOES-16).
 
+
 [horizontal]
 Native File Size:: 9,626,842 bytes
+Total Variables:: 19
+Range Variables:: 16
 Uncompressed Range Variable:: 11,520,000 bytes
 
 granule_url:: https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/GOES16-SST-OSISAF-L3C-v1.0/2022/224/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc
@@ -46,6 +49,8 @@ instruments aboard NOAA polar-orbiting satellites.
 
 [horizontal]
 Native File Size:: 39,007,534 bytes
+Total Variables:: 18
+Range Variables:: 11
 Uncompressed Range Variable:: 74,649,600 bytes
 
 TDS Dataset Page:: https://www.ncei.noaa.gov/thredds-ocean/catalog/pathfinder/Version5.3/L3C/1996/data/catalog.html?dataset=pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
@@ -59,6 +64,8 @@ file_name:: 19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA1
 ==== Test Granule: _01/06/1996 Daytime_
 [horizontal]
 Native File Size:: 39,106,029 bytes
+Total Variables:: 18
+Range Variables:: 11
 Uncompressed Range Variable:: 74,649,600 bytes
 
 TDS Dataset Page:: https://www.ncei.noaa.gov/thredds-ocean/catalog/pathfinder/Version5.3/L3C/1996/data/catalog.html?dataset=pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc
@@ -95,6 +102,8 @@ website.
 
 [horizontal]
 Native File Size:: 150,254,547 bytes
+Total Variables:: ??? (_I have no idea what's going on in this dataset!_)
+Range Variables:: 15
 Uncompressed Range Variable:: 60,825,600 bytes
 
 dap_service:: https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5
@@ -114,6 +123,8 @@ shortwave radiation, vapor pressure, snow water equivalent, and day length.
 
 [horizontal]
 Native File Size:: 3,810,812,334 bytes
+Total Variables:: 9
+Range Variables:: 1
 Uncompressed Range Variable:: 92,123,153,000 bytes
 
 granule_url:: https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_na_prcp_1996.nc
