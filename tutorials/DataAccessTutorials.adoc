@@ -2,4 +2,5 @@
 = Tutorial Links
 
 *  link:https://opendap.github.io/documentation/tutorials/nccopy_tutorial.html[nccopy tutorial]
+*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[pydap tutorial DAP2]
 *  link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information]

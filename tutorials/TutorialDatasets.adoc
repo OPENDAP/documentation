@@ -8,7 +8,9 @@
 :docinfo: shared
 
 These datasets are used by the various DAP data access tutorials located here.
-They are listed from smallest to largest.
+They are listed in order from smallest to largest. Each of the following
+sections contains links to the source dataset at the original publishers site,
+and links to a copy of the dataset granule hosted at test.opendap.org
 
 == https://cmr.earthdata.nasa.gov/search/concepts/C2036877806-POCLOUD.html[NASA Global High Resolution Sea Surface Temperature (GOES-16 Satellite)]
 
@@ -20,12 +22,18 @@ based on retrievals from the Advanced Baseline Imager (ABI) on board the
 Geostationary Operational Environmental Satellite-16 (GOES-16).
 
 
+
 [horizontal]
+file_name:: 20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc
+BoundingBox:: lon_max = -15, lat_max = 60, lon_min = -135, lat_min = -60
 Native File Size:: 9,626,842 bytes
 Total Variables:: 19
 Range Variables:: 16
 Uncompressed Range Variable:: 11,520,000 bytes
 
+=== Publisher: NASA
+
+[horizontal]
 granule_url:: https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/GOES16-SST-OSISAF-L3C-v1.0/2022/224/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc
 
 dap_service_url:: https://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0
@@ -34,9 +42,12 @@ https://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/2022
 DAP2 Links:: https://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.dds[dds]
 https://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.das[das]
 
-file_name:: 20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc
+=== Host: test.opendap.org
+[horizontal]
+dap_service_url:: http://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc
+DAP4:: http://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc.dmr.html[html] http://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc.dmr.xml[dmr]
+DAP2:: http://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc.dds[dds] http://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc.das[das]
 
-BoundingBox:: lon_max = -15, lat_max = 60, lon_min = -135, lat_min = -60
 
 == https://www.ncei.noaa.gov/products/avhrr-pathfinder-sst[NOAA GHRSST, 4km (Pathfinder Satellite)]
 
@@ -53,44 +64,63 @@ instruments aboard NOAA polar-orbiting satellites.
 === Test Granule: _01/06/1996 Nighttime_
 
 [horizontal]
+file_name:: 19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
 Native File Size:: 39,007,534 bytes
 Total Variables:: 18
 Range Variables:: 11
 Uncompressed Range Variable:: 74,649,600 bytes
 
+==== Publisher: NOAA
+[horizontal]
 TDS Dataset Page:: https://www.ncei.noaa.gov/thredds-ocean/catalog/pathfinder/Version5.3/L3C/1996/data/catalog.html?dataset=pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
 
 granule_url:: https://www.ncei.noaa.gov/thredds-ocean/fileServer/pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
 
 dap_service_url:: https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
-DAP4 Links:: [.line-through]#https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.dmr.xml[dmr]
+
+DAP4:: [.line-through]#https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.dmr.xml[dmr]
 https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.dmr.html[html]#
 *_DAP4 Services Do Not Appear to Be Available For This Granule._*
-DAP2 Links:: https://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.dds[dds]
+
+DAP2:: https://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.dds[dds]
 https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.das[das]
 
-file_name:: 19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
+==== Host: test.opendap.org
+[horizontal]
+dap_service_url:: http://test.opendap.org/opendap/hyrax/tutorials/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc
+DAP4:: http://test.opendap.org/opendap/hyrax/tutorials/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.dmr.html[html] http://test.opendap.org/opendap/hyrax/tutorials/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.dmr.xml[dmr]
+DAP2:: http://test.opendap.org/opendap/hyrax/tutorials/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.dds[dds] http://test.opendap.org/opendap/hyrax/tutorials/19960106043137-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_night-v02.0-fv01.0.nc.das[das]
+
 
 === Test Granule: _01/06/1996 Daytime_
 [horizontal]
+file_name:: 19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc
 Native File Size:: 39,106,029 bytes
 Total Variables:: 18
 Range Variables:: 11
 Uncompressed Range Variable:: 74,649,600 bytes
 
+==== Publisher: NOAA
+[horizontal]
 TDS Dataset Page:: https://www.ncei.noaa.gov/thredds-ocean/catalog/pathfinder/Version5.3/L3C/1996/data/catalog.html?dataset=pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc
 
 granule_url:: https://www.ncei.noaa.gov/thredds-ocean/fileServer/pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc
 
 dap_service_url:: https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc
 
-DAP4 Links:: [.line-through]##dmr## [.line-through]##html##
+DAP4:: [.line-through]##dmr## [.line-through]##html##
 *_DAP4 Services Do Not Appear to Be Available For This Granule._*
 
-DAP2 Links:: https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.dds[dds]
+DAP2:: https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.dds[dds]
 https://www.ncei.noaa.gov/thredds-ocean/dodsC/pathfinder/Version5.3/L3C/1996/data/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.das[das]
 
-filename:: 06_day-v02.0-fv01.0.nc
+
+==== Host: test.opendap.org
+[horizontal]
+dap_service_url:: http://test.opendap.org/opendap/hyrax/tutorials/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc
+DAP4:: http://test.opendap.org/opendap/hyrax/tutorials/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.dmr.html[html] http://test.opendap.org/opendap/hyrax/tutorials/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.dmr.xml[dmr]
+DAP2:: http://test.opendap.org/opendap/hyrax/tutorials/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.dds[dds] http://test.opendap.org/opendap/hyrax/tutorials/19960106134722-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA14_G_1996006_day-v02.0-fv01.0.nc.das[das]
+
 
 == https://ecostress.jpl.nasa.gov/science?_ga=2.62570348.1593016743.1678124175-1286591547.1677867690[NASA/JPL/USGS ECOSTRESS]
 
@@ -117,23 +147,30 @@ A map of the acquisition coverage can be found on the https://ecostress.jpl.nasa
 website.
 
 [horizontal]
+file_name:: ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5
 Native File Size:: 150,254,547 bytes
 Total Variables:: ??? (_I have no idea what's going on in this dataset!_)
 Range Variables:: 15
 Uncompressed Range Variable:: 60,825,600 bytes
 
-
+==== Publisher: USGS
+[horizontal]
 granule_url:: https://e4ftl01.cr.usgs.gov/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5
 
 dap_service_url:: https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5
 
-DAP4 Links:: https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dmr.xml[dmr]
+DAP4:: https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dmr.xml[dmr]
 https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dmr.html[html]
 
-DAP2 Links:: https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dds[dds]
+DAP2:: https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dds[dds]
 https://opendap.cr.usgs.gov/opendap/hyrax/ECOB/ECOSTRESS/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.das[das]
 
-file_name:: ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5
+
+==== Host: test.opendap.org
+[horizontal]
+dap_service_url:: http://test.opendap.org/opendap/hyrax/tutorials/ECO2LSTE.001/2023.03.02/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5
+DAP4:: http://test.opendap.org/opendap/hyrax/tutorials/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dmr.html[html] http://test.opendap.org/opendap/hyrax/tutorials/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dmr.xml[dmr]
+DAP2:: http://test.opendap.org/opendap/hyrax/tutorials/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.dds[dds] http://test.opendap.org/opendap/hyrax/tutorials/ECOSTRESS_L2_LSTE_26387_008_20230302T100304_0601_02.h5.das[das]
 
 == https://daac.ornl.gov/DAYMET/guides/Daymet_Daily_V4R1.html[NASA Daymet Precipitation]
 
@@ -146,21 +183,40 @@ shortwave radiation, vapor pressure, snow water equivalent, and day length.
 === Test Granule: _Daymet 1996 North America Daily V4R1 Precipitation_
 
 [horizontal]
+file_name:: daymet_v4_daily_na_prcp_1996.nc
 Native File Size:: 3,810,812,334 bytes
 Total Variables:: 9
 Range Variables:: 1
 Uncompressed Range Variable:: 92,123,153,000 bytes
 
-granule_url:: https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_na_prcp_1996.nc
+==== Publisher: NASA
 
-dap_service_url:: https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc
+[horizontal]
+granule_url::
+https://data.ornldaac.earthdata.nasa.gov/protected/daymet/Daymet_Daily_V4R1/data/daymet_v4_daily_na_prcp_1996.nc
 
-DAP4 Links:: https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc.dmr.xml[dmr]
+dap_service_url::
+https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc
+
+DAP4::
 https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc.dmr.html[html]
+https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc.dmr.xml[dmr]
 
-DAP2 Links:: https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc.dds[dds]
+DAP2:: https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc.dds[dds]
 https://opendap.earthdata.nasa.gov/collections/C2532426483-ORNL_CLOUD/granules/Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc.das[das]
 
-file_name:: Daymet_Daily_V4R1.daymet_v4_daily_na_prcp_1996.nc
+
+
+==== Host: test.opendap.org
+[horizontal]
+dap_service_url:: http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc
+DAP4::
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.dmr.html[html]
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.dmr.xml[dmr]
+DAP2::
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.dds[dds]
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.das[das]
+
+
 
 
