@@ -579,11 +579,11 @@ When I committed the edit (aka hit Enter) Panoply popped up a dialog box that in
 image::Panoply-Shibboleth.png[Panoply Shibboleth Authentication Failure]
 
 == _Matlab, Ferret, Other applications that use NetCDF C_ ==
-Check the version of the netCDF C library that the application uses; once they have updated to 4.3.3.1 or later, authentication configuration should be the same as the _ncdump_ example above. That is, both URS and LDAP-backed HTTP/S-Basic authentication should work by reading credentials from the _.netrc_ file given that the _.dodsrc_ file is set to point to them.
+Check the version of the netCDF C library that the application uses; once they have updated to 4.3.3.1 or later, authentication configuration should be the same as the _ncdump_ example above. That is, both EDL and LDAP-backed HTTP/S-Basic authentication should work by reading credentials from the _.netrc_ file given that the _.dodsrc_ file is set to point to them.
 
 === Earthdata Login & LDAP ===
 Here's a short summary of the configuration
-Add your URS/LDAP credentials to the _.netrc_ file, associating them with the URS/OpenDAP server that you normally authenticate with, like this:
+Add your EDL/LDAP credentials to the _.netrc_ file, associating them with the server with which you normally authenticate:
 
 [source,apache]
 ----
@@ -608,10 +608,10 @@ HTTP.NETRC=/Users/jimg/.netrc
 This is certain to not work until the netCDF C library is modified to explicitly support it.
 
 == _PyDAP_ ==
-The PyDAP software (pydap.org) provides one interface for python programs to read from OpenDAP servers (the other is the netCDF4 python module, which uses the netCDF-C library to actually access data, include data from OpenDAP servers). PyDAP includes an extension mechanism so that it can interact with different kinds of authentication systems. This system is very flexible and we were able to use it to add support for both LDAP-backed HTTP/S Basic authentication and ELA/URS. The same scheme could be used to add support for Shibboleth, although it would take additional development work (described in general below).
+The PyDAP software (pydap.org) provides one interface for python programs to read from OpenDAP servers (the other is the netCDF4 python module, which uses the netCDF-C library to actually access data, include data from OpenDAP servers). PyDAP includes an extension mechanism so that it can interact with different kinds of authentication systems. This system is very flexible and we were able to use it to add support for both LDAP and EDL using HTTP/S Basic authentication. The same scheme could be used to add support for Shibboleth, although it would take additional development work (described in general below).
 
 === Earthdata Login & LDAP ===
-To use PyDAP with a server the requires either LDAP or ELA/URS authentication, first enter host, username and password credentials in the .netrc file stored in your home account. If it does not yet exist, make a file using a text editor. The format of this file is the following set of three lines repeated for each host:
+To use PyDAP with a server the requires either LDAP or EDL authentication, first enter host, username and password credentials in the .netrc file stored in your home account. If it does not yet exist, make a file using a text editor. The format of this file is the following set of three lines repeated for each host:
 
 [source,apache]
 ----
@@ -620,7 +620,7 @@ machine server.that.accepts.credentials
 	password your_password
 ----
 
-NOTE: For LDAP-backed HTTP/S Basic authentication, each host that might prompt for credentials must be listed (and the username and password repeated, even if it is the same for several hosts). For ELA/URS, list only the ELA/URS site and the username and password you use for it.
+NOTE: For LDAP-backed HTTP/S Basic authentication, each host that might prompt for credentials must be listed (and the username and password repeated, even if it is the same for several hosts). For EDL, list only the EDL site and the username and password you use for it.
 
 Here's an example _.netrc_ file:
 
@@ -643,7 +643,7 @@ Once the _.netrc_ file is configured, start python, run the function install_bas
 
 [source,python]
 ----
-# Set up PyDAP to use the URS request() function
+# Set up PyDAP to use the request() function
 
 from pydap.util.urs import install_basic_client
 install_basic_client()

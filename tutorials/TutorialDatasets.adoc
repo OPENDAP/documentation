@@ -220,3 +220,38 @@ http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.
 
 
 
+== https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.dmr.html[NASA: Daily MUR SST, Final product]
+
+image::GHRSST(PODAAC)-MUR-Example.png[GHRSST (MUR) Example,  640,480,pdfwidth=50%,scaledwidth=50%]
+
+[horizontal]
+file_name:: 20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc
+Native File Size:: 730,585,356 bytes
+Total Variables:: 9
+Range Variables:: 6
+Uncompressed Range Variable:: 1,295,928,000 bytes
+
+=== Publisher: NASA PODACC
+[horizontal]
+granule_url::
+https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/MUR-JPL-L4-GLOB-v4.1/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.nc
+
+dap_service_url::
+https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1
+
+DAP4::
+https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.dmr.html[html]
+https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.dmr.xml[dmr]
+
+DAP2:: https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.dds[dds]
+https://opendap.earthdata.nasa.gov/collections/C1996881146-POCLOUD/granules/20220531090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.das[das]
+
+=== Host: test.opendap.org
+
+dap_service_url:: http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc
+DAP4::
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.dmr.html[html]
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.dmr.xml[dmr]
+DAP2::
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.dds[dds]
+http://test.opendap.org/opendap/hyrax/tutorials/daymet_v4_daily_na_prcp_1996.nc.das[das]
