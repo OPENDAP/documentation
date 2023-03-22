@@ -1,7 +1,7 @@
 
 = OPeNDAP Data Access Client Tutorials
 
-== Commandline clients
+== Command line clients
 These clients are invoked from a shell and are typically used in an automated
 data access activity, possibly written as a shell script.
 
@@ -16,3 +16,11 @@ Python clients like PyDAp are best explained in a Jupyter (aka iPython) notebook
 
 == Datasets
 Several datasets are used in these tutorials and some general information about each may be found on our  link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information] information page.
+
+
+== _Coming Soon_
+* XArray Python tutorial (notebook)
+* DAP2/4 NetCDF Python Tutorial (notebook)
+* DAP4 PyDAP Python sub-setting large datasets (notebook)
+* Using the cURL command line to access data (shell)
+* Panoply Tutorial for remote data access.
