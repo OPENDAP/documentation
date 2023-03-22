@@ -1,7 +1,18 @@
 
-= Tutorial Links
+= OPeNDAP Data Access Client Tutorials
+
+== Commandline clients
+These clients are invoked from a shell and are typically used in an automated
+data access activity, possibly written as a shell script.
 
 *  link:https://opendap.github.io/documentation/tutorials/nccopy_tutorial.html[nccopy tutorial]
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[pydap tutorial DAP2]
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap4_basic.ipynb[pydap tutorial DAP4]
-*  link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information]
+
+== Python client tutorials
+Python clients like PyDAp are best explained in a Jupyter (aka iPython) notebook
+
+
+*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[PyDAP w/DAP2] - An iPython notebook tutorial for PyDAP with DAP2 access examples
+*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap4_basic.ipynb[PyDAP w/DAP4]- An iPython notebook tutorial for PyDAP with DAP4 data access examples
+
+== Datasets
+Several datasets are used in these tutorials and some general information about each may be found on our  link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information] information page.
