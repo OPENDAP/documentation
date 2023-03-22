@@ -24,3 +24,4 @@ Several datasets are used in these tutorials and some general information about 
 * DAP4 PyDAP Python sub-setting large datasets (notebook)
 * Using the cURL command line to access data (shell)
 * Panoply Tutorial for remote data access.
+* Matlab Tutorial for remote data access.
