@@ -12,13 +12,14 @@ Python clients like PyDAp are best explained in a Jupyter (aka iPython) notebook
 You  can click the associated image:https://mybinder.org/badge_logo.svg[fit=line]
 binder badge  to run the notebook in your browser.
 
-* link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[PyDAP w/DAP2] -
+* link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[PyDAP w/DAP2]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap2_basic.ipynb"] -
 An iPython notebook tutorial for PyDAP with DAP2 access examples.
-image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap2_basic.ipynb"]
 
 
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap4_basic.ipynb[PyDAP w/DAP4]- An iPython notebook tutorial for PyDAP with DAP4 data access examples
-image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap4_basic.ipynb"]
+*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap4_basic.ipynb[PyDAP w/DAP4]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap4_basic.ipynb"] -
+An iPython notebook tutorial for PyDAP with DAP4 data access examples
 
 == Datasets
 Several datasets are used in these tutorials and some general information about
