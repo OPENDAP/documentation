@@ -10,13 +10,21 @@ data access activity, possibly written as a shell script.
 == Python client tutorials
 Python clients like PyDAp are best explained in a Jupyter (aka iPython) notebook
 
+link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[PyDAP w/DAP2] -
+An iPython notebook tutorial for PyDAP with DAP2 access examples image::https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap2_basic.ipynb"]
 
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[PyDAP w/DAP2] - An iPython notebook tutorial for PyDAP with DAP2 access examples
+
+
+
+
+
 *  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap4_basic.ipynb[PyDAP w/DAP4]- An iPython notebook tutorial for PyDAP with DAP4 data access examples
 
 == Datasets
-Several datasets are used in these tutorials and some general information about each may be found on our  link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information] information page.
-
+Several datasets are used in these tutorials and some general information about
+each may be found on our
+link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information]
+information page.
 
 == _Coming Soon_
 * XArray Python tutorial (notebook)
