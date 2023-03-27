@@ -32,7 +32,7 @@ to the remote service.
 Several datasets are used in these tutorials and some general information about
 each may be found on our
 link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tutorial Dataset Information]
-information page.
+page.
 
 == _Coming Soon_
 * XArray Python tutorial (notebook)
@@ -41,3 +41,4 @@ information page.
 * Using the cURL command line to access data (shell)
 * Panoply Tutorial for remote data access.
 * Matlab Tutorial for remote data access.
+

@@ -616,8 +616,8 @@ To use PyDAP with a server the requires either LDAP or EDL authentication, first
 [source,apache]
 ----
 machine server.that.accepts.credentials
-	login your_login_name
-	password your_password
+  login your_login_name
+  password your_password
 ----
 
 NOTE: For LDAP-backed HTTP/S Basic authentication, each host that might prompt for credentials must be listed (and the username and password repeated, even if it is the same for several hosts). For EDL, list only the EDL site and the username and password you use for it.
@@ -627,16 +627,16 @@ Here's an example _.netrc_ file:
 [source,apache]
 ----
 machine urs.earthdata.nasa.gov
-login jhrg
-password ****
+  login jhrg
+  password ****
 
 machine uat.urs.earthdata.nasa.gov
-login jhrg
-password ****
+  login jhrg
+  password ****
 
 machine 130.56.244.153
-login tesla
-password password
+  login tesla
+  password password
 ----
 
 Once the _.netrc_ file is configured, start python, run the function install_basic_client() and then access servers. Here's a python script that will open a PyDAP virtual connection to an authenticated server:
