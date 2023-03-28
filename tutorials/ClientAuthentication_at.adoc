@@ -7,6 +7,9 @@
 :numbered:
 :docinfo: shared
 
+// #############################################################################
+// #
+// #
 == Overview
 Many users access DAP servers using a browser as their primary software
 interface. However, there is also a growing group of users that utilize either:
@@ -107,11 +110,12 @@ You can non-destructively create a new `~/.netrc` in your users home directory
 on the system where you will be running the data access clients.
 [source,sh]
 ----
-[~/OPeNDAP/hyrax/documentation] ndp% cd # Return to home dir.
-[~] ndp% touch .netrc # Creates the file if it does not exist.
-[~] ndp% chmod 600 .netrc # Restrict the access permissions
-[~] ndp% ls -l .netrc # Check your work
--rw-------@ 1 ndp  staff  92 Nov 13 06:08 . netrc
+#!/bin/bash
+cd # Return to home dir.
+touch .netrc # Creates the file if it does not exist.
+chmod 600 .netrc # Restrict the access permissions
+ls -l .netrc # Check your work
+-rw-------@ 1 ndp  staff  92 Nov 13 06:08 .netrc
 ----
 (You can see that my `~.netrc` file already had things in it so this example also
 shows the "non-destructive" aspect of using `touch` to create the file as needed.)
@@ -147,6 +151,11 @@ access client software will ignore (possibly silently) the offending `~/.netrc`
 file and authentication will fail.
 
 
+// #############################################################################
+// #############################################################################
+// #############################################################################
+// #
+// #
 
 == Earthdata Login (OAuth2)
 Earthdata Login is a NASA implementation of an OAuth2 Single Sign-On service.
@@ -226,6 +235,7 @@ server with the following _curl_ command:
 
 [source,sh]
 ----
+#!/bin/bash
 curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 What is happening here?
@@ -249,12 +259,18 @@ In order to retrieve multiple URLs without re-authenticating you can use multipl
 
 [source,sh]
 ----
-curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/ --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
+#!/bin/bash
+curl -k -n -c edlCookies -b edlCookies -L \
+    --url https://opendap.earthdata.nasa.gov/ \
+    --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds \
+    --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
 ----
 
 Or, since _cURL_ is actually pretty smart about using cookies and such you can also make multiple _curl_ requests with the same cookies, and it won't have to reauthenticate with EDL once it's authenticated the first time:
 
+[source,sh]
 ----
+#!/bin/bash
 curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/
 curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
@@ -276,6 +292,7 @@ Consider this _wget_ command:
 
 [source,sh]
 ----
+#!/bin/bash
 wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 
@@ -287,18 +304,22 @@ What's happening here?
 --no-check-certificate :: Do not check the authenticity of the (self signed) certificates. This is good for testing against your own servers running with self-signed certificates in that this switch will allow you to experience success when interacting with such servers. However, this switch breaks the *chain of trust* and may allow bad things to happen if used on the open internets. Thus, for regular use, do not include this switch!
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds:: The URL to retrieve.
 
-Here's the output of said _wget_ request:
-
+Here's the request:
 [source,sh]
 ----
-[spooky:olfs/testsuite/urs] ndp% wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+#!/bin/bash
+wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+----
+Here's the output:
+[source,sh]
+----
 --2014-11-14 11:22:18--  https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
-Connecting to 54.172.97.47:443... connected.
-WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
+Connecting to opendap.earthdata.nasa.gov:443... connected.
+WARNING: cannot verify opendap.earthdata.nasa.gov's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=opendap.earthdata.nasa.gov/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
 HTTP request sent, awaiting response... 302 Found
-Location: https://urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2F54.172.97.47%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
---2014-11-14 11:22:19--  https://urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2F54.172.97.47%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
+Location: https://urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2Fopendap.earthdata.nasa.gov%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
+--2014-11-14 11:22:19--  https://urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2Fopendap.earthdata.nasa.gov%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
 Resolving urs.earthdata.nasa.gov... 198.118.243.34, 2001:4d0:241a:4089::91
 Connecting to urs.earthdata.nasa.gov|198.118.243.34|:443... connected.
 WARNING: certificate common name `earthdata.nasa.gov' doesn't match requested host name `urs.earthdata.nasa.gov'.
@@ -308,14 +329,14 @@ WARNING: certificate common name `earthdata.nasa.gov' doesn't match requested ho
 HTTP request sent, awaiting response... 302 Found
 Location: https://opendap.earthdata.nasa.gov/hyrax/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
 --2014-11-14 11:22:20--  https://opendap.earthdata.nasa.gov/hyrax/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
-Connecting to 54.172.97.47:443... connected.
-WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
+Connecting to opendap.earthdata.nasa.gov:443... connected.
+WARNING: cannot verify opendap.earthdata.nasa.gov's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=opendap.earthdata.nasa.gov/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
 HTTP request sent, awaiting response... 302 Found
 Location: https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds [following]
 --2014-11-14 11:22:21--  https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
-Connecting to 54.172.97.47:443... connected.
-WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
+Connecting to opendap.earthdata.nasa.gov:443... connected.
+WARNING: cannot verify opendap.earthdata.nasa.gov's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=opendap.earthdata.nasa.gov/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
 HTTP request sent, awaiting response... 200 OK
 Length: unspecified [text/plain]
@@ -539,6 +560,8 @@ d = open_url('https://52.1.74.222/opendap/data/hdf4/S3096277.HDF')
 
 
 // #############################################################################
+// #############################################################################
+// #############################################################################
 // LDAP
 //
 == LDAP
@@ -552,9 +575,10 @@ First in my home directory I created a _.netrc_ file and set its file permission
 
 [source,sh]
 ----
-[spooky:~] ndp% touch .netrc
-[spooky:~] ndp% chmod 600 .netrc
-[spooky:~] ndp% ls -l .netrc
+#!/bin/bash
+touch .netrc
+chmod 600 .netrc
+ls -l .netrc
 -rw-------@ 1 ndp  staff  92 Nov 13 06:08 .netrc
 ----
 
@@ -571,6 +595,7 @@ I could then access the top level directory of the LDAP authentication enabled H
 
 [source,sh]
 ----
+#!/bin/bash
 curl -k -n -c ldapCookies -b ldapCookies  --url https://130.56.244.153/opendap
 ----
 
@@ -596,9 +621,10 @@ file permissions to read only for owner:
 
 [source,sh]
 ----
-[spooky:~] ndp% touch .netrc
-[spooky:~] ndp% chmod 600 .netrc
-[spooky:~] ndp% ls -l . netrc
+#!/bin/bash
+touch .netrc
+chmod 600 .netrc
+ndp% ls -l . netrc
 -rw-------@ 1 ndp  staff  92 Nov 13 06:08 . netrc
 ----
 
@@ -762,6 +788,8 @@ d = open_url('https://52.1.74.222/opendap/data/hdf4/S3096277.HDF')
 
 
 
+// #############################################################################
+// #############################################################################
 // #############################################################################
 // Shibboleth
 //
