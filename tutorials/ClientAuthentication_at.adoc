@@ -22,21 +22,32 @@ In both these examples we want these client software applications to be able to
 manage authentication without user intervention, otherwise the automation
 benefits of these tools is lost.
 
-In general these automated clients rely on HTTP BASIC authentication. One
-significant facet of this is that the server MUST return an HTTP 401 status to t
-he client in order to trigger the client to resubmit the request with
-credentials associated with the 401 endpoint. While the username and password
-are sent to the server as "plain-text", if the connection to the server
+All of these automated clients rely on HTTP BASIC authentication. One
+significant facet of this is that the authentication server MUST return an HTTP
+401 status to the client in order to trigger the client to resubmit the request
+with credentials associated with the 401 endpoint. While the username and
+password are sent to the server as "plain-text", if the connection to the server
 is over TLS (HTTPS) then the authentication information is encrypted over the
 wire.
 
 === DAP Data Access Clients
-* _**cURL (a.k.a. _lib_curl_ or _curl_)**_
+The collection of software clients discussed here have some remarkable
+similarities in the way that they handle the client end of tHTTP BASIC
+authentication. The clients that present a GUI to the user, Panoply, IDV, and
+ToolsUI will open a dialog box and prompt the user for credentials when the
+authentication service endpoint returns a 401 Unauthorized response to the
+GUI client. The rest of these clients all utilize a `.netrc` file to store
+credentials on the client host system, and associate each credential set with
+the appropriate Single Sign On (SSO) host.
+
+* _**cURL (a.k.a. lib_curl or curl) **_
 The cURL library provides the HTTP functionality for a surprisingly large part
-the world wide web. IThe cURL library also has a command line appication, `curl`,
+the world wide web. IThe cURL library also has a command line application, `curl`,
 that can be used to issue HTTP requests and collect the responses. It can be a
 a very powerful data access tool when used manually or in the scope of a larger
 shell script.
+** _**Credentials**_: `~/.netrc`
+** _**.dodsrc**_: _**false**_
 
 * _**ncdump, nccopy, Matlab, Ferret, and other applications that are built on NetCDF-C**_
 The `ncdump` and `nccopy` commandline applications utilize the NetCDF-C library
@@ -48,6 +59,8 @@ outlined here should directly translate to any application that uses netCDF C.
 Note, however, that these steps were tested against the version of netCDF C
 retrieved from GitHub on 1 May 2105. That software likely corresponds to netcdf
 library version 4.9.0 or later. Contact Unidata for the latest information.
+** _**Credentials**_: `~/.netrc`
+** _**.dodsrc**_: _**true**_
 
 * _**Integrated Data Viewer (IDV)**_
 The Integrated Data Viewer is GUI driven data client that is based around the
@@ -57,22 +70,84 @@ retrieve (and cache for later) users credentials directly from the user.
 Since IDV utilizes the Java-NetCDF library to access DAP resources then in
 theory if it works for IDV then it should work for all the other clients that
 use the Java-NetCDF library.
+** _**Credentials**_: _**GUI**_
+** _**.dodsrc**_: _**false**_
+
 * _**ToolsUI**_
 The ToolsUI application is a simple is GUI driven data client that is based
 around the CDM/NetCDF data model and utilizes that NetCDF-Java (and thus the
 Java DAP implementation) to access remote DAP datasets. Because it has a GUI
 it can retrieve (and cache for later) users credentials directly from the user.
+** _**Credentials**_: _**GUI**_
+** _**.dodsrc**_: _**false**_
+
 * _**Panoply**_
 The Panoply application is a sophisticated GUI driven data client that is based
 around the CDM/NetCDF data model and utilizes that NetCDF-Java (and thus the
 Java DAP implementation) to access remote DAP datasets. Because it has a GUI it
 can retrieve (and cache for later) users credentials directly from the user.
-* _**Matlab, Ferret, Other applications that use NetCDF C**_
+** _**Credentials**_: _**GUI**_
+** _**.dodsrc**_: _**false**_
+
 * _**PyDAP**_
 The PyDAP software (pydap.org) provides one interface for python programs to
 read from OpenDAP servers (another is the netCDF4 python module, which uses
 the netCDF-C library to actually access data, including data from OpenDAP
-servers). PyDAP includes an extension mechanism so that it can interact with
+servers).
+** _**Credentials**_: `~/.netrc`
+** _**.dodsrc**_: _**false**_
+
+[id=netrc]
+=== Our friend, `.netrc`
+The `~/.netrc` file (A file named _**.netrc**_ located in your home directory,
+_**~**_) is the way in which many of the data access clients discussed
+here expect (i.e. are coded) to access credentials to be used in an HTTP BASIC
+authentication exchange.
+
+You can non-destructively create a new `~/.netrc` in your users home directory
+on the system where you will be running the data access clients.
+[source,sh]
+----
+[spooky:~/OPeNDAP/hyrax/documentation] ndp% cd # Return to home dir.
+[spooky:~] ndp% touch .netrc # Creates the file if it does not exist.
+[spooky:~] ndp% chmod 600 .netrc # Restrict the access permissions
+[spooky:~] ndp% ls -l .netrc # Check your work
+-rw-------@ 1 ndp  staff  92 Nov 13 06:08 . netrc
+----
+(You can see that my `~.netrc` file already had things in it so this example also
+shows the "non-destructive" of using `touch` to create the file as needed.)
+
+Add your Earth Data Login credentials to the `~/.netrc` file, associating each
+set of credentials with the appropriate login endpoint. Here is an Earth Data
+Login example:
+
+[source,apache]
+----
+machine urs.earthdata.nasa.gov
+	login your_edl_uid
+	password your_edl_password
+----
+
+And you can simpley add more credentials and SSO endpoints as needed:
+[source,apache]
+----
+machine urs.earthdata.nasa.gov
+	login your_edl_uid
+	password your_edl_password
+
+machine sso.noaa.gov
+	login your_noaa_uid
+	password your_noaa_password
+----
+
+NOTE: It is crucial that the access permissions be set to allow reading and
+writing only by the account owner. This can be done using the command:
+`chmod 600 ~/.netrc`
+If _group_ or _other_ are allowed any access to the `~/>nerc` file the data
+access client software will ignore (possibly silently) the offending `~/.netrc`
+file and authentication will fail.
+
+
 
 == Earthdata Login (OAuth2)
 Earthdata Login is a NASA implementation of an OAuth2 Single Sign-On service.
@@ -135,17 +210,9 @@ to *_Hyrax in the cloud_*
 I was able to use command line _curl_ to retrieve EDL authenticated resources
 using the following technique.
 
-First in my home directory I created a _.netrc_ file and set its file
-permissions to read only for owner:
-[source,sh]
-----
-[argon:~] ndp% touch .netrc
-[argon:~] ndp% chmod 600 .netrc
-[argon:~] ndp% ls -l .netrc
--rw-------@ 1 ndp  staff  92 Nov 13 06:08 .netrc
-----
+I created a `~/.netrc` file as described in <<netrc,the .netrc section above>>
 
-Then I edited the _.netrc_ file and associated my EDL credentials with the EDL
+Then I edited the `~/.netrc` file and associated my EDL credentials with the EDL
 IdP instance utilized by my target DAP server:
 
 [source,apache]
@@ -196,7 +263,16 @@ curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.g
 
 === _wget_
 
-The _wget_ documentation indicates that _wget_ understands to use the _.netrc_ file that we created for _curl_, and happily it appears to work, as long as other things are in place.
+The _wget_ documentation indicates that _wget_ will automatically locate and
+utilize the _.netrc_ file that we created for _curl_.
+
+Summary ::
+* I created a `~/.netrc` file as described in <<netrc,the .netrc section above>>
+* Then I edited the `~/.netrc` file and associated my EDL credentials with the
+EDL instance utilized by my target DAP server.
+
+And happily it appears to work, as long as the `~/.netrc` file is in place.
+
 Consider this _wget_ command:
 
 [source,sh]
@@ -222,14 +298,14 @@ Connecting to 54.172.97.47:443... connected.
 WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
 HTTP request sent, awaiting response... 302 Found
-Location: https://uat.urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2F54.172.97.47%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
---2014-11-14 11:22:19--  https://uat.urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2F54.172.97.47%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
-Resolving uat.urs.earthdata.nasa.gov... 198.118.243.34, 2001:4d0:241a:4089::91
-Connecting to uat.urs.earthdata.nasa.gov|198.118.243.34|:443... connected.
-WARNING: certificate common name `uat.earthdata.nasa.gov' doesn't match requested host name `uat.urs.earthdata.nasa.gov'.
+Location: https://urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2F54.172.97.47%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
+--2014-11-14 11:22:19--  https://urs.earthdata.nasa.gov/oauth/authorize?app_type=401&client_id=04xHKVaNdYNzCBG6KB7-Ig&response_type=code&redirect_uri=https%3A%2F%2F54.172.97.47%2Fopendap%2Flogin&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
+Resolving urs.earthdata.nasa.gov... 198.118.243.34, 2001:4d0:241a:4089::91
+Connecting to urs.earthdata.nasa.gov|198.118.243.34|:443... connected.
+WARNING: certificate common name `earthdata.nasa.gov' doesn't match requested host name `urs.earthdata.nasa.gov'.
 HTTP request sent, awaiting response... 401 Unauthorized
-Connecting to uat.urs.earthdata.nasa.gov|198.118.243.34|:443... connected.
-WARNING: certificate common name `uat.earthdata.nasa.gov' doesn't match requested host name `uat.urs.earthdata.nasa.gov'.
+Connecting to urs.earthdata.nasa.gov|198.118.243.34|:443... connected.
+WARNING: certificate common name `earthdata.nasa.gov' doesn't match requested host name `urs.earthdata.nasa.gov'.
 HTTP request sent, awaiting response... 302 Found
 Location: https://54.172.97.47/opendap/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
 --2014-11-14 11:22:20--  https://54.172.97.47/opendap/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
@@ -262,17 +338,17 @@ Dataset {
 ----
 
 It appears that _wget_ correctly followed the first redirect to
-`uat.urs.earthdata.nasa.gov`, where the EDL server responded with a
-"401 Unauthorized" (thanks to the the app_type=401 query parameter in the
-redirect URL provided by mod_auth_urs). After getting the 401 _wget_ resubmits
+`urs.earthdata.nasa.gov`, where the EDL server responded with a
+"401 Unauthorized" (thanks to the app_type=401 query parameter in the
+redirect URL provided by the _origin_ server). After getting the 401 _wget_ resubmits
 the request with the authentication credentials and the EDL server accepts them
-and redirects _wget_ back to the _mod_auth_urs_ server to complete the request.
+and redirects _wget_ back to the _origin_ server to complete the request.
 
 === _ncdump_, _nccopy_, _Matlab_, _Ferret_, and other applications that are built on _NetCDF-C_
 
 The following works with the `ncdump` and `nccopy` command line applications
-code bundled with NetCDF-4.9.0. Previous versions including 4.3.2 and 4.3.1 may
-not work.
+that come bundled with the netcdf-c library. This content was developed using
+NetCDF-4.9.0. Previous versions, including 4.3.2 and 4.3.1, may not work.
 
 The online documentation for version
 https://docs.unidata.ucar.edu/netcdf-c/4.8.1/index.html[netcdf-c-4.8.1] contains
@@ -284,23 +360,10 @@ the current netcdf-c release, 4.9.2 at the time of this writing, no longer
 contains a authentication/authorization discussion.]
 
 
-[source,sh]
-----
-[spooky:~] ndp% touch .netrc
-[spooky:~] ndp% chmod 600 .netrc
-[spooky:~] ndp% ls -l . netrc
--rw-------@ 1 ndp  staff  92 Nov 13 06:08 . netrc
-----
-
-Add your Earth Data Login credentials to the _.netrc_ file, associating them
-with the Earth Data Login server that you normally authenticate with, like this:
-
-[source,apache]
-----
-machine urs.earthdata.nasa.gov
-	login your_urs_uid
-	password you_urs_password
-----
+Summary ::
+* I created a `~/.netrc` file as described in <<netrc,the .netrc section above>>
+* Then I edited the `~/.netrc` file and associated my EDL credentials with the
+EDL instance utilized by my target DAP server.
 
 Next, edit the _.dodsrc_ file in your HOME directory so that it tells DAP
 clients to use the _.netrc_ file for password information:
@@ -364,7 +427,7 @@ _coads_climatology.nc_:
 https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) IDV popped up a dialog box that
-indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials:
+indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials:
 
 image::IDVAuthDialog.png[IDV EDL Authentication Dialog]
 
@@ -391,7 +454,7 @@ In ToolsUI selected the _Viewer_ tab, and entered the AWS test service URL for o
 
 https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
+When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
 
@@ -415,7 +478,7 @@ I entered the URL for our friend _coads_climatology.nc_:
 https://54.172.97.47/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that
-indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
+indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
 
@@ -588,7 +651,7 @@ In ToolsUI selected the _Viewer_ tab, and entered the AWS test service URL for o
 
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
+When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::ToolsUI-LDAP.png[ToolsUI LDAP Authentication Dialog]
 
@@ -608,7 +671,7 @@ I entered the URL for our friend _coads_climatology.nc_:
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that
-indicated that the _uat.urs.earthdata.nasa.gov_ server wanted my credentials.
+indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::Panoply-LDAP.png[Panoply LDAP Authentication Dialog]
 
