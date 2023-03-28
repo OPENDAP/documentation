@@ -283,7 +283,7 @@ utilize the _.netrc_ file that we created for _curl_.
 
 Summary ::
 * Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
-* Edit the `~/.netrc` file and associated your EDL credentials with the
+* Edit the `~/.netrc` file and associate your EDL credentials with the
 EDL service endpoint.
 
 And happily it appears to work, as long as the `~/.netrc` file is in place.
@@ -381,7 +381,7 @@ contains a authentication/authorization discussion.]
 
 Summary ::
 * Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
-* Edit the `~/.netrc` file and associated your EDL credentials with the
+* Edit the `~/.netrc` file and associate your EDL credentials with the
 EDL service endpoint.
 
 Next, edit the _.dodsrc_ file in your HOME directory so that it tells DAP
@@ -513,7 +513,7 @@ although it would take additional development work (described in general below).
 
 Summary ::
 * Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
-* Edit the `~/.netrc` file and associated your EDL credentials with the
+* Edit the `~/.netrc` file and associate your EDL credentials with the
 EDL service endpoint.
 
 Once the _.netrc_ file is configured, start python, run the function
