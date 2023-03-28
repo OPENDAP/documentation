@@ -100,7 +100,7 @@ servers).
 ** _**.dodsrc**_: _**false**_
 
 [id=netrc]
-=== Our friend, `.netrc`
+=== Our friend, the `.netrc` file
 The `~/.netrc` file (A file named _**.netrc**_ located in your home directory,
 aka **~**) is the way in which many of the data access clients discussed
 here expect (i.e. are coded) to access credentials to be used in an HTTP BASIC
