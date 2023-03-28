@@ -31,16 +31,24 @@ is over TLS (HTTPS) then the authentication information is encrypted over the
 wire.
 
 === DAP Data Access Clients
-* _**cURL**_ (a.k.a. _lib_curl_ or _curl_)
-* _**ncdump**_ and _**nccopy**_ - `ncdump` and `nccopy` utilize the NetCDF-C library to
-access DAP resources so
-`ncdump` and `nccopy` can act as a litmus test for any command line application
-that uses the netCDF C library. Because the netCDF C library is the software
+* _**cURL (a.k.a. _lib_curl_ or _curl_)**_
+The cURL library provides the HTTP functionality for a surprisingly large part
+the world wide web. IThe cURL library also has a command line appication, `curl`,
+that can be used to issue HTTP requests and collect the responses. It can be a
+a very powerful data access tool when used manually or in the scope of a larger
+shell script.
+
+* _**ncdump, nccopy, Matlab, Ferret, and other applications that are built on NetCDF-C**_
+The `ncdump` and `nccopy` commandline applications utilize the NetCDF-C library
+to access DAP resources. This means we can use
+`ncdump` and `nccopy` as n easy test for any command line application
+that uses the netCDF C library. Because the netCDF-C library is the software
 component that is performing the authentication, the configuration steps
 outlined here should directly translate to any application that uses netCDF C.
 Note, however, that these steps were tested against the version of netCDF C
 retrieved from GitHub on 1 May 2105. That software likely corresponds to netcdf
 library version 4.9.0 or later. Contact Unidata for the latest information.
+
 * _**Integrated Data Viewer (IDV)**_
 The Integrated Data Viewer is GUI driven data client that is based around the
 CDM/NetCDF data model and utilizes that NetCDF-Java (and thus the Java DAP
@@ -66,8 +74,7 @@ read from OpenDAP servers (another is the netCDF4 python module, which uses
 the netCDF-C library to actually access data, including data from OpenDAP
 servers). PyDAP includes an extension mechanism so that it can interact with
 
-
-== Earthdata Login
+== Earthdata Login (OAuth2)
 Earthdata Login is a NASA implementation of an OAuth2 Single Sign-On service.
 In order to access NASA held data you will need to:
 
@@ -78,15 +85,13 @@ described in the following section.
 3. Use this guide to configure your DAP client of choice (_curl_, browser,
 etc.) to utilize these credentials.
 
-NOTE: Throughout this document NASA's Earthdata Login is referred to as and is
-synonymous with *EDL* (NASA changed the name of this service shortly before it's
-use became mandatory for all data access requests.)
+=== Setting Up Earthdata Login
 
-=== Acquire Earthdata Login credentials
+==== Acquire Earthdata Login Credentials
 Registering with Earthdata Login and getting a
 user account is free. Point you browser at the https://urs.earthdata.nasa.gov/users/new[Earthdata Login New User] page and do the stuff that needs the doing.
 
-=== Approving The Hyrax OPeNDAP Service Application
+==== Approving The Hyrax OPeNDAP Service Application
 
 Regardless of which software client you decide to employ, before you can access
 any new Earthdata Login authenticated server you must first add that sever to
@@ -126,8 +131,7 @@ applications deployed in NGAP and to use any of them with your EDL user account
 you will have to authorize each application service in a similar manner
 to *_Hyrax in the cloud_*
 
-
-=== _cURL_ (a.k.a. _lib_curl_ or _curl_) ===
+=== _cURL_ (a.k.a. _lib_curl_ or _curl_)
 I was able to use command line _curl_ to retrieve EDL authenticated resources
 using the following technique.
 
@@ -190,7 +194,7 @@ curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.g
 curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
 ----
 
-=== _wget_ ===
+=== _wget_
 
 The _wget_ documentation indicates that _wget_ understands to use the _.netrc_ file that we created for _curl_, and happily it appears to work, as long as other things are in place.
 Consider this _wget_ command:
@@ -264,13 +268,21 @@ redirect URL provided by mod_auth_urs). After getting the 401 _wget_ resubmits
 the request with the authentication credentials and the EDL server accepts them
 and redirects _wget_ back to the _mod_auth_urs_ server to complete the request.
 
-=== _ncdump_ and _nccopy_ ===
+=== _ncdump_, _nccopy_, _Matlab_, _Ferret_, and other applications that are built on _NetCDF-C_
 
-The following works with the ncdump (and oc client) code bundled with
-NetCDF-4.9.0 Previous versions including 4.3.2 and 4.3.1 may not work.
+The following works with the `ncdump` and `nccopy` command line applications
+code bundled with NetCDF-4.9.0. Previous versions including 4.3.2 and 4.3.1 may
+not work.
 
-Edit (create as needed) the file _.netrc_ in your HOME directory, and set its
-file permissions to read only for owner:
+The online documentation for version
+https://docs.unidata.ucar.edu/netcdf-c/4.8.1/index.html[netcdf-c-4.8.1] contains
+their instructions for
+https://docs.unidata.ucar.edu/netcdf-c/4.8.1/md_auth.html[configuring authentication].
+Oddly, the
+https://docs.unidata.ucar.edu/netcdf-c/current/[online documentation most for
+the current netcdf-c release, 4.9.2 at the time of this writing, no longer
+contains a authentication/authorization discussion.]
+
 
 [source,sh]
 ----
@@ -326,7 +338,16 @@ HTTP.COOKIEJAR=/Users/jimg/.cookies
 HTTP.NETRC=/Users/jimg/.netrc
 ----
 
-=== _Integrated Data Viewer (IDV)_ ===
+For other NeCDF-C built applications ::
+__
+Check the version of the netCDF C library that the application uses; once they
+have updated to 4.3.3.1 or later, authentication configuration should be the
+same as this `ncdump` example. That is, both EDL and LDAP-backed
+HTTP/S-Basic authentication should work by reading credentials from the `.netrc`
+file given that the `.dodsrc` file is set to point to them.
+__
+
+=== _Integrated Data Viewer (IDV)_
 
 I http://www.unidata.ucar.edu/downloads/idv/current/index.jsp[downloaded the
 latest version of IDV] (5.0u2 on 11/19/14) and installed it on my local system.
@@ -353,7 +374,7 @@ successful access other resources at the AWS server were also available, but
 without an additional authentication challenge being presented to the user.
 
 
-=== _ToolsUI_ ===
+=== _ToolsUI_
 
 I ftp://ftp.unidata.ucar.edu/pub/netcdf-java/v4.5/toolsUI-4.5.jar[downloaded the latest version of ToolsUI] (4.5 on 11/19/14) and installed it on my local system. I launched ToolsUI using the command line:
 
@@ -377,7 +398,7 @@ image::ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
 I entered them and clicked the _OK_ button. ToolsUI was then able to access the requested resource.
 
 
-=== _Panoply_ ===
+=== _Panoply_
 
 I http://www.giss.nasa.gov/tools/panoply/download_mac.html[downloaded the latest version of Panoply] (4.0.5 on 11/20/14)
 and installed it on my local system. I launched Panoply (clicking it's icon in
@@ -401,37 +422,7 @@ image::PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
 I entered them, clicked the save password check box, and clicked the _OK_
 button. Panoply was then able to access the requested resource.
 
-
-=== _Matlab, Ferret, Other applications that use NetCDF C_ ===
-Check the version of the netCDF C library that the application uses; once they
-have updated to 4.3.3.1 or later, authentication configuration should be the
-same as the _ncdump_ example above. That is, both EDL and LDAP-backed
-HTTP/S-Basic authentication should work by reading credentials from the _.netrc_
-file given that the _.dodsrc_ file is set to point to them.
-
-Add your EDL credentials to the _.netrc_ file, associating them with the
-server with which you normally authenticate:
-
-[source,apache]
-----
-machine urs.earthdata.nasa.gov
-login your_earthdata_login_user_name
-password your_earthdata_login_password
-
-machine opendap.server.using.ldap
-	login your_ldap_login_name
-	password your_ldap_password
-----
-
-Next, edit the _.dodsrc_ file in your HOME directory so that it tells DAP clients to use the _.netrc_ file for password information:
-
-[source,apache]
-----
-HTTP.COOKIEJAR=/Users/jimg/.cookies
-HTTP.NETRC=/Users/jimg/.netrc
-----
-
-=== _PyDAP_ ===
+=== _PyDAP_
 PyDAP includes an extension mechanism so that it can interact with
 different kinds of authentication systems. This system is very flexible: we
 were able to use it to add support for both LDAP and EDL using HTTP/S Basic
