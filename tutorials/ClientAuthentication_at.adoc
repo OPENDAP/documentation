@@ -215,13 +215,13 @@ you will have to authorize each application service in a similar manner
 to *_Hyrax in the cloud_*
 
 === _cURL_ (a.k.a. _lib_curl_ or _curl_)
-I was able to use command line _curl_ to retrieve EDL authenticated resources
+You can use command line _curl_ to retrieve EDL authenticated resources
 using the following technique.
 
-I created a `~/.netrc` file as described in <<netrc,the .netrc section above>>
+Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
 
-Then I edited the `~/.netrc` file and associated my EDL credentials with the EDL
-IdP instance utilized by my target DAP server:
+Edit the `~/.netrc` file and associated your EDL credentials with the EDL
+service endpoint utilized by your target DAP server:
 
 [source,apache]
 ----
@@ -230,8 +230,8 @@ machine urs.earthdata.nasa.gov
 	password your_edl_password
 ----
 
-I could then retrieve a DDS object in the EDL authentication enabled Hyrax
-server with the following _curl_ command:
+If the configuration is correct you should npw be able to retrieve a DDS object
+in from the associated DAP service with the following _curl_ command:
 
 [source,sh]
 ----
@@ -282,9 +282,9 @@ The _wget_ documentation indicates that _wget_ will automatically locate and
 utilize the _.netrc_ file that we created for _curl_.
 
 Summary ::
-* I created a `~/.netrc` file as described in <<netrc,the .netrc section above>>
-* Then I edited the `~/.netrc` file and associated my EDL credentials with the
-EDL instance utilized by my target DAP server.
+* Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
+* Edit the `~/.netrc` file and associated your EDL credentials with the
+EDL service endpoint.
 
 And happily it appears to work, as long as the `~/.netrc` file is in place.
 
@@ -368,11 +368,11 @@ and redirects _wget_ back to the _origin_ server to complete the request.
 
 The following works with the `ncdump` and `nccopy` command line applications
 that come bundled with the netcdf-c library. This content was developed using
-NetCDF-4.9.0. Previous versions, including 4.3.2 and 4.3.1, may not work.
+NetCDF-4.9.0. Previous versions may not work.
 
 The online documentation for version
 https://docs.unidata.ucar.edu/netcdf-c/4.8.1/index.html[netcdf-c-4.8.1] contains
-their instructions for
+UNIDATA's instructions for
 https://docs.unidata.ucar.edu/netcdf-c/4.8.1/md_auth.html[configuring authentication].
 Oddly, the
 https://docs.unidata.ucar.edu/netcdf-c/current/[online documentation most for
