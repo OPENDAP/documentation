@@ -36,29 +36,28 @@ similarities in the way that they handle the client end of tHTTP BASIC
 authentication. The clients that present a GUI to the user, Panoply, IDV, and
 ToolsUI will open a dialog box and prompt the user for credentials when the
 authentication service endpoint returns a 401 Unauthorized response to the
-GUI client. The rest of these clients all utilize a `.netrc` file to store
-credentials on the client host system, and associate each credential set with
-the appropriate Single Sign On (SSO) host.
+GUI client. The rest of these clients all utilize a file, typically, `~/.netrc`
+to store credentials on the client host system, and associate each credential
+set with the appropriate Single Sign On (SSO) host.
 
 * _**cURL (a.k.a. lib_curl or curl) **_
 The cURL library provides the HTTP functionality for a surprisingly large part
-the world wide web. IThe cURL library also has a command line application, `curl`,
+the world wide web. The cURL library also has a command line application, `curl`,
 that can be used to issue HTTP requests and collect the responses. It can be a
-a very powerful data access tool when used manually or in the scope of a larger
+very powerful data access tool when used manually or in the scope of a larger
 shell script.
 ** _**Credentials**_: `~/.netrc`
 ** _**.dodsrc**_: _**false**_
 
 * _**ncdump, nccopy, Matlab, Ferret, and other applications that are built on NetCDF-C**_
-The `ncdump` and `nccopy` commandline applications utilize the NetCDF-C library
-to access DAP resources. This means we can use
-`ncdump` and `nccopy` as n easy test for any command line application
-that uses the netCDF C library. Because the netCDF-C library is the software
-component that is performing the authentication, the configuration steps
-outlined here should directly translate to any application that uses netCDF C.
-Note, however, that these steps were tested against the version of netCDF C
-retrieved from GitHub on 1 May 2105. That software likely corresponds to netcdf
-library version 4.9.0 or later. Contact Unidata for the latest information.
+The `ncdump` and `nccopy` command line applications are part of the NetCDF-C
+library and can be utilized to access DAP resources. This means we can use
+`ncdump` and `nccopy` as an easy sanity check for authentication issues for
+command line applications that uses the netCDF-C library. Because the netCDF-C
+library is the software component that is performing the authentication, the
+configuration steps outlined here should directly translate to any application
+that uses netCDF-C. Note, however, that these steps were tested against
+netCDF-C version 4.9.0. Contact Unidata for the latest information.
 ** _**Credentials**_: `~/.netrc`
 ** _**.dodsrc**_: _**true**_
 
@@ -100,7 +99,7 @@ servers).
 [id=netrc]
 === Our friend, `.netrc`
 The `~/.netrc` file (A file named _**.netrc**_ located in your home directory,
-_**~**_) is the way in which many of the data access clients discussed
+aka **~**) is the way in which many of the data access clients discussed
 here expect (i.e. are coded) to access credentials to be used in an HTTP BASIC
 authentication exchange.
 
@@ -108,14 +107,14 @@ You can non-destructively create a new `~/.netrc` in your users home directory
 on the system where you will be running the data access clients.
 [source,sh]
 ----
-[spooky:~/OPeNDAP/hyrax/documentation] ndp% cd # Return to home dir.
-[spooky:~] ndp% touch .netrc # Creates the file if it does not exist.
-[spooky:~] ndp% chmod 600 .netrc # Restrict the access permissions
-[spooky:~] ndp% ls -l .netrc # Check your work
+[~/OPeNDAP/hyrax/documentation] ndp% cd # Return to home dir.
+[~] ndp% touch .netrc # Creates the file if it does not exist.
+[~] ndp% chmod 600 .netrc # Restrict the access permissions
+[~] ndp% ls -l .netrc # Check your work
 -rw-------@ 1 ndp  staff  92 Nov 13 06:08 . netrc
 ----
 (You can see that my `~.netrc` file already had things in it so this example also
-shows the "non-destructive" of using `touch` to create the file as needed.)
+shows the "non-destructive" aspect of using `touch` to create the file as needed.)
 
 Add your Earth Data Login credentials to the `~/.netrc` file, associating each
 set of credentials with the appropriate login endpoint. Here is an Earth Data
@@ -143,7 +142,7 @@ machine sso.noaa.gov
 NOTE: It is crucial that the access permissions be set to allow reading and
 writing only by the account owner. This can be done using the command:
 `chmod 600 ~/.netrc`
-If _group_ or _other_ are allowed any access to the `~/>nerc` file the data
+If _group_ or _other_ are allowed any access to the `~/.netrc` file the data
 access client software will ignore (possibly silently) the offending `~/.netrc`
 file and authentication will fail.
 
@@ -227,7 +226,7 @@ server with the following _curl_ command:
 
 [source,sh]
 ----
-curl -k -n -c edlCookies -b edlCookies -L --url https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds
+curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 What is happening here?
 
@@ -244,13 +243,13 @@ must for any Single Sign On (SSO) authentication flow, such as OAuth2.
 
 NOTE: The ``--location-trusted`` option should not be used as it will cause _cURL_ to spread user credentials to servers other than to which they were associated.
 
---url https://54.172.97.47/opendap:: The desired URL, protected by the Earthdata Login authentication flow.
+--url https://opendap.earthdata.nasa.gov/... :: The desired URL, protected by the Earthdata Login authentication flow.
 
 In order to retrieve multiple URLs without re-authenticating you can use multiple instances of the _--url_ parameter:
 
 [source,sh]
 ----
-curl -k -n -c edlCookies -b edlCookies -L --url https://54.172.97.47/opendap --url https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds --url https://54.172.97.47/opendap/data/nc/coads_climatology.nc.dds
+curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/ --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
 ----
 
 Or, since _cURL_ is actually pretty smart about using cookies and such you can also make multiple _curl_ requests with the same cookies, and it won't have to reauthenticate with EDL once it's authenticated the first time:
@@ -277,7 +276,7 @@ Consider this _wget_ command:
 
 [source,sh]
 ----
-wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds
+wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 
 What's happening here?
@@ -286,14 +285,14 @@ What's happening here?
 --save-cookies cookies :: Save cookies to the file "cookies"
 --keep-session-cookie :: Save session cookies.
 --no-check-certificate :: Do not check the authenticity of the (self signed) certificates. This is good for testing against your own servers running with self-signed certificates in that this switch will allow you to experience success when interacting with such servers. However, this switch breaks the *chain of trust* and may allow bad things to happen if used on the open internets. Thus, for regular use, do not include this switch!
-https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds:: The URL to retrieve.
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds:: The URL to retrieve.
 
 Here's the output of said _wget_ request:
 
 [source,sh]
 ----
-[spooky:olfs/testsuite/urs] ndp% wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds
---2014-11-14 11:22:18--  https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds
+[spooky:olfs/testsuite/urs] ndp% wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+--2014-11-14 11:22:18--  https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 Connecting to 54.172.97.47:443... connected.
 WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
@@ -307,14 +306,14 @@ HTTP request sent, awaiting response... 401 Unauthorized
 Connecting to urs.earthdata.nasa.gov|198.118.243.34|:443... connected.
 WARNING: certificate common name `earthdata.nasa.gov' doesn't match requested host name `urs.earthdata.nasa.gov'.
 HTTP request sent, awaiting response... 302 Found
-Location: https://54.172.97.47/opendap/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
---2014-11-14 11:22:20--  https://54.172.97.47/opendap/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
+Location: https://opendap.earthdata.nasa.gov/hyrax/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw [following]
+--2014-11-14 11:22:20--  https://opendap.earthdata.nasa.gov/hyrax/login?code=a590cfc189783e29a7b8ab3ce1e0357618cbab3f590e7268a26e7ad1f7cf899d&state=aHR0cHM6Ly81NC4xNzIuOTcuNDcvb3BlbmRhcC9kYXRhL25jL2Zub2MxLm5jLmRkcw
 Connecting to 54.172.97.47:443... connected.
 WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
 HTTP request sent, awaiting response... 302 Found
-Location: https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds [following]
---2014-11-14 11:22:21--  https://54.172.97.47/opendap/data/nc/fnoc1.nc.dds
+Location: https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds [following]
+--2014-11-14 11:22:21--  https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 Connecting to 54.172.97.47:443... connected.
 WARNING: cannot verify 54.172.97.47's certificate, issued by `/C=US/ST=RI/L=Narragansett/O=OPeNDAP Inc./OU=Engineering/CN=54.172.97.47/emailAddress=support@opendap.org':
   Self-signed certificate encountered.
@@ -424,7 +423,7 @@ In IDV I attempted to choose a new dataset by starting with the "*Data*" menu:
 In the resulting pane I entered the AWS test service URL for our friend
 _coads_climatology.nc_:
 
-https://54.172.97.47/opendap/data/nc/coads_climatology.nc
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) IDV popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials:
@@ -452,7 +451,7 @@ For testing I utilized my AWS test service, configured to require EDL authentica
 
 In ToolsUI selected the _Viewer_ tab, and entered the AWS test service URL for our friend _coads_climatology.nc_:
 
-https://54.172.97.47/opendap/data/nc/coads_climatology.nc
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
@@ -475,7 +474,7 @@ authentication for all access of Hyrax.
 From the _File_ menu, I selected "Open Remote Dataset.." and in the pop dialog
 I entered the URL for our friend _coads_climatology.nc_:
 
-https://54.172.97.47/opendap/data/nc/coads_climatology.nc
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
 When I committed the edit (aka hit Enter) Panoply popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
