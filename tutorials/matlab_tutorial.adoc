@@ -1,0 +1,585 @@
+
+
+Intro material
+
+[source,matlab]
+----
+>> ghrsst = 'dap4://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc'
+>> ncid = netcdf.open(ghrsst);
+>> [numdims,numvars,numglobalatts,unlimdimid] = netcdf.inq(ncid);
+>> numvars
+----
+
+This returns some useful information about the dataset, including the
+number of variables:
+
+[listing]
+----
+numvars =
+
+    19
+----
+
+The ncinfo() function can also be used to retrieve information about
+the remote dataset.
+
+[source,matlab]
+----
+% Use the ncinfo function to retrieve information about the remote netCDF file
+>> ncinfo_result = ncinfo(ghrsst);
+----
+
+In this case, the ncinfo function retrieves information about the
+remote netCDF file located at the specified URL and stores it in the
+ncinfo_result structure. Information about the Dimensions, Variables,
+and Global Attributes can all be accessed from the object returned by
+ncinfo(). This same information can also be accessed using the ncid
+returned by ncopen(), but ncinfo() packages the result convenienctly.
+Note that accessing remote data through OPeNDAP requires an internet
+connection and can take longer than accessing local files.
+
+[listing]
+----
+ncinfo_result = 
+
+  struct with fields:
+
+      Filename: 'dap4://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc'
+          Name: '/'
+    Dimensions: [1×3 struct]
+     Variables: [1×19 struct]
+    Attributes: []
+        Groups: []
+        Format: 'netcdf4'
+     Datatypes: []
+----
+
+To see all the values of the fields of an attribute struct, you can
+loop over the attributes and display their names and values using the
+disp() function. Here's an example:
+
+[source,matlab]
+----
+% Extract the global attributes from the ncinfo result
+>> global_atts = ncinfo_result.Attributes;
+
+% Loop over the attributes and display their names and values
+>> disp('Global attributes:')
+>> for i = 1:length(global_atts)
+    att_name = global_atts(i).Name;
+    att_val = global_atts(i).Value;
+    disp([att_name, ': ', att_val])
+end
+----
+
+In this case, we first extract the global attributes from the
+Attributes field of the ncinfo_result structure. We then loop over the
+attributes using a for loop, and for each attribute, we extract its
+name and value using the Name and Value fields of the attribute
+struct. We then display the attribute name and value using the disp
+function. This will display all the global attributes and their
+values.
+
+[listing]
+----
+Global attributes:
+Conventions: CF-1.4
+title: Sea Surface Temperature
+summary: The L3C product derived from GOES16/ABI brightness temperatures.
+references: Geostationary Sea Surface Temperature Product User Manual, http://www.osi-saf.org
+institution: OSISAF
+comment: 
+license: All intellectual property rights of the Ocean & Sea Ice SAF products belong to EUMETSAT. The use of these products is granted to every user, free of charge. If users wish to use these products, EUMETSAT's copyright credit must be shown by displaying the words 'Copyright EUMETSAT' under each of the products shown. EUMETSAT offers no warranty and accepts no liability in respect of the Ocean & Sea Ice SAF products. EUMETSAT neither commits to nor guarantees the continuity, availability, or quality or suitability for any purpose of, the Ocean & Sea Ice SAF products.
+id: GOES16-OSISAF-L3C-v1.0
+product_id: OSI-207-b
+naming_authority: org.ghrsst
+product_version: 1.0
+gds_version_id: 2.0
+file_quality_level: 
+spatial_resolution: 0.05 degree
+northernmost_latitude: <
+southernmost_latitude:  
+easternmost_longitude:  
+westernmost_longitude:  
+source: GOES_ABI
+platform: GOES16
+sensor: GOES_ABI
+Metadata_Conventions: Unidata Dataset Discovery v1.0
+metadata_link: N/A
+keywords: Oceans > Ocean Temperature > Sea Surface Temperature 
+keywords_vocabulary: NASA Global Change Master Directory (GCMD) Science Keywords
+standard_name_vocabulary: NetCDF Climate and Forecast (CF) Metadata Convention
+geospatial_lat_units: degrees_north
+geospatial_lat_resolution:  
+geospatial_lon_units: degrees_east
+geospatial_lon_resolution:  
+acknowledgment: In case SAF data (pre-operational or operational) has been used for the study described in a paper the following sentence would be an appropriate reference to the funding coming from EUMETSAT: The data from the EUMETSAT Satellite Application Facility on Ocean & Sea Ice  used in this study are accessible through the SAF's homepage http://www.osi-saf.org
+creator_name: O&SI SAF
+creator_email: osi-saf.helpdesk@meteo.fr
+creator_url: http://www.osi-saf.org
+project: Group for High Resolution Sea Surface Temperature
+publisher_name: The GHRSST Project Office
+publisher_url: http://www.ghrsst.org
+publisher_email: ghrsst-po@nceo.ac.uk
+processing_level: L3C
+cdm_data_type: grid
+history: METEO-FRANCE GEOSAFO v1.1.8
+uuid: DF556788-19E1-11ED-A08A-48DF370DAD10
+date_created: 20220812T015542Z
+start_time: 20220812T004042Z
+time_coverage_start: 20220812T004042Z
+stop_time: 20220812T011929Z
+time_coverage_end: 20220812T011929Z
+netcdf_version_id: 4.6.3
+DODS_EXTRA.Unlimited_Dimension: time
+----
+
+We would like to look at the names of the values in this dataset so
+that we can use netcdf command to read the data values into Matlab.
+
+To display the name, size, and dimensions of each variable in a
+netCDF file, you can loop over the variables in the Variables field of
+the ncinfo_result structure and display their names, sizes, and
+dimensions using the disp function. Here's an example:
+
+[source,matlab]
+----
+% Loop over the variables and display their names and sizes
+>> disp('Variables:')
+>> for i = 1:length(ncinfo_result.Variables)
+    var_name = ncinfo_result.Variables(i).Name;
+    var_size = ncinfo_result.Variables(i).Size;
+    var_dims = ncinfo_result.Variables(i).Dimensions;
+    disp([var_name, ': ', mat2str(var_size), ' (', strjoin({var_dims.Name}, ', '), ')'])
+end
+----
+
+We loop over the variables using a for loop, and for each variable, we
+extract its name and size using the Name and Size fields of the
+variable struct. We then display the variable name and size using the
+disp function. The mat2str function is used to convert the variable
+size from a numeric array to a string for display, and the strjoin
+function is used to concatenate the dimension names into a
+comma-separated string. This will display the names, sizes, and
+dimensions of all the variables in the netCDF file. This will display
+the names and sizes of all the variables in the netCDF file.
+
+[listing]
+----
+Variables:
+time: 1 (time)
+lat: 2400 (lat)
+lon: 2400 (lon)
+sea_surface_temperature: [2400 2400 1] (lon, lat, time)
+sst_dtime: [2400 2400 1] (lon, lat, time)
+sses_bias: [2400 2400 1] (lon, lat, time)
+sses_standard_deviation: [2400 2400 1] (lon, lat, time)
+dt_analysis: [2400 2400 1] (lon, lat, time)
+wind_speed: [2400 2400 1] (lon, lat, time)
+sea_ice_fraction: [2400 2400 1] (lon, lat, time)
+aerosol_dynamic_indicator: [2400 2400 1] (lon, lat, time)
+adi_dtime_from_sst: [2400 2400 1] (lon, lat, time)
+sources_of_adi: [2400 2400 1] (lon, lat, time)
+l2p_flags: [2400 2400 1] (lon, lat, time)
+quality_level: [2400 2400 1] (lon, lat, time)
+satellite_zenith_angle: [2400 2400 1] (lon, lat, time)
+solar_zenith_angle: [2400 2400 1] (lon, lat, time)
+or_latitude: [2400 2400 1] (lon, lat, time)
+or_longitude: [2400 2400 1] (lon, lat, time)
+----
+
+We might want to get a quick look at the 'sea_surface_temperature'
+array before going further, so lets do that. This will be far from
+'publication ready,' but given that the array is quite large, it will
+give us a look at the data.
+
+[source,matlab]
+----
+>> sst_varid = netcdf.inqVarID(ncid, 'sea_surface_temperature');
+>> sst_data = netcdf.getVar(ncid, sst_varid);
+>> imagesc(sst_data);
+>> colormap(hot);
+----
+
+This shows a plot in a popup window. It's pretty rough, but we can
+manipulate the data later.
+
+image::matlab_images/plot_1_a_quick_look.png[width=300]
+
+
+
+
+To read the data values for the 'lat' and 'lon' variables, we can
+first ask for their variable IDs and then use those to read the
+values.
+
+[source,matlab]
+----
+>> % Get the IDs of the lat and lon variables
+lat_varid = netcdf.inqVarID(ncid, 'lat');
+lon_varid = netcdf.inqVarID(ncid, 'lon');
+
+% Read the data for the lat and lon variables
+lat_data = netcdf.getVar(ncid, lat_varid);
+lon_data = netcdf.getVar(ncid, lon_varid);
+----
+
+Now we will need to do some data wrangling because the sst_data are
+neigther scaled nor are the missing data values replaced with NaN.
+
+To get the attributes of a specific variable we can use the ncinfo()
+function as follows:
+
+[source,matlab]
+----
+% Get the variable's attributes
+>> varinfo = ncinfo(ghrsst, 'sea_surface_temperature');
+>> varinfo
+----
+
+The information returned is:
+
+[listing]
+----
+varinfo = 
+
+  struct with fields:
+
+        Filename: 'dap4://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc'
+            Name: 'sea_surface_temperature'
+      Dimensions: [1×3 struct]
+            Size: [2400 2400 1]
+        Datatype: 'int16'
+      Attributes: [1×12 struct]
+       ChunkSize: []
+       FillValue: 'disable'
+    DeflateLevel: []
+         Shuffle: 0
+          Format: 'netcdf4'
+----
+
+As before with the dataset's global attributes, loop over the
+attributes and display their names and values:
+
+[source,matlab]
+----
+>> disp('sea_surface_temperature attributes:')
+>> for i = 1:length(varinfo.Attributes)
+    attr = varinfo.Attributes(i);
+    name = attr.Name;
+    value = attr.Value;
+    
+    if ischar(value)
+        fprintf('%s = ''%s''\n', name, value);
+    else
+        fprintf('%s = %g\n', name, value);
+    end
+end
+----
+
+The output shows the numercial values correctly:
+
+[listing]
+----
+_FillValue = -32768
+long_name = NaN
+standard_name = NaN
+units = NaN
+add_offset = 273.15
+scale_factor = 0.01
+valid_min = -300
+valid_max = 4500
+depth = NaN
+source = NaN
+comment = NaN
+_edu.ucar.maps = NaN
+/lat = NaN
+----
+
+Now, lets change the cells in the array that have the _FillValue
+(-32768) so they hold NaN. This will improve the plot:
+
+[source,matlab]
+----
+% Get the scale factor and add offset
+scale_factor = varinfo.Attributes(strcmp({varinfo.Attributes.Name},'scale_factor')).Value;
+add_offset = varinfo.Attributes(strcmp({varinfo.Attributes.Name},'add_offset')).Value;
+
+% Get the fill value
+fill_value =
+varinfo.Attributes(strcmp({varinfo.Attributes.Name},'_FillValue')).Value
+----
+
+Before we go further, lets look at some values:
+
+[source,matlab]
+----
+scale_factor =
+
+    0.0100
+
+>> add_offset
+
+add_offset =
+
+  273.1500
+
+>> fill_value
+
+fill_value =
+
+  int16
+
+   -32768
+   
+>> sst_data(1:150:2400, 1:150:2400)
+
+ans =
+
+  16×16 int16 matrix
+
+   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2606     2404   -32768   -32768     2378   -32768   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2625     2392   -32768   -32768   -32768     2170   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768     2400   -32768     2268   -32768   -32768     2527   -32768   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2280   -32768   -32768     2759   -32768   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768     2190   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768     1641   -32768     2095   -32768   -32768   -32768     2955     3072   -32768   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768     1704     1785   -32768   -32768   -32768   -32768   -32768     2885   -32768   -32768   -32768   -32768
+   -32768      594      768     1280     1617   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     1782   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2840   -32768     2935   -32768   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2868     2889     2964   -32768   -32768   -32768
+     -110   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2814   -32768     2882     2856   -32768   -32768
+   -32768   -32768   -32768     1417   -32768   -32768   -32768   -32768   -32768     2964     2779     2658     2856   -32768   -32768   -32768
+   -32768   -32768   -32768     1618     2030   -32768   -32768   -32768     2767   -32768   -32768     2514   -32768     2711   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768     2575   -32768     2709   -32768   -32768   -32768   -32768     2678     2342   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768     2431     2754     2598   -32768     2362   -32768     2463     2589   -32768   -32768
+   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2389   -32768     2186   -32768   -32768
+----
+
+The rest of this tutorial contains two basic activities: wrangling the
+data so that we can use them and then plotting that data using only
+those commands available in the base version of Matlab.
+
+Data wrangling.
+
+The `sst_data` array in an Int16 array, but we would like an array of
+double values. Once we have that, we can replace the fill_value cells
+with NaN and sacle the data.
+
+>> data = double(sst_data);
+>> data(fv_mask) = NaN;
+>> data(1:150:2400, 1:150:2400)
+      1704        1785         NaN         NaN         NaN         NaN
+>> NaN        2885         NaN
+         NaN         594         768        1280        1617
+>> NaN         NaN         NaN         NaN         NaN         NaN
+>> NaN         NaN
+         NaN         NaN         NaN         NaN         NaN
+>> NaN         NaN         NaN         NaN         NaN        2840
+>> NaN        2935
+         NaN         NaN         NaN         NaN         NaN
+>> NaN         NaN         NaN         NaN         NaN        2868
+>> 2889        2964
+        -110         NaN         NaN         NaN         NaN
+>> NaN         NaN         NaN         NaN         NaN        2814
+>> NaN        2882
+         NaN         NaN         NaN        1417         NaN
+>> NaN         NaN         NaN         NaN        2964        2779
+>> 2658        2856
+         NaN         NaN         NaN        1618        2030
+>> NaN         NaN         NaN        2767         NaN         NaN
+>> 2514         NaN
+         NaN         NaN         NaN         NaN         NaN
+>> NaN        2575         NaN        2709         NaN         NaN
+>> NaN         NaN
+         NaN         NaN         NaN         NaN         NaN
+>> NaN        2431        2754        2598         NaN        2362
+>> NaN        2463
+         NaN         NaN         NaN         NaN         NaN
+>> NaN         NaN         NaN         NaN         NaN         NaN
+>> 2389         NaN
+
+  Columns 14 through 16
+
+         NaN         NaN         NaN
+                  NaN         NaN         NaN
+                           NaN         NaN         NaN
+                                    NaN         NaN         NaN
+                                             NaN         NaN
+                  NaN
+                           NaN         NaN         NaN
+                                    NaN         NaN         NaN
+                                             NaN        1782
+                  NaN
+                           NaN         NaN         NaN
+                                    NaN         NaN         NaN
+                                            2856         NaN
+                  NaN
+                           NaN         NaN         NaN
+                                   2711         NaN         NaN
+                                           2678        2342
+                  NaN
+                          2589         NaN         NaN
+                                  2186         NaN         NaN
+
+>> data = data * scale_factor + add_offset;
+>> data(1:150:2400, 1:150:2400)
+
+ans =
+
+       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+       299.2100  297.1900       NaN       NaN  296.9300       NaN
+       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       NaN  299.4000  297.0700       NaN       NaN       NaN  294.8500
+       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       297.1500       NaN  295.8300       NaN       NaN  298.4200
+       NaN       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       NaN       NaN  295.9500       NaN       NaN  300.7400       NaN
+       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       295.0500       NaN       NaN       NaN       NaN       NaN
+       NaN       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN  289.5600       NaN
+       294.1000       NaN       NaN       NaN  302.7000  303.8700
+       NaN       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN  290.1900  291.0000
+       NaN       NaN       NaN       NaN       NaN  302.0000       NaN
+       NaN       NaN       NaN
+              NaN  279.0900  280.8300  285.9500  289.3200       NaN
+       NaN       NaN       NaN       NaN       NaN       NaN       NaN
+       NaN  290.9700       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       NaN       NaN       NaN       NaN  301.5500       NaN  302.5000
+       NaN       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       NaN       NaN       NaN       NaN  301.8300  302.0400  302.7900
+       NaN       NaN       NaN
+         272.0500       NaN       NaN       NaN       NaN       NaN
+       NaN       NaN       NaN       NaN  301.2900       NaN  301.9700
+       301.7100       NaN       NaN
+              NaN       NaN       NaN  287.3200       NaN       NaN
+       NaN       NaN       NaN  302.7900  300.9400  299.7300  301.7100
+       NaN       NaN       NaN
+              NaN       NaN       NaN  289.3300  293.4500       NaN
+       NaN       NaN  300.8200       NaN       NaN  298.2900       NaN
+       300.2600       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       298.9000       NaN  300.2400       NaN       NaN       NaN
+       NaN  299.9300  296.5700       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       297.4600  300.6900  299.1300       NaN  296.7700       NaN
+       297.7800  299.0400       NaN       NaN
+              NaN       NaN       NaN       NaN       NaN       NaN
+       NaN       NaN       NaN       NaN       NaN  297.0400       NaN
+       295.0100       NaN       NaN
+
+
+Plotting
+
+The data values are rotated 90 degrees (because netCDF uses C notion
+of row-major order but Matlab uses column-major order).
+
+>> data_t = data';
+
+The data store negative latitude at the top and positive at the
+bottom - we need those flipped for a north-up plot.
+
+>> imagesc(lon_mesh(1,:), flip(lat_mesh(:,1)), data_t);
+
+However, that leaves the Y-axis labels still inverted; use this 'set'
+command to flip tha Y-axis labels.
+
+>> set(gca,'YTickLabel',flip(get(gca,'YTickLabel')));
+>> % Add x and y axis labels
+xlabel('Longitude');
+ylabel('Latitude');
+
+Set the range of the colorbar and the colormap
+
+>> caxis([270, 310]);
+>> colorbar;
+>> colormap(hot)
+>> colormap(cool)
+>> colormap(parula)
+
+image::matlab_images/plot_2_A_BETTER_PLOT.png[width=300]
+
+
+
+
+
+
+===================OLD =====================
+
+
+From the above we can see that the `sst_data` array is loaded with
+fill valuues and that the data values will otherwise need to be scaled
+to be used in any real computation unless we are very careful with the
+math.
+
+Lets replace the fill value with Nan and scale all the values that are
+not NaN. We use logical indexing to find all the fill value elements.
+Then name a mask of all the values that are not NaN and scale those:
+
+[source,matlab]
+----
+% Set fill values to NaN; we will use the mask again
+>> fv_mask = data == fill_value;
+>> sst_data(fv_mask) = NaN;
+
+% Apply the scale factor and offset to non-NaN elements only
+>> sst_data(fv_mask) = scale_factor * sst_data(fv_mask) + add_offset;
+----
+
+Lets look at the same subsampled part of the sst_data array now:
+
+[source,matlab]
+----
+>> data(1:150:2400, 1:150:2400)
+
+ans =
+
+  16×16 int16 matrix
+
+     273     273     273     273     273     273     273    2606    2404     273     273    2378     273     273     273     273
+     273     273     273     273     273     273     273    2625    2392     273     273     273    2170     273     273     273
+     273     273     273     273     273     273    2400     273    2268     273     273    2527     273     273     273     273
+     273     273     273     273     273     273     273     273    2280     273     273    2759     273     273     273     273
+     273     273     273     273     273     273    2190     273     273     273     273     273     273     273     273     273
+     273     273     273     273    1641     273    2095     273     273     273    2955    3072     273     273     273     273
+     273     273     273     273    1704    1785     273     273     273     273     273    2885     273     273     273     273
+     273     594     768    1280    1617     273     273     273     273     273     273     273     273     273    1782     273
+     273     273     273     273     273     273     273     273     273     273    2840     273    2935     273     273     273
+     273     273     273     273     273     273     273     273     273     273    2868    2889    2964     273     273     273
+    -110     273     273     273     273     273     273     273     273     273    2814     273    2882    2856     273     273
+     273     273     273    1417     273     273     273     273     273    2964    2779    2658    2856     273     273     273
+     273     273     273    1618    2030     273     273     273    2767     273     273    2514     273    2711     273     273
+     273     273     273     273     273     273    2575     273    2709     273     273     273     273    2678    2342     273
+     273     273     273     273     273     273    2431    2754    2598     273    2362     273    2463    2589     273     273
+     273     273     273     273     273     273     273     273
+     273     273     273    2389     273    2186     273     273
+
+----
+
+Now lets plot those geo-referenced data:
+
+[source,matlab]
+----
+>> [lon, lat] = meshgrid(lon_data, lat_data);
+>> imagesc(lon(1,:), lat(:,1), data);
+>> colorbar;
+
+% But the plot is upside down - this is often the case since many
+%  datasets store valus in the latitude array starting with the
+%  smallest values (i.e., the southern hemisphere) first.
+
+>> data_prime = flipud(data)
+
+
+  
+
+
+
