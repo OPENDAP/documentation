@@ -49,8 +49,8 @@ the world wide web. The cURL library also has a command line application, `curl`
 that can be used to issue HTTP requests and collect the responses. It can be a
 very powerful data access tool when used manually or in the scope of a larger
 shell script.
-** _**Credentials**_: `~/.netrc`
-** _**.dodsrc**_: _**false**_
+** _Credentials_: `~/.netrc`
+** _.dodsrc_: _**false**_
 
 * _**ncdump, nccopy, Matlab, Ferret, and other applications that are built on NetCDF-C**_
 The `ncdump` and `nccopy` command line applications are part of the NetCDF-C
@@ -61,8 +61,8 @@ library is the software component that is performing the authentication, the
 configuration steps outlined here should directly translate to any application
 that uses netCDF-C. Note, however, that these steps were tested against
 netCDF-C version 4.9.0. Contact Unidata for the latest information.
-** _**Credentials**_: `~/.netrc`
-** _**.dodsrc**_: _**true**_
+** _Credentials_: `~/.netrc`
+** _.dodsrc_: _**true**_
 
 * _**Integrated Data Viewer (IDV)**_
 The Integrated Data Viewer is GUI driven data client that is based around the
@@ -72,32 +72,32 @@ retrieve (and cache for later) users credentials directly from the user.
 Since IDV utilizes the Java-NetCDF library to access DAP resources then in
 theory if it works for IDV then it should work for all the other clients that
 use the Java-NetCDF library.
-** _**Credentials**_: _**GUI**_
-** _**.dodsrc**_: _**false**_
+** _Credentials_: _**GUI**_
+** _.dodsrc_: _**false**_
 
 * _**ToolsUI**_
 The ToolsUI application is a simple is GUI driven data client that is based
 around the CDM/NetCDF data model and utilizes that NetCDF-Java (and thus the
 Java DAP implementation) to access remote DAP datasets. Because it has a GUI
 it can retrieve (and cache for later) users credentials directly from the user.
-** _**Credentials**_: _**GUI**_
-** _**.dodsrc**_: _**false**_
+** _Credentials_: _**GUI**_
+** _.dodsrc_: _**false**_
 
 * _**Panoply**_
 The Panoply application is a sophisticated GUI driven data client that is based
 around the CDM/NetCDF data model and utilizes that NetCDF-Java (and thus the
 Java DAP implementation) to access remote DAP datasets. Because it has a GUI it
 can retrieve (and cache for later) users credentials directly from the user.
-** _**Credentials**_: _**GUI**_
-** _**.dodsrc**_: _**false**_
+** _Credentials_: _**GUI**_
+** _.dodsrc_: _**false**_
 
 * _**PyDAP**_
 The PyDAP software (pydap.org) provides one interface for python programs to
 read from OpenDAP servers (another is the netCDF4 python module, which uses
 the netCDF-C library to actually access data, including data from OpenDAP
 servers).
-** _**Credentials**_: `~/.netrc`
-** _**.dodsrc**_: _**false**_
+** _Credentials_: `~/.netrc`
+** _.dodsrc_: _**false**_
 
 [id=netrc]
 === Our friend, the `.netrc` file
