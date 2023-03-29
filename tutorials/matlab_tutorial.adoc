@@ -34,7 +34,7 @@ remote netCDF file located at the specified URL and stores it in the
 ncinfo_result structure. Information about the Dimensions, Variables,
 and Global Attributes can all be accessed from the object returned by
 ncinfo(). This same information can also be accessed using the ncid
-returned by ncopen(), but ncinfo() packages the result convenienctly.
+returned by ncopen(), but ncinfo() packages the result conveniently.
 Note that accessing remote data through OPeNDAP requires an internet
 connection and can take longer than accessing local files.
 
@@ -157,8 +157,8 @@ end
 We loop over the variables using a for loop, and for each variable, we
 extract its name and size using the Name and Size fields of the
 variable struct. We then display the variable name and size using the
-disp function. The mat2str function is used to convert the variable
-size from a numeric array to a string for display, and the strjoin
+disp() function. The mat2str() function is used to convert the variable
+size from a numeric array to a string for display, and the strjoin()
 function is used to concatenate the dimension names into a
 comma-separated string. This will display the names, sizes, and
 dimensions of all the variables in the netCDF file. This will display
@@ -189,7 +189,7 @@ or_longitude: [2400 2400 1] (lon, lat, time)
 ----
 
 We might want to get a quick look at the 'sea_surface_temperature'
-array before going further, so lets do that. This will be far from
+array before going further, so let's do that. This will be far from
 'publication ready,' but given that the array is quite large, it will
 give us a look at the data.
 
@@ -225,7 +225,7 @@ lon_data = netcdf.getVar(ncid, lon_varid);
 ----
 
 Now we will need to do some data wrangling because the sst_data are
-neigther scaled nor are the missing data values replaced with NaN.
+neither scaled nor are the missing data values replaced with NaN.
 
 To get the attributes of a specific variable we can use the ncinfo()
 function as follows:
@@ -277,7 +277,7 @@ attributes and display their names and values:
 end
 ----
 
-The output shows the numercial values correctly:
+The output shows the numerical values correctly:
 
 [listing]
 ----
@@ -297,7 +297,7 @@ _edu.ucar.maps = NaN
 ----
 
 Now, lets change the cells in the array that have the _FillValue
-(-32768) so they hold NaN. This will improve the plot:
+(-32768) so that they hold NaN. This will improve the plot:
 
 [source,matlab]
 ----
@@ -364,8 +364,10 @@ Data wrangling.
 
 The `sst_data` array in an Int16 array, but we would like an array of
 double values. Once we have that, we can replace the fill_value cells
-with NaN and sacle the data.
+with NaN and scale the data.
 
+[source,matlab]
+----
 >> data = double(sst_data);
 >> data(fv_mask) = NaN;
 >> data(1:150:2400, 1:150:2400)
@@ -475,37 +477,58 @@ ans =
               NaN       NaN       NaN       NaN       NaN       NaN
        NaN       NaN       NaN       NaN       NaN  297.0400       NaN
        295.0100       NaN       NaN
-
+----
 
 Plotting
 
 The data values are rotated 90 degrees (because netCDF uses C notion
 of row-major order but Matlab uses column-major order).
 
+[source,matlab]
+----
 >> data_t = data';
-
+----
 The data store negative latitude at the top and positive at the
 bottom - we need those flipped for a north-up plot.
 
+[source,matlab]
+----
 >> imagesc(lon_mesh(1,:), flip(lat_mesh(:,1)), data_t);
+----
 
 However, that leaves the Y-axis labels still inverted; use this 'set'
 command to flip tha Y-axis labels.
 
+[source,matlab]
+----
 >> set(gca,'YTickLabel',flip(get(gca,'YTickLabel')));
->> % Add x and y axis labels
-xlabel('Longitude');
-ylabel('Latitude');
+% Add x and y axis labels
+>> xlabel('Longitude');
+>> ylabel('Latitude');
+----
 
-Set the range of the colorbar and the colormap
+Set the range of the color bar and the colormap
 
+[source,matlab]
+----
 >> caxis([270, 310]);
+
+% Try out various color maps
+>> colormap(hot);
+>> colormap(cool);
+>> colormap(parula);
 >> colorbar;
->> colormap(hot)
->> colormap(cool)
->> colormap(parula)
+----
+
+Here's the plot. It lacks a coastline because we want to show access without
+requiring any of the optional Matlab packages that provide coastlines. It _is_
+possible to download the coastlines and plot them, but that is beyond the scope
+of this tutorial.
 
 image::matlab_images/plot_2_A_BETTER_PLOT.png[width=300]
+
+_fini_
+
 
 
 
@@ -516,11 +539,11 @@ image::matlab_images/plot_2_A_BETTER_PLOT.png[width=300]
 
 
 From the above we can see that the `sst_data` array is loaded with
-fill valuues and that the data values will otherwise need to be scaled
+fill values and that the data values will otherwise need to be scaled
 to be used in any real computation unless we are very careful with the
 math.
 
-Lets replace the fill value with Nan and scale all the values that are
+Let's replace the fill value with Nan and scale all the values that are
 not NaN. We use logical indexing to find all the fill value elements.
 Then name a mask of all the values that are not NaN and scale those:
 
@@ -534,7 +557,7 @@ Then name a mask of all the values that are not NaN and scale those:
 >> sst_data(fv_mask) = scale_factor * sst_data(fv_mask) + add_offset;
 ----
 
-Lets look at the same subsampled part of the sst_data array now:
+Let's look at the same sub-sampled part of the sst_data array now:
 
 [source,matlab]
 ----
@@ -577,6 +600,7 @@ Now lets plot those geo-referenced data:
 %  smallest values (i.e., the southern hemisphere) first.
 
 >> data_prime = flipud(data)
+----
 
 
   
