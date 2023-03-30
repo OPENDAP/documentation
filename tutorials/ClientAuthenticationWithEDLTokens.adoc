@@ -10,6 +10,27 @@
 //###########################################################################
 //###########################################################################
 //###########################################################################
+
+== Overview
+Using EDL tokens for authentication is usually straight forward when the software
+making the requests has an API/UI that allows the injection of an HTTP request
+header. All of the data access clients that have been working with EDL
+authentication have been doing so because the authentication endpoints support
+the most fundamental type of web authentication, HTTP BASIC. Crucially, even the
+
+
+
+
+
+
+The transaction
+is conducted over a TLS (HTTPS) connection so the communication may be
+considered secure.
+
+//###########################################################################
+//###########################################################################
+//###########################################################################
+
 == Acquire an EDL token from the EDL service
 This is an activity that you must do by hand, with a browser.
 
@@ -30,6 +51,9 @@ in the file put this line:
 ----
 Authorization: Bearer TOKEN_VALUE
 ----
+
+== Those that Work
+:leveloffset: +1
 
 //###########################################################################
 //###########################################################################
@@ -131,6 +155,10 @@ my_session.headers={"Authorization", auth_hdr}
 pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="dap4")
 
 ----
+
+:leveloffset: -1
+== Those That Do Not Work
+:leveloffset: +1
 
 == _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
 
