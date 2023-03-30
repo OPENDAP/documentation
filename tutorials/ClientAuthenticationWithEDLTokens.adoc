@@ -135,11 +135,12 @@ pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="da
 == _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
 
 Neither of the usage statements from `nccopy` and `ncdump` contain any mention
-of submitting arbitrary headers, or authorization headers through there
+of submitting arbitrary headers, or authorization headers through their
 published command line interface.
 
-This may be a request that we should make of them because until this is resolved
-existing NetCDF client will be able to work with EDL tokens.
+We may need to make a request to UNIDATA to add a request header injection UI
+to the NetCDF tools because until this is resolved existing NetCDF client will
+be able to work with EDL tokens.
 
 
 == _Panoply_, _ToolsUI_, _Integrated Data Viewer (IDV)_
