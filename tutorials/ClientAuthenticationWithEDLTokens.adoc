@@ -104,11 +104,32 @@ https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.das
 == _PyDAP_
 
 Summary ::
-*
+Because PyDAP allows the programmer to inject a Session object with customized
+request headers it is pretty straight forward to utilize an EDL token when
+making requests.
 
 [source,python]
 ----
-# PyDAP uses the request() function
+# Importing the star of our show, PyDAP!
+import pydap
+
+print ("dataset_url: ", dataset_url)
+
+# This gets the EDL token from the users keyboard.
+edl_token=input("EDL Token Value: ")
+print("EDL Token: ", edl_token);
+
+auth_hdr="Bearer "+edl_token
+print("auth_hdr: ", auth_hdr);
+
+# PyDAP accepts a Session, so we make a Session and give it the Authorization
+# header:
+
+my_session = requests.Session()
+my_session.headers={"Authorization", auth_hdr}
+
+pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="dap4")
+
 ----
 
 == _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
@@ -118,11 +139,15 @@ of submitting arbitrary headers, or authorization headers through there
 published command line interface.
 
 This may be a request that we should make of them because until this is resolved
-exisiting NetCDF client will be able to work with EDL tokens.
-
+existing NetCDF client will be able to work with EDL tokens.
 
 
 == _Panoply_, _ToolsUI_, _Integrated Data Viewer (IDV)_
 
-None of these GUI based data access clients have a GUI component that allows the user to either submit an authorization header or EDL token value. Nor do they have a mechanism through which a user may identify an authorization header or token file. Until these applications GUIs or their configuration interface have been changed to utilize tokens these application will be unable to authenticate with EDL without using traditional
-credentials.
+None of these GUI driven data access clients contain a GUI component that
+allows the user to either submit an authorization header or EDL token value.
+Nor do they have a mechanism through which a user may identify an authorization
+header or token file. Until these applications GUIs or their configuration
+interface have been changed to utilize tokens these applications will be unable
+to authenticate with EDL without using HTTP BASIC authentication (including an
+expected 401 response from the EDL endpoint) and traditional credentials.
