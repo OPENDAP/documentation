@@ -51,8 +51,9 @@ in the file put this line:
 Authorization: Bearer TOKEN_VALUE
 ----
 
-== Those that Work
+== Clients that work with EDL tokens
 :leveloffset: +1
+(Some shimming required)
 
 //###########################################################################
 //###########################################################################
@@ -156,7 +157,7 @@ pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="da
 ----
 
 :leveloffset: -1
-== Those That Do Not Work
+== Clients that do not work with EDL tokens
 :leveloffset: +1
 
 == _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
