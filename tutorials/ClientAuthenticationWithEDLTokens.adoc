@@ -14,18 +14,17 @@
 == Overview
 Using EDL tokens for authentication is usually straight forward when the software
 making the requests has an API/UI that allows the injection of an HTTP request
-header. All of the data access clients that have been working with EDL
-authentication have been doing so because the authentication endpoints support
-the most fundamental type of web authentication, HTTP BASIC. Crucially, even the
+header. All the data access clients that we have been tested with EDL
+authentication have been working because the EDL authentication endpoints support
+the most fundamental type of web authentication, HTTP BASIC.
 
+The introduction of EDL tokens means a move away from the HTTP and into something
+new. Some very flexible clients like `cURL` and `wget` can easily adapt to the change
+in authentication procedure by simply taking an EDL token and submitting it as
+part of an Authorization request header.
 
-
-
-
-
-The transaction
-is conducted over a TLS (HTTPS) connection so the communication may be
-considered secure.
+Other data access client software has no API or UI through which an EDL token
+might be introduced and used in an authorization header.
 
 //###########################################################################
 //###########################################################################
