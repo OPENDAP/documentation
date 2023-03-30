@@ -1,0 +1,32 @@
+= How to use EDL authorization tokens for data access.
+{docdate}
+:imagesdir: ../images
+:source-highlighter: rouge
+:toc: left
+:toclevels: 3
+:numbered:
+:docinfo: shared
+
+== Acquire an EDL token from the EDL service
+This is an activity that you must do by hand, with a browser.
+
+* Point you broswer here: https://urs.earthdata.nasa.gov/profile
+image:EDL_Profile_Page.png[EDL Profile]
+
+* Click the `Generate Token` link.
+* Now you should be at the `Generate a Bearer Token` page
+image:EDL_Generate_Token_Page_1.png[EDL Generate Bearer Token]
+
+* Click the big green `Generate Token` button.
+* Consider the resulting page:
+image:EDL_Generate_Token_Page_2.png[EDL Generate Bearer Token]
+
+Copy the token into your clipboard and save it in a local file for safe keeping.
+Also, for the purposes of this guide, make a file called `edl_token.hdr` and
+in the file put this line:
+----
+Authorization: Bearer TOKEN_VALUE
+----
+
+== Command line cURL
+

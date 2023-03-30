@@ -254,7 +254,7 @@ machine urs.earthdata.nasa.gov
 	password your_edl_password
 ----
 
-If the configuration is correct you should npw be able to retrieve a DDS object
+If the configuration is correct you should now be able to retrieve a DDS object
 in from the associated DAP service with the following _curl_ command:
 
 [source,sh]
@@ -268,7 +268,7 @@ What is happening here?
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
 
--n:: This tells _cURL_ to use that _~/.netrc_ file I created.
+-n:: This tells _cURL_ to use that _~/.netrc_ file you created.
 
 -c edlCookies:: This tells _cURL_ to stash cookies in the file _edlCookies_
 
@@ -470,26 +470,26 @@ __
 
 === _Integrated Data Viewer (IDV)_
 
-I http://www.unidata.ucar.edu/downloads/idv/current/index.jsp[downloaded the
+We http://www.unidata.ucar.edu/downloads/idv/current/index.jsp[downloaded the
 latest version of IDV] (5.0u2 on 11/19/14) and installed it on my local system.
 
-For EDL testing I utilized my AWS test service, configured to require EDL
+For EDL testing weutilized my AWS test service, configured to require EDL
 authentication for all access of Hyrax.
 
-In IDV I attempted to choose a new dataset by starting with the "*Data*" menu:
+In IDV weattempted to choose a new dataset by starting with the "*Data*" menu:
 *Data* > *Choose Data* > *From A Web Server*
 
-In the resulting pane I entered the AWS test service URL for our friend
+In the resulting pane weentered the AWS test service URL for our friend
 _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) IDV popped up a dialog box that
+When wecommitted the edit (aka hit Enter) IDV popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials:
 
 image::IDVAuthDialog.png[IDV EDL Authentication Dialog]
 
-I entered them, clicked the save password check box, and clicked the _OK_
+We entered them, clicked the save password check box, and clicked the _OK_
 button. IDV was then able to access the requested resource. After the first
 successful access other resources at the AWS server were also available, but
 without an additional authentication challenge being presented to the user.
@@ -497,8 +497,8 @@ without an additional authentication challenge being presented to the user.
 
 === _ToolsUI_
 
-I ftp://ftp.unidata.ucar.edu/pub/netcdf-java/v4.5/toolsUI-4.5.jar[downloaded the latest version of ToolsUI]
-(4.5 on 11/19/14) and installed it on my local system. I launched ToolsUI using
+We ftp://ftp.unidata.ucar.edu/pub/netcdf-java/v4.5/toolsUI-4.5.jar[downloaded the latest version of ToolsUI]
+(4.5 on 11/19/14) and installed it on my local system. We launched ToolsUI using
 the command line:
 
 [source,bash]
@@ -508,45 +508,45 @@ java -Xmx1g -jar toolsUI-4.5.jar
 
 _Summary: Authentication Successful_
 
-For testing, I utilized my the NGAP Hyrax service, which requires EDL
+For testing, weutilized my the NGAP Hyrax service, which requires EDL
 authentication for all data access.
 
-In ToolsUI I selected the _Viewer_ tab, and entered the URL for our friend
+In ToolsUI weselected the _Viewer_ tab, and entered the URL for our friend
 _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
+When wecommitted the edit (aka hit Enter) ToolsUI popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
 
-I entered them and clicked the _OK_ button. ToolsUI was then able to access the
+We entered them and clicked the _OK_ button. ToolsUI was then able to access the
 requested resource.
 
 
 === _Panoply_
 
-I http://www.giss.nasa.gov/tools/panoply/download_mac.html[downloaded the latest version of Panoply]
-(4.0.5 on 11/20/14) and installed it on my local system. I launched Panoply
+We http://www.giss.nasa.gov/tools/panoply/download_mac.html[downloaded the latest version of Panoply]
+(4.0.5 on 11/20/14) and installed it on my local system. We launched Panoply
 (clicking its icon in my Applications folder)
 
 _Summary: Authentication Successful_
 
-For testing, I utilized my AWS test service, configured to require EDL
+For testing, we utilized my AWS test service, configured to require EDL
 authentication for all access of Hyrax.
 
-From the _File_ menu, I selected "Open Remote Dataset..." and in the pop dialog
-I entered the URL for our friend _coads_climatology.nc_:
+From the _File_ menu, weselected "Open Remote Dataset..." and in the pop dialog
+we entered the URL for our friend _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) Panoply popped up a dialog box that
+When wecommitted the edit (aka hit Enter) Panoply popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
 
-I entered them, clicked the save password check box, and clicked the _OK_
+We entered them, clicked the save password check box, and clicked the _OK_
 button. Panoply was then able to access the requested resource.
 
 
@@ -586,12 +586,13 @@ pydap_dataset = pydap.client.open_url(dataset_url, protocol="dap4")
 // #############################################################################
 // LDAP
 //
-== LDAP
-
+== https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol[LDAP]
+The Lightweight Directory Access Protocol (LDAP) can do many things. One of
+those things is to Single Sign On (SSO) authentication  service.
 
 === _cURL_ (a.k.a. _lib_curl_ or _curl_) ===
 
-I was able to use command line _curl_ to retrieve LDAP authenticated resources
+We were able to use command line _curl_ to retrieve LDAP authenticated resources
 using the following technique.
 
 Summary ::
@@ -599,7 +600,7 @@ Summary ::
 * Edit the `~/.netrc` file and associate your credentials with the LDAP service
 endpoint.
 
-I could then access the top level directory of an LDAP authenticated
+We could then access the top level directory of an LDAP authenticated
 Hyrax server with the following _curl_ command:
 
 [source,sh]
@@ -613,7 +614,7 @@ What is happening here?
 -k:: This tells _curl_ to accept self-signed certificates. This is ok for
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
--n:: This tells _curl_ to use that _~/.netrc_ file I created.
+-n:: This tells _curl_ to use that _~/.netrc_ file wecreated.
 -c ldapCookies:: This tells _curl_ to stash cookies in the file _ldapCookies_
 -b ldapCookies:: This tells _curl_ to read cookies from the file _ldapCookies_
 --url https://130.56.244.153/opendap:: The desired URL, protected LDAP
@@ -643,30 +644,30 @@ HTTP.NETRC=/Users/jimg/.netrc
 
 === _Integrated Data Viewer (IDV)_ ===
 
-For testing, I utilized an ANU/NCI puppet instance configured to require LDAP
+For testing, we utilized an ANU/NCI puppet instance configured to require LDAP
 authentication for all access of Hyrax.
 
-In IDV I attempted to choose a new dataset by starting with the "Data" menu:
+In IDV we attempted to choose a new dataset by starting with the "Data" menu:
 *Data* > *Choose Data* > *From A Web Server*
 
-In the resulting pane I entered the LDAP test service URL for our friend
+In the resulting pane we entered the LDAP test service URL for our friend
 _coads_climatology.nc_:
 
 https://130.56.244.153/hyrax/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) IDV popped up a dialog box that
+When we committed the edit (aka hit Enter) IDV popped up a dialog box that
 indicated that the _130.56.244.153_ server wanted my credentials:
 
 image::IDV-LDAP.png[IDV LDAP Authentication Dialog]
 
-I entered them, clicked the save password check box, and clicked the _OK_
+WE entered them, clicked the save password check box, and clicked the _OK_
 button. IDV was then able to access the requested resource.
 
 
 === _ToolsUI_ ===
 _Summary: Authentication Successful_
 
-For testing, I utilized an ANU/NCI puppet instance configured to require LDAP
+For testing, WE utilized an ANU/NCI puppet instance configured to require LDAP
 authentication for all access of Hyrax.
 
 In ToolsUI selected the _Viewer_ tab, and entered the LDAP test service URL for
@@ -674,31 +675,31 @@ our friend _coads_climatology.nc_:
 
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
+When we committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::ToolsUI-LDAP.png[ToolsUI LDAP Authentication Dialog]
 
-I entered them and clicked the _OK_ button. ToolsUI was then able to access
+We entered them and clicked the _OK_ button. ToolsUI was then able to access
 the requested resource.
 
 === _Panoply_ ===
 _Summary: Authentication Successful_
 
-For testing, I utilized an ANU/NCI puppet instance configured to require LDAP
+For testing, we utilized an ANU/NCI puppet instance configured to require LDAP
 authentication for all access of Hyrax.
 
-From the _File_ menu, I selected "Open Remote Dataset..." and in the pop dialog
-I entered the URL for our friend _coads_climatology.nc_:
+From the _File_ menu, we selected "Open Remote Dataset..." and in the pop dialog
+we entered the URL for our friend _coads_climatology.nc_:
 
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) Panoply popped up a dialog box that
+When we committed the edit (aka hit Enter) Panoply popped up a dialog box that
 indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
 
 image::Panoply-LDAP.png[Panoply LDAP Authentication Dialog]
 
-I entered them, clicked the save password check box, and clicked the _OK_
+We entered them, clicked the save password check box, and clicked the _OK_
 button. Panoply was then able to access the requested resource.
 
 === _PyDAP_
@@ -741,7 +742,7 @@ pydap_dataset = pydap.client.open_url(dataset_url, protocol="dap4")
 
 === _cURL_ (a.k.a. _lib_curl_ or _curl_) ===
 
-I was not able to use command line _curl_ to retrieve Shibboleth authentication
+We was not able to use command line _curl_ to retrieve Shibboleth authentication
 resources using the _.netrc_ technique described in the LDAP and EDL sections.
 
 Analysis of the HTTP conversation between the idp.testshib.org  server and
@@ -777,18 +778,18 @@ not support authentication using the Shibboleth ECP profile.
 === _Integrated Data Viewer (IDV)_ ===
 _Summary: Failed To Authenticate_
 
-For Shibboleth testing I utilized an AWS VM, configured to require Shibboleth
+For Shibboleth testing we utilized an AWS VM, configured to require Shibboleth
 authentication for all access of Hyrax.
 
-In IDV I attempted to choose a new dataset by starting with the "Data" menu:
+In IDV we attempted to choose a new dataset by starting with the "Data" menu:
 Data > Choose Data > From A Web Server
 
-In the resulting pane I entered the AWS VM service URL for our friend
+In the resulting pane we entered the AWS VM service URL for our friend
 _coads_climatology.nc_:
 
 https://54.174.13.127/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) IDV popped up a dialog box that
+When we committed the edit (aka hit Enter) IDV popped up a dialog box that
 indicated that there was an error loading the data:
 
 image::IDV-Shibboleth.png[IDV Shibboleth Authentication Failure Dialog]
@@ -796,7 +797,7 @@ image::IDV-Shibboleth.png[IDV Shibboleth Authentication Failure Dialog]
 === _ToolsUI_ ===
 _Summary: Failed To Authenticate_
 
-For Shibboleth testing I utilized an AWS VM, configured to require Shibboleth
+For Shibboleth testing we utilized an AWS VM, configured to require Shibboleth
 authentication for all access of Hyrax.
 
 In ToolsUI selected the _Viewer_ tab, and entered the AWS test service URL
@@ -804,7 +805,7 @@ for our friend _coads_climatology.nc_:
 
 https://54.174.13.127/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
+When we committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
 indicated that there was an error loading the data:
 
 image::ToolsUI-Shibboleth.png[ToolsUI Shibboleth Authentication Failure]
@@ -812,15 +813,15 @@ image::ToolsUI-Shibboleth.png[ToolsUI Shibboleth Authentication Failure]
 === _Panoply_ ===
 _Summary: Failed To Authenticate_
 
-For Shibboleth testing I utilized an AWS VM, configured to require Shibboleth
+For Shibboleth testing we utilized an AWS VM, configured to require Shibboleth
 authentication for all access of Hyrax.
 
-From the _File_ menu, I selected "Open Remote Dataset..." and in the pop dialog
-I entered the URL for our friend _coads_climatology.nc_:
+From the _File_ menu, we selected "Open Remote Dataset..." and in the pop dialog
+we entered the URL for our friend _coads_climatology.nc_:
 
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) Panoply popped up a dialog box that
+When we committed the edit (aka hit Enter) Panoply popped up a dialog box that
 indicated that there was an error loading the data:
 
 image::Panoply-Shibboleth.png[Panoply Shibboleth Authentication Failure]
