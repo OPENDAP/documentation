@@ -1,4 +1,11 @@
-
+= Using Matlab with OPeNDAP
+{docdate}
+:imagesdir: ./matlab_images
+:source-highlighter: rouge
+:toc: left
+:toclevels: 3
+:numbered:
+:docinfo: shared
 
 Intro material
 
@@ -204,7 +211,7 @@ give us a look at the data.
 This shows a plot in a popup window. It's pretty rough, but we can
 manipulate the data later.
 
-image::matlab_images/plot_1_a_quick_look.png[width=300]
+image::plot_1_a_quick_look.png[width=450]
 
 
 
@@ -368,11 +375,17 @@ with NaN and scale the data.
 
 [source,matlab]
 ----
+% Convert to double
 >> data = double(sst_data);
+
+% Set fill values to NaN
+>> fv_mask = data == fill_value;
 >> data(fv_mask) = NaN;
+
+% Look at a sub-sample of the values
 >> data(1:150:2400, 1:150:2400)
       1704        1785         NaN         NaN         NaN         NaN
->> NaN        2885         NaN
+NaN        2885         NaN
          NaN         594         768        1280        1617
 >> NaN         NaN         NaN         NaN         NaN         NaN
 >> NaN         NaN
@@ -486,6 +499,7 @@ of row-major order but Matlab uses column-major order).
 
 [source,matlab]
 ----
+% Use the apostrophe (') operator to transpose the data
 >> data_t = data';
 ----
 The data store negative latitude at the top and positive at the
@@ -525,7 +539,7 @@ requiring any of the optional Matlab packages that provide coastlines. It _is_
 possible to download the coastlines and plot them, but that is beyond the scope
 of this tutorial.
 
-image::matlab_images/plot_2_A_BETTER_PLOT.png[width=300]
+image::plot_2_A_BETTER_PLOT.png[width=450]
 
 _fini_
 

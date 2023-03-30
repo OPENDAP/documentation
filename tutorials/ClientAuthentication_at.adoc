@@ -11,20 +11,27 @@
 // #
 // #
 == Overview
+This document describes how to configure DAP clients to work with data servers
+that require use authentication. The document is divided into four sections. This
+Overview provides a brief introduction to the topic and some background on commonly
+used clients. The remaining sections provide information on three different
+authentication systems in use today: NASA's Earthdata Login, LDAP and Shibboleth.
+
 Many users access DAP servers using a browser as their primary software
 interface. However, there is also a growing group of users that utilize either:
 
 * A "smart" tool. Where "smart" means that the tool understands how to interact
 with a DAP service and construct DAP queries for data and use that in higher
 level  client side activities like GUI based graphs, image display, selection,
-navigation etc.
+navigation, etc.
 * A command line tool such as "wget" or "curl" that can be used to extract data
-from a DAP service, but the URL construction is left to other software.
+from a DAP service, but the URL construction is left to the user or other software.
 
-In both these examples we want these client software applications to be able to
+In both these cases we want these client software applications to be able to
 manage authentication without user intervention, otherwise the automation
 benefits of these tools is lost.
 
+////
 All of these automated clients rely on HTTP BASIC authentication. One
 significant facet of this is that the authentication server MUST return an HTTP
 401 status to the client in order to trigger the client to resubmit the request
@@ -32,16 +39,24 @@ with credentials associated with the 401 endpoint. While the username and
 password are sent to the server as "plain-text", if the connection to the server
 is over TLS (HTTPS) then the authentication information is encrypted over the
 wire.
+////
 
-=== DAP Data Access Clients
+=== Common DAP Data Access Clients
 The collection of software clients discussed here have some remarkable
-similarities in the way that they handle the client end of tHTTP BASIC
-authentication. The clients that present a GUI to the user, Panoply, IDV, and
-ToolsUI will open a dialog box and prompt the user for credentials when the
-authentication service endpoint returns a 401 Unauthorized response to the
-GUI client. The rest of these clients all utilize a file, typically, `~/.netrc`
-to store credentials on the client host system, and associate each credential
-set with the appropriate Single Sign On (SSO) host.
+similarities in the way that they handle the client end of
+authentication. The clients that present a GUI to the user (Panoply, IDV, and
+ToolsUI) will open a dialog box and prompt the user for credentials when the
+server requires user authentication. The rest of these clients listed here use
+a file called `.netrc` to store credentials. The `.netrc` file is a simple text
+file and is described in detail in <<netrc,Our friend, the _.netrc_ file>>.
+
+In some cases, DAP client software will use the `.dodsrc` file to store important
+authentication information. The `.dodsrc` file is a simple text file and is
+typically located in the users home directory. For the client software listed
+here, only the Unidata-based clients use the `.dodsrc` file. Their documentation
+provides more information about the `.dodsrc` file. See
+<<dodsrc,_ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_>>
+for more information about the `.dodsrc` file.
 
 * _**cURL (a.k.a. lib_curl or curl) **_
 The cURL library provides the HTTP functionality for a surprisingly large part
@@ -52,7 +67,7 @@ shell script.
 ** _Credentials_: `~/.netrc`
 ** _.dodsrc_: _**false**_
 
-* _**ncdump, nccopy, Matlab, Ferret, and other applications that are built on NetCDF-C**_
+* _**ncdump, nccopy, netCDF4 Python, Matlab, and other applications using NetCDF-C**_
 The `ncdump` and `nccopy` command line applications are part of the NetCDF-C
 library and can be utilized to access DAP resources. This means we can use
 `ncdump` and `nccopy` as an easy sanity check for authentication issues for
@@ -93,7 +108,7 @@ can retrieve (and cache for later) users credentials directly from the user.
 
 * _**PyDAP**_
 The PyDAP software (pydap.org) provides one interface for python programs to
-read from OpenDAP servers (another is the netCDF4 python module, which uses
+read from OpenDAP servers (another is the netCDF4 Python module, which uses
 the netCDF-C library to actually access data, including data from OpenDAP
 servers).
 ** _Credentials_: `~/.netrc`
@@ -101,12 +116,18 @@ servers).
 
 [id=netrc]
 === Our friend, the `.netrc` file
-The `~/.netrc` file (A file named _**.netrc**_ located in your home directory,
+The `~/.netrc` file (a file named _**.netrc**_ located in your home directory,
 aka **~**) is the way in which many of the data access clients discussed
-here expect (i.e. are coded) to access credentials to be used in an HTTP BASIC
+here expect (i.e., are coded) to access credentials to be used in an
 authentication exchange.
 
-You can non-destructively create a new `~/.netrc` in your users home directory
+Because the `.netrc` file name starts with a dot, it is a hidden file and
+will not be visible in a standard directory listing. You can use the `ls -a` command
+to see all files in a directory, including hidden files.
+
+////
+// I don't think most users will get 'non-destructively create'
+You can non-destructively create a new `~/.netrc` in your home directory
 on the system where you will be running the data access clients.
 [source,sh]
 ----
@@ -119,8 +140,9 @@ ls -l .netrc # Check your work
 ----
 (You can see that my `~.netrc` file already had things in it so this example also
 shows the "non-destructive" aspect of using `touch` to create the file as needed.)
+////
 
-Add your Earth Data Login credentials to the `~/.netrc` file, associating each
+Add login credentials for various servers to the `~/.netrc` file, associating each
 set of credentials with the appropriate login endpoint. Here is an Earth Data
 Login example:
 
@@ -131,7 +153,7 @@ machine urs.earthdata.nasa.gov
 	password your_edl_password
 ----
 
-And you can simpley add more credentials and SSO endpoints as needed:
+And you can add more credentials and machines (aka single sign-on endpoints) as needed:
 [source,apache]
 ----
 machine urs.earthdata.nasa.gov
@@ -147,7 +169,7 @@ NOTE: It is crucial that the access permissions be set to allow reading and
 writing only by the account owner. This can be done using the command:
 `chmod 600 ~/.netrc`
 If _group_ or _other_ are allowed any access to the `~/.netrc` file the data
-access client software will ignore (possibly silently) the offending `~/.netrc`
+access client software will ignore (possibly silently) the `~/.netrc`
 file and authentication will fail.
 
 
@@ -171,7 +193,7 @@ etc.) to utilize these credentials.
 === Setting Up Earthdata Login
 
 ==== Acquire Earthdata Login Credentials
-Registering with Earthdata Login and getting a
+Registering with Earthdata Login (EDL) and getting a
 user account is free. Point you browser at the
 https://urs.earthdata.nasa.gov/users/new[Earthdata Login New User]
 page and do the stuff that needs the doing.
@@ -206,13 +228,13 @@ this will bring you to the Earthdata Login Application Approval page:
 
 image::EDL-Approve-Apps-Application-Authorize.png[Earthdata Login Application Approval Page, 640,480,pdfwidth=50%,scaledwidth=50%]
 
-* Click the _Authorize_ button associated with thhe *Hyrax in the cloud_* service.
+* Click the _Authorize_ button associated with the *Hyrax in the cloud_* service.
 You will be returned to the *My Applications* page where you should now see your
 new application on the list of _Approved Applications_.
 
 NOTE: The application named *Hyrax in the cloud* used in this example is the
-only OPeNDAP service application running in the NGAP cloud. There are many other
-applications deployed in NGAP and to use any of them with your EDL user account
+only OPeNDAP service application running in the NASA cloud. There are many other
+applications deployed in NASA and to use any of them with your EDL user account
 you will have to authorize each application service in a similar manner
 to *_Hyrax in the cloud_*
 
@@ -255,7 +277,7 @@ for working with production systems. Because: Security, Chain-Of-Trust, etc.
 -L:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
 must for any Single Sign On (SSO) authentication flow, such as OAuth2.
 
-NOTE: The ``--location-trusted`` option should not be used as it will cause
+NOTE: Do not use the  ``--location-trusted`` option. It will cause
 _cURL_ to spread user credentials to servers other than to which they were
 associated.
 
@@ -311,7 +333,7 @@ What's happening here?
 --load-cookies cookies :: Load cookies from the file "cookies"
 --save-cookies cookies :: Save cookies to the file "cookies"
 --keep-session-cookie :: Save session cookies.
---no-check-certificate :: Do not check the authenticity of the (self signed)
+--no-check-certificate :: Do not check the authenticity of the (self-signed)
 certificates. This is good for testing against your own servers running with
 self-signed certificates in that this switch will allow you to experience
 success when interacting with such servers. However, this switch breaks the
@@ -373,14 +395,15 @@ Dataset {
 ----
 
 It appears that _wget_ correctly followed the first redirect to
-`urs.earthdata.nasa.gov`, where the EDL server responded with a
+`urs.earthdata.nasa.gov`, where the EDL server responded with
 "401 Unauthorized" (thanks to the app_type=401 query parameter in the
 redirect URL provided by the _origin_ server). After getting the 401 _wget_
 resubmits the request with the authentication credentials and the EDL server
 accepts them and redirects _wget_ back to the _origin_ server to complete the
 request.
 
-=== _ncdump_, _nccopy_, _Matlab_, _Ferret_, and other applications that are built on _NetCDF-C_
+[id=dodsrc]
+=== _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
 
 The following works with the `ncdump` and `nccopy` command line applications
 that come bundled with the netcdf-c library. This content was developed using
@@ -388,12 +411,12 @@ NetCDF-4.9.0. Previous versions may not work.
 
 The online documentation for version
 https://docs.unidata.ucar.edu/netcdf-c/4.8.1/index.html[netcdf-c-4.8.1] contains
-UNIDATA's instructions for
+instructions written by UNIDATA for
 https://docs.unidata.ucar.edu/netcdf-c/4.8.1/md_auth.html[configuring authentication].
 Oddly, the
 https://docs.unidata.ucar.edu/netcdf-c/current/[online documentation most for
 the current netcdf-c release, 4.9.2 at the time of this writing, no longer
-contains a authentication/authorization discussion.]
+contains an authentication/authorization discussion.]
 
 Summary ::
 * Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
@@ -485,7 +508,7 @@ java -Xmx1g -jar toolsUI-4.5.jar
 
 _Summary: Authentication Successful_
 
-For testing I utilized my the NGAP Hyrax service, which requires EDL
+For testing, I utilized my the NGAP Hyrax service, which requires EDL
 authentication for all data access.
 
 In ToolsUI I selected the _Viewer_ tab, and entered the URL for our friend
@@ -510,10 +533,10 @@ I http://www.giss.nasa.gov/tools/panoply/download_mac.html[downloaded the latest
 
 _Summary: Authentication Successful_
 
-For testing I utilized my AWS test service, configured to require EDL
+For testing, I utilized my AWS test service, configured to require EDL
 authentication for all access of Hyrax.
 
-From the _File_ menu, I selected "Open Remote Dataset.." and in the pop dialog
+From the _File_ menu, I selected "Open Remote Dataset..." and in the pop dialog
 I entered the URL for our friend _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
@@ -620,7 +643,7 @@ HTTP.NETRC=/Users/jimg/.netrc
 
 === _Integrated Data Viewer (IDV)_ ===
 
-For testing I utilized an ANU/NCI puppet instance configured to require LDAP
+For testing, I utilized an ANU/NCI puppet instance configured to require LDAP
 authentication for all access of Hyrax.
 
 In IDV I attempted to choose a new dataset by starting with the "Data" menu:
@@ -631,8 +654,8 @@ _coads_climatology.nc_:
 
 https://130.56.244.153/hyrax/data/nc/coads_climatology.nc
 
-When I committed the edit (aka hit Enter) IDV popped up a dialog box that i
-ndicated that the _130.56.244.153_ server wanted my credentials:
+When I committed the edit (aka hit Enter) IDV popped up a dialog box that
+indicated that the _130.56.244.153_ server wanted my credentials:
 
 image::IDV-LDAP.png[IDV LDAP Authentication Dialog]
 
@@ -643,7 +666,7 @@ button. IDV was then able to access the requested resource.
 === _ToolsUI_ ===
 _Summary: Authentication Successful_
 
-For testing I utilized an ANU/NCI puppet instance configured to require LDAP
+For testing, I utilized an ANU/NCI puppet instance configured to require LDAP
 authentication for all access of Hyrax.
 
 In ToolsUI selected the _Viewer_ tab, and entered the LDAP test service URL for
@@ -662,10 +685,10 @@ the requested resource.
 === _Panoply_ ===
 _Summary: Authentication Successful_
 
-For testing I utilized an ANU/NCI puppet instance configured to require LDAP
+For testing, I utilized an ANU/NCI puppet instance configured to require LDAP
 authentication for all access of Hyrax.
 
-From the _File_ menu, I selected "Open Remote Dataset.." and in the pop dialog
+From the _File_ menu, I selected "Open Remote Dataset..." and in the pop dialog
 I entered the URL for our friend _coads_climatology.nc_:
 
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
@@ -792,7 +815,7 @@ _Summary: Failed To Authenticate_
 For Shibboleth testing I utilized an AWS VM, configured to require Shibboleth
 authentication for all access of Hyrax.
 
-From the _File_ menu, I selected "Open Remote Dataset.." and in the pop dialog
+From the _File_ menu, I selected "Open Remote Dataset..." and in the pop dialog
 I entered the URL for our friend _coads_climatology.nc_:
 
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
