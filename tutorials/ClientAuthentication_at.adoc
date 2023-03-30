@@ -122,25 +122,8 @@ here expect (i.e., are coded) to access credentials to be used in an
 authentication exchange.
 
 Because the `.netrc` file name starts with a dot, it is a hidden file and
-will not be visible in a standard directory listing. You can use the `ls -a` command
-to see all files in a directory, including hidden files.
-
-////
-// I don't think most users will get 'non-destructively create'
-You can non-destructively create a new `~/.netrc` in your home directory
-on the system where you will be running the data access clients.
-[source,sh]
-----
-#!/bin/bash
-cd # Return to home dir.
-touch .netrc # Creates the file if it does not exist.
-chmod 600 .netrc # Restrict the access permissions
-ls -l .netrc # Check your work
--rw-------@ 1 ndp  staff  92 Nov 13 06:08 .netrc
-----
-(You can see that my `~.netrc` file already had things in it so this example also
-shows the "non-destructive" aspect of using `touch` to create the file as needed.)
-////
+will not be visible in a standard directory listing. You can use the `ls -a`
+command to see all files in a directory, including hidden files.
 
 Add login credentials for various servers to the `~/.netrc` file, associating each
 set of credentials with the appropriate login endpoint. Here is an Earth Data
@@ -471,21 +454,21 @@ __
 === _Integrated Data Viewer (IDV)_
 
 We http://www.unidata.ucar.edu/downloads/idv/current/index.jsp[downloaded the
-latest version of IDV] (5.0u2 on 11/19/14) and installed it on my local system.
+latest version of IDV] (5.0u2 on 11/19/14) and installed it on our local system.
 
-For EDL testing weutilized my AWS test service, configured to require EDL
+For EDL testing we utilized our AWS test service, configured to require EDL
 authentication for all access of Hyrax.
 
-In IDV weattempted to choose a new dataset by starting with the "*Data*" menu:
+In IDV we attempted to choose a new dataset by starting with the "*Data*" menu:
 *Data* > *Choose Data* > *From A Web Server*
 
-In the resulting pane weentered the AWS test service URL for our friend
+In the resulting pane we entered the AWS test service URL for our friend
 _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
-When wecommitted the edit (aka hit Enter) IDV popped up a dialog box that
-indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials:
+When we committed the edit (aka hit Enter) IDV popped up a dialog box that
+indicated that the _urs.earthdata.nasa.gov_ server wanted our credentials:
 
 image::IDVAuthDialog.png[IDV EDL Authentication Dialog]
 
@@ -498,7 +481,7 @@ without an additional authentication challenge being presented to the user.
 === _ToolsUI_
 
 We ftp://ftp.unidata.ucar.edu/pub/netcdf-java/v4.5/toolsUI-4.5.jar[downloaded the latest version of ToolsUI]
-(4.5 on 11/19/14) and installed it on my local system. We launched ToolsUI using
+(4.5 on 11/19/14) and installed it on our local system. We launched ToolsUI using
 the command line:
 
 [source,bash]
@@ -508,16 +491,16 @@ java -Xmx1g -jar toolsUI-4.5.jar
 
 _Summary: Authentication Successful_
 
-For testing, weutilized my the NGAP Hyrax service, which requires EDL
+For testing, we utilized our the NGAP Hyrax service, which requires EDL
 authentication for all data access.
 
-In ToolsUI weselected the _Viewer_ tab, and entered the URL for our friend
+In ToolsUI we selected the _Viewer_ tab, and entered the URL for our friend
 _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
-When wecommitted the edit (aka hit Enter) ToolsUI popped up a dialog box that
-indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
+When we committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
+indicated that the _urs.earthdata.nasa.gov_ server wanted our credentials.
 
 image::ToolsUIAuthDialog.png[ToolsUI EDL Authentication Dialog]
 
@@ -528,21 +511,21 @@ requested resource.
 === _Panoply_
 
 We http://www.giss.nasa.gov/tools/panoply/download_mac.html[downloaded the latest version of Panoply]
-(4.0.5 on 11/20/14) and installed it on my local system. We launched Panoply
-(clicking its icon in my Applications folder)
+(4.0.5 on 11/20/14) and installed it on our local system. We launched Panoply
+(clicking its icon in our Applications folder)
 
 _Summary: Authentication Successful_
 
-For testing, we utilized my AWS test service, configured to require EDL
+For testing, we utilized our AWS test service, configured to require EDL
 authentication for all access of Hyrax.
 
-From the _File_ menu, weselected "Open Remote Dataset..." and in the pop dialog
+From the _File_ menu, we selected "Open Remote Dataset..." and in the pop dialog
 we entered the URL for our friend _coads_climatology.nc_:
 
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc
 
-When wecommitted the edit (aka hit Enter) Panoply popped up a dialog box that
-indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
+When we committed the edit (aka hit Enter) Panoply popped up a dialog box that
+indicated that the _urs.earthdata.nasa.gov_ server wanted our credentials.
 
 image::PanoplyAuthDialog.png[Panoply EDL Authentication Dialog]
 
@@ -614,7 +597,7 @@ What is happening here?
 -k:: This tells _curl_ to accept self-signed certificates. This is ok for
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
--n:: This tells _curl_ to use that _~/.netrc_ file wecreated.
+-n:: This tells _curl_ to use that _~/.netrc_ file we created.
 -c ldapCookies:: This tells _curl_ to stash cookies in the file _ldapCookies_
 -b ldapCookies:: This tells _curl_ to read cookies from the file _ldapCookies_
 --url https://130.56.244.153/opendap:: The desired URL, protected LDAP
@@ -656,7 +639,7 @@ _coads_climatology.nc_:
 https://130.56.244.153/hyrax/data/nc/coads_climatology.nc
 
 When we committed the edit (aka hit Enter) IDV popped up a dialog box that
-indicated that the _130.56.244.153_ server wanted my credentials:
+indicated that the _130.56.244.153_ server wanted our credentials:
 
 image::IDV-LDAP.png[IDV LDAP Authentication Dialog]
 
@@ -676,7 +659,7 @@ our friend _coads_climatology.nc_:
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
 When we committed the edit (aka hit Enter) ToolsUI popped up a dialog box that
-indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
+indicated that the _urs.earthdata.nasa.gov_ server wanted our credentials.
 
 image::ToolsUI-LDAP.png[ToolsUI LDAP Authentication Dialog]
 
@@ -695,7 +678,7 @@ we entered the URL for our friend _coads_climatology.nc_:
 https://130.56.244.153/opendap/data/nc/coads_climatology.nc
 
 When we committed the edit (aka hit Enter) Panoply popped up a dialog box that
-indicated that the _urs.earthdata.nasa.gov_ server wanted my credentials.
+indicated that the _urs.earthdata.nasa.gov_ server wanted our credentials.
 
 image::Panoply-LDAP.png[Panoply LDAP Authentication Dialog]
 
