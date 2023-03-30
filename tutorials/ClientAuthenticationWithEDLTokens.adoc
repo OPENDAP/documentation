@@ -1,0 +1,182 @@
+= How to use EDL authorization tokens for data access.
+{docdatetime}
+:imagesdir: ../images
+:source-highlighter: rouge
+:toc: left
+:toclevels: 3
+:numbered:
+:docinfo: shared
+
+//###########################################################################
+//###########################################################################
+//###########################################################################
+
+== Overview
+Using EDL tokens for authentication is usually straight forward when the software
+making the requests has an API/UI that allows the injection of an HTTP request
+header. All the data access clients that we have been tested with EDL
+authentication have been working because the EDL authentication endpoints support
+the most fundamental type of web authentication, HTTP BASIC.
+
+The introduction of EDL tokens means a move away from the HTTP and into something
+new. Some very flexible clients like `cURL` and `wget` can easily adapt to the change
+in authentication procedure by simply taking an EDL token and submitting it as
+part of an Authorization request header.
+
+Other data access client software has no API or UI through which an EDL token
+might be introduced and used in an authorization header.
+
+//###########################################################################
+//###########################################################################
+//###########################################################################
+
+== Acquire an EDL token from the EDL service
+This is an activity that you must do by hand, with a browser.
+
+* Point you browser here: https://urs.earthdata.nasa.gov/profile
+image:EDL_Profile_Page.png[EDL Profile]
+
+* Click the `Generate Token` link.
+* Now you should be at the `Generate a Bearer Token` page
+image:EDL_Generate_Token_Page_1.png[EDL Generate Bearer Token]
+
+* Click the big green `Generate Token` button.
+* Consider the resulting page:
+image:EDL_Generate_Token_Page_2.png[EDL Generate Bearer Token]
+
+Copy the token into your clipboard and save it in a local file for safe keeping.
+Also, for the purposes of this guide, make a file called `edl_token_auth.hdr` and
+in the file put this line:
+----
+Authorization: Bearer TOKEN_VALUE
+----
+
+== Clients that work with EDL tokens
+:leveloffset: +1
+(Some shimming required)
+
+//###########################################################################
+//###########################################################################
+//###########################################################################
+== _curl_ (Command line _cURL_)
+
+You can utilize your EDL token with cURL request as follows:
+[source,sh]
+----
+#!/bin/bash
+export url="https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds"
+echo "url: ${url}" >&2
+
+export auth_hdr=$(cat edl_token_auth.hdr)
+echo "auth_hdr: ${auth_hdr}" >&2
+
+curl -c ~/edlCookies -b ~/edlCookies -L -H "${auth_hdr}" "${url}"
+----
+
+What is happening here?
+
+`-k`:: This tells _cURL_ to accept self-signed certificates. This is ok for
+working with trusted (as in your own) "test" services but should be removed
+for working with production systems. Because: Security, Chain-Of-Trust, etc.
+
+`-c edlCookies`:: This tells _cURL_ to stash cookies in the file _edlCookies_
+
+`-b edlCookies`:: This tells _cURL_ to read cookies from the file _edlCookies_
+
+`-L`:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
+must for any Single Sign On (SSO) authentication flow, such as OAuth2.
+
+`-H` "${auth_hdr}":: The -H option adds its parameter value as a request header in
+the HTTP request sent to the origin server, `${url}` in the example above.
+
+`${url}`:: The URL to dereference and retrieve.
+
+//###########################################################################
+//###########################################################################
+//###########################################################################
+== _wget_
+
+In this example we will also utilize the `edl_token_auth.hdr` file the we
+created earlier.
+
+Consider this _wget_ command:
+
+[source,sh]
+----
+#!/bin/bash
+export url="https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.das"
+echo "url: ${url}" >&2
+
+export auth_hdr=$(cat edl_token_auth.hdr)
+echo "auth_hdr: ${auth_hdr}" >&2
+
+wget --load-cookies ./cookie_jar --save-cookies ./cookie_jar --keep-session-cookie --header="${auth_hdr}" "${url}"
+----
+What's happening withb `wget` here?
+
+`--load-cookies cookies` :: Load cookies from the file "./cookie_jar"
+`--save-cookies cookies` :: Save cookies to the file "./cookie_jar"
+`--keep-session-cookie` :: Save session cookies.
+`--header "${auth_hdr}"` :: Send the value of the environment variable `auth_hdr`
+along with the rest of the headers in each HTTP request.  The supplied header
+is sent as-is, which means it must contain name and value separated by colon,
+and must not contain newlines.
+`${url}`:: The URL to retrieve, in this case
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.das
+
+
+== _PyDAP_
+
+Summary ::
+Because PyDAP allows the programmer to inject a Session object with customized
+request headers it is pretty straight forward to utilize an EDL token when
+making requests.
+
+[source,python]
+----
+# Importing the star of our show, PyDAP!
+import pydap
+
+print ("dataset_url: ", dataset_url)
+
+# This gets the EDL token from the users keyboard.
+edl_token=input("EDL Token Value: ")
+print("EDL Token: ", edl_token);
+
+auth_hdr="Bearer "+edl_token
+print("auth_hdr: ", auth_hdr);
+
+# PyDAP accepts a Session, so we make a Session and give it the Authorization
+# header:
+
+my_session = requests.Session()
+my_session.headers={"Authorization", auth_hdr}
+
+pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="dap4")
+
+----
+
+:leveloffset: -1
+== Clients that do not work with EDL tokens
+:leveloffset: +1
+
+== _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
+
+Neither of the usage statements from `nccopy` and `ncdump` contain any mention
+of submitting arbitrary headers, or authorization headers through their
+published command line interface.
+
+We may need to make a request to UNIDATA to add a request header injection UI
+to the NetCDF tools because until this is resolved existing NetCDF client will
+be able to work with EDL tokens.
+
+
+== _Panoply_, _ToolsUI_, _Integrated Data Viewer (IDV)_
+
+None of these GUI driven data access clients contain a GUI component that
+allows the user to either submit an authorization header or EDL token value.
+Nor do they have a mechanism through which a user may identify an authorization
+header or token file. Until these applications GUIs or their configuration
+interface have been changed to utilize tokens these applications will be unable
+to authenticate with EDL without using HTTP BASIC authentication (including an
+expected 401 response from the EDL endpoint) and traditional credentials.
