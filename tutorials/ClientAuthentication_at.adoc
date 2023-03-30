@@ -1,5 +1,5 @@
 = Authentication For DAP Clients
-{docdate}
+{docdatetime}
 :imagesdir: ../images
 :source-highlighter: rouge
 :toc: left

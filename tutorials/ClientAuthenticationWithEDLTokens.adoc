@@ -1,5 +1,5 @@
 = How to use EDL authorization tokens for data access.
-{docdate}
+{docdatetime}
 :imagesdir: ../images
 :source-highlighter: rouge
 :toc: left
