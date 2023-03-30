@@ -13,7 +13,7 @@
 == Acquire an EDL token from the EDL service
 This is an activity that you must do by hand, with a browser.
 
-* Point you broswer here: https://urs.earthdata.nasa.gov/profile
+* Point you browser here: https://urs.earthdata.nasa.gov/profile
 image:EDL_Profile_Page.png[EDL Profile]
 
 * Click the `Generate Token` link.
@@ -51,19 +51,21 @@ curl -c ~/edlCookies -b ~/edlCookies -L -H "${auth_hdr}" "${url}"
 
 What is happening here?
 
--k:: This tells _cURL_ to accept self-signed certificates. This is ok for
+`-k`:: This tells _cURL_ to accept self-signed certificates. This is ok for
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
 
--c edlCookies:: This tells _cURL_ to stash cookies in the file _edlCookies_
+`-c edlCookies`:: This tells _cURL_ to stash cookies in the file _edlCookies_
 
--b edlCookies:: This tells _cURL_ to read cookies from the file _edlCookies_
+`-b edlCookies`:: This tells _cURL_ to read cookies from the file _edlCookies_
 
--L:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
+`-L`:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
 must for any Single Sign On (SSO) authentication flow, such as OAuth2.
 
--H "${auth_hdr}":: The -H option adds its parameter value as a request header in
-the HTTP request sent to the origin server, `${ur}` in the example above.
+`-H` "${auth_hdr}":: The -H option adds its parameter value as a request header in
+the HTTP request sent to the origin server, `${url}` in the example above.
+
+`${url}`:: The URL to dereference and retrieve.
 
 //###########################################################################
 //###########################################################################
@@ -112,7 +114,7 @@ Summary ::
 == _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
 
 Neither of the usage statements from `nccopy` and `ncdump` contain any mention
-of submitting aribitrasry headers, or authorization headers through there
+of submitting arbitrary headers, or authorization headers through there
 published command line interface.
 
 This may be a request that we should make of them because until this is resolved
