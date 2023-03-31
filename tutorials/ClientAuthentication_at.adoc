@@ -264,7 +264,7 @@ NOTE: Do not use the  ``--location-trusted`` option. It will cause
 _cURL_ to spread user credentials to servers other than to which they were
 associated.
 
-`--url https://opendap.earthdata.nasa.gov/...` :: The desired URL, protected by
+`--url https://opendap.earthdata.nasa.gov/ ...` :: The desired URL, protected by
 the Earthdata Login authentication flow.
 
 In order to retrieve multiple URLs without re-authenticating you can use
