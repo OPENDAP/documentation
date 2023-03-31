@@ -21,12 +21,14 @@ An iPython notebook tutorial for PyDAP with DAP2 access examples.
 image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap4_basic.ipynb"] -
 An iPython notebook tutorial for PyDAP with DAP4 data access examples
 
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/netCDF4_tutorial.ipynb[NetCDF w/DAP2]
+*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/netCDF4_tutorial.ipynb[NetCDF w/DAP4]
 image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2FnetCDF4_tutorial.ipynb"] -
 An iPython notebook tutorial for remote data access using NetCDF Python. When
-NetCDF is used to access a remote dataset it does so by making DAP2/3 queries
+NetCDF is used to access a remote dataset it does so by making DAP4 queries
 to the remote service.
 
+== Matlab
+* link:https://opendap.github.io/documentation/tutorials/matlab_tutorial.html[Matlab Tutorial for remote data access].
 
 == Tutorial Datasets
 Several datasets are used in these tutorials and some general information about
@@ -36,9 +38,8 @@ page.
 
 == _Coming Soon_
 * XArray Python tutorial (notebook)
-* DAP2/4 NetCDF Python Tutorial (notebook)
 * DAP4 PyDAP Python sub-setting large datasets (notebook)
 * Using the cURL command line to access data (shell)
 * Panoply Tutorial for remote data access.
-* Matlab Tutorial for remote data access.
+
 

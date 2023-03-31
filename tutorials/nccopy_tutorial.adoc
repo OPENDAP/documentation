@@ -7,7 +7,6 @@
 :numbered:
 :docinfo: shared
 
-
 == Overview
 
 Who Is This Tutorial For?::

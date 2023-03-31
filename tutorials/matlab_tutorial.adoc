@@ -7,7 +7,76 @@
 :numbered:
 :docinfo: shared
 
-Intro material
+// TODO Test the Matlab code here to make sure it was copied over correctly.
+// TODO in the later part of the tutorial, I removed the array value dumps. Redo those
+//  and add them back in.
+
+== Overview
+
+.Who Is This Tutorial For?
+This tutorial is for Matlab users who want to access OPeNDAP data services. In
+the tutorial we will use Matlab's built-in OPeNDAP client to access data from
+either a server we run just for this purpose or from a server NASA runs as part
+of its effort to move data into a cloud computing environment.
+
+This tutorial assumes that the reader has a basic grasp of Matlab commands and
+programming. It also assumes that the reader has a basic grasp of the Matlab
+netCDF interface.
+
+The NASA data in this document will require that the user configure
+their client applications to authenticate with the NASA Earthdata Login service.
+Since the authentication setup is similar for many clients,
+we have covered it in a separate document
+
+* **link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[Client Authentication Tutorial]**
+
+.Tutorial Examples Language
+The examples are written as Matlab commands. As much as possible, the examples
+can be copied from the tutorial and run in the Matlab command window.
+
+=== Matlab netCDF C details
+The Matlab netCDF interface provides a way to read data from both netCDF files
+on you computer and from remote OPeNDAP servers. The Matlab netCDF interface has two
+parts: the netCDF C library and the Matlab interface to the netCDF C library. The latter,
+the Matlab interface to the library is a set of Matlab functions that call the C library
+and are documented in the Matlab help system. These functions are somewhat easier to use
+that the netCDF library interface itself, but they are not as flexible as the C library.
+
+In this tutorial we will use both the Matlab netCDF interface and the netCDF library calls.
+
+==== Environment
+You will need Matlab 2020a or later to run the examples in this tutorial.
+
+=== The Data
+In these examples will use GHRSST Level 3 Sea Surface Temperature data. The URL to
+the data is given below and in the tutorial. In fact, there are two different URLs to the
+same data. The first is a URL to a file on a server we run just for tutorial data and
+testing while the second is a URL to a file on a NASA server running in NASA's Cloud
+Computing Environment. Both of the URLs use the _dap4://_ URL prefix to indicate that
+the netCDF software should use the DAP4 protocol to access the data. The URL to the
+OPeNDAP test server can be used without authentication. To use the URL to the NASA
+Cloud server, you will need to have an Earthdata Login (EDL) account and have configured
+your client applications to
+link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[
+authenticate with EDL].
+
+GHRSST Sub-skin Sea Surface Temperature data, no authentication needed::
+dap4://test.opendap.org/opendap/hyrax/tutorials/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0.nc
+
+GHRSST Sub-skin Sea Surface Temperature data, NASA Cloud, authentication required::
+dap4://opendap.earthdata.nasa.gov/collections/C2036877806-POCLOUD/granules/20220812010000-OSISAF-L3C_GHRSST-SSTsubskin-GOES16-ssteqc_goes16_20220812_010000-v02.0-fv01.0
+
+== Getting Started
+First, start Matlab and make sure the dataset is accessible. If you encounter problems
+at this step, try using the URL in a browser. You will need to replace the _dap4:://_
+URL prefix with _http://_ to make the URL work in a browser.
+
+When the `netcdf.open` function is called, the Matlab netCDF interface will attempt to
+'open' the remote dataset. If that works, you will be about to use the `netcdf.inq` function
+along with the netCDF ID returned by `netcdf.open` to get information about the dataset.
+These function calls are examples of using the netCDF C library interface to get information.
+
+We do that here and see that this dataset holds 19 variables.
 
 [source,matlab]
 ----
@@ -15,20 +84,15 @@ Intro material
 >> ncid = netcdf.open(ghrsst);
 >> [numdims,numvars,numglobalatts,unlimdimid] = netcdf.inq(ncid);
 >> numvars
-----
-
-This returns some useful information about the dataset, including the
-number of variables:
-
-[listing]
-----
 numvars =
 
     19
 ----
 
 The ncinfo() function can also be used to retrieve information about
-the remote dataset.
+the remote dataset. The `ncinfo()` function is a Matlab function that provides
+a convenient way to access information about a remote dataset. It is a wrapper
+to the netCDF library calls used in the previous example.
 
 [source,matlab]
 ----
@@ -36,14 +100,12 @@ the remote dataset.
 >> ncinfo_result = ncinfo(ghrsst);
 ----
 
-In this case, the ncinfo function retrieves information about the
+In this case, the `ncinfo()` function retrieves information about the
 remote netCDF file located at the specified URL and stores it in the
-ncinfo_result structure. Information about the Dimensions, Variables,
+`ncinfo_result` structure. Information about the Dimensions, Variables,
 and Global Attributes can all be accessed from the object returned by
-ncinfo(). This same information can also be accessed using the ncid
-returned by ncopen(), but ncinfo() packages the result conveniently.
-Note that accessing remote data through OPeNDAP requires an internet
-connection and can take longer than accessing local files.
+`ncinfo()`. This same information can also be accessed using the ncid
+returned by `netcdf.open()`, but `ncinfo()` packages the result conveniently.
 
 [listing]
 ----
@@ -61,9 +123,10 @@ ncinfo_result =
      Datatypes: []
 ----
 
+=== Getting more detailed information about the dataset
 To see all the values of the fields of an attribute struct, you can
 loop over the attributes and display their names and values using the
-disp() function. Here's an example:
+Matlab `disp()` function. Here's an example:
 
 [source,matlab]
 ----
@@ -80,7 +143,7 @@ end
 ----
 
 In this case, we first extract the global attributes from the
-Attributes field of the ncinfo_result structure. We then loop over the
+Attributes field of the `ncinfo_result` structure. We then loop over the
 attributes using a for loop, and for each attribute, we extract its
 name and value using the Name and Value fields of the attribute
 struct. We then display the attribute name and value using the disp
@@ -141,13 +204,13 @@ netcdf_version_id: 4.6.3
 DODS_EXTRA.Unlimited_Dimension: time
 ----
 
-We would like to look at the names of the values in this dataset so
+We would like to look at the names of the variables in this dataset so
 that we can use netcdf command to read the data values into Matlab.
 
 To display the name, size, and dimensions of each variable in a
 netCDF file, you can loop over the variables in the Variables field of
 the ncinfo_result structure and display their names, sizes, and
-dimensions using the disp function. Here's an example:
+dimensions using the `disp()` function. Here's an example:
 
 [source,matlab]
 ----
@@ -164,8 +227,8 @@ end
 We loop over the variables using a for loop, and for each variable, we
 extract its name and size using the Name and Size fields of the
 variable struct. We then display the variable name and size using the
-disp() function. The mat2str() function is used to convert the variable
-size from a numeric array to a string for display, and the strjoin()
+`disp()` function. The `mat2str()` function is used to convert the variable
+size from a numeric array to a string for display, and the `strjoin()`
 function is used to concatenate the dimension names into a
 comma-separated string. This will display the names, sizes, and
 dimensions of all the variables in the netCDF file. This will display
@@ -195,6 +258,7 @@ or_latitude: [2400 2400 1] (lon, lat, time)
 or_longitude: [2400 2400 1] (lon, lat, time)
 ----
 
+=== Get a quick look at the data
 We might want to get a quick look at the 'sea_surface_temperature'
 array before going further, so let's do that. This will be far from
 'publication ready,' but given that the array is quite large, it will
@@ -213,8 +277,10 @@ manipulate the data later.
 
 image::plot_1_a_quick_look.png[width=450]
 
-
-
+== Using the data
+To plot the data in a more publication-ready way, we will need to
+get the vectors that hold the Latitude and Longitude coordinate information
+for the Sea Surface Temperature data.
 
 To read the data values for the 'lat' and 'lon' variables, we can
 first ask for their variable IDs and then use those to read the
@@ -231,10 +297,16 @@ lat_data = netcdf.getVar(ncid, lat_varid);
 lon_data = netcdf.getVar(ncid, lon_varid);
 ----
 
-Now we will need to do some data wrangling because the sst_data are
-neither scaled nor are the missing data values replaced with NaN.
+=== Data wrangling
+In many cases, data stored in files are not quite in teh form needed for actual use
+in a toll like Matlab. Transforming the values so they are ready for analysis is
+often called 'data wrangling'. We will need to do some data wrangling because the
+data in `sst_data` are neither scaled nor are the missing data values replaced with _NaN_.
 
-To get the attributes of a specific variable we can use the ncinfo()
+To find out how to transform the data, let's look at the attributes of the dataset
+and see if there is any information there that will help us.
+
+To get the attributes of a specific variable we can use the `ncinfo()`
 function as follows:
 
 [source,matlab]
@@ -266,7 +338,11 @@ varinfo =
 ----
 
 As before with the dataset's global attributes, loop over the
-attributes and display their names and values:
+attributes and display their names and values. This version of the loop
+is slightly more complex because some attributes are strings and
+some are numeric. The `ischar()` function is used along with `fprintf()`
+to display the values correctly (note that in the format string used with
+`fprintf()`, the %g format specifier is used to display numeric values, e.g.).
 
 [source,matlab]
 ----
@@ -303,8 +379,8 @@ _edu.ucar.maps = NaN
 /lat = NaN
 ----
 
-Now, lets change the cells in the array that have the _FillValue
-(-32768) so that they hold NaN. This will improve the plot:
+The variable attributes __FillValue_, _add_offset_, and _scale_factor_ indicate
+how the values will need to be modified to get the correct values.
 
 [source,matlab]
 ----
@@ -317,7 +393,7 @@ fill_value =
 varinfo.Attributes(strcmp({varinfo.Attributes.Name},'_FillValue')).Value
 ----
 
-Before we go further, lets look at some values:
+Before we go further, lets look at those values:
 
 [source,matlab]
 ----
@@ -345,29 +421,9 @@ ans =
 
   16×16 int16 matrix
 
-   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2606     2404   -32768   -32768     2378   -32768   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2625     2392   -32768   -32768   -32768     2170   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768     2400   -32768     2268   -32768   -32768     2527   -32768   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2280   -32768   -32768     2759   -32768   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768     2190   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768     1641   -32768     2095   -32768   -32768   -32768     2955     3072   -32768   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768     1704     1785   -32768   -32768   -32768   -32768   -32768     2885   -32768   -32768   -32768   -32768
-   -32768      594      768     1280     1617   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     1782   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2840   -32768     2935   -32768   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2868     2889     2964   -32768   -32768   -32768
-     -110   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2814   -32768     2882     2856   -32768   -32768
-   -32768   -32768   -32768     1417   -32768   -32768   -32768   -32768   -32768     2964     2779     2658     2856   -32768   -32768   -32768
-   -32768   -32768   -32768     1618     2030   -32768   -32768   -32768     2767   -32768   -32768     2514   -32768     2711   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768     2575   -32768     2709   -32768   -32768   -32768   -32768     2678     2342   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768     2431     2754     2598   -32768     2362   -32768     2463     2589   -32768   -32768
-   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768   -32768     2389   -32768     2186   -32768   -32768
+...
+
 ----
-
-The rest of this tutorial contains two basic activities: wrangling the
-data so that we can use them and then plotting that data using only
-those commands available in the base version of Matlab.
-
-Data wrangling.
 
 The `sst_data` array in an Int16 array, but we would like an array of
 double values. Once we have that, we can replace the fill_value cells
@@ -384,58 +440,12 @@ with NaN and scale the data.
 
 % Look at a sub-sample of the values
 >> data(1:150:2400, 1:150:2400)
-      1704        1785         NaN         NaN         NaN         NaN
-NaN        2885         NaN
-         NaN         594         768        1280        1617
->> NaN         NaN         NaN         NaN         NaN         NaN
->> NaN         NaN
-         NaN         NaN         NaN         NaN         NaN
->> NaN         NaN         NaN         NaN         NaN        2840
->> NaN        2935
-         NaN         NaN         NaN         NaN         NaN
->> NaN         NaN         NaN         NaN         NaN        2868
->> 2889        2964
-        -110         NaN         NaN         NaN         NaN
->> NaN         NaN         NaN         NaN         NaN        2814
->> NaN        2882
-         NaN         NaN         NaN        1417         NaN
->> NaN         NaN         NaN         NaN        2964        2779
->> 2658        2856
-         NaN         NaN         NaN        1618        2030
->> NaN         NaN         NaN        2767         NaN         NaN
->> 2514         NaN
-         NaN         NaN         NaN         NaN         NaN
->> NaN        2575         NaN        2709         NaN         NaN
->> NaN         NaN
-         NaN         NaN         NaN         NaN         NaN
->> NaN        2431        2754        2598         NaN        2362
->> NaN        2463
-         NaN         NaN         NaN         NaN         NaN
->> NaN         NaN         NaN         NaN         NaN         NaN
->> 2389         NaN
 
-  Columns 14 through 16
+ans =
 
-         NaN         NaN         NaN
-                  NaN         NaN         NaN
-                           NaN         NaN         NaN
-                                    NaN         NaN         NaN
-                                             NaN         NaN
-                  NaN
-                           NaN         NaN         NaN
-                                    NaN         NaN         NaN
-                                             NaN        1782
-                  NaN
-                           NaN         NaN         NaN
-                                    NaN         NaN         NaN
-                                            2856         NaN
-                  NaN
-                           NaN         NaN         NaN
-                                   2711         NaN         NaN
-                                           2678        2342
-                  NaN
-                          2589         NaN         NaN
-                                  2186         NaN         NaN
+  16×16 double matrix
+
+...
 
 >> data = data * scale_factor + add_offset;
 >> data(1:150:2400, 1:150:2400)
@@ -445,54 +455,14 @@ ans =
        NaN       NaN       NaN       NaN       NaN       NaN       NaN
        299.2100  297.1900       NaN       NaN  296.9300       NaN
        NaN       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
+
+       NaN       NaN       NaN       NaN       NaN       NaN
        NaN  299.4000  297.0700       NaN       NaN       NaN  294.8500
        NaN       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       297.1500       NaN  295.8300       NaN       NaN  298.4200
-       NaN       NaN       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       NaN       NaN  295.9500       NaN       NaN  300.7400       NaN
-       NaN       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       295.0500       NaN       NaN       NaN       NaN       NaN
-       NaN       NaN       NaN       NaN
-              NaN       NaN       NaN       NaN  289.5600       NaN
-       294.1000       NaN       NaN       NaN  302.7000  303.8700
-       NaN       NaN       NaN       NaN
-              NaN       NaN       NaN       NaN  290.1900  291.0000
-       NaN       NaN       NaN       NaN       NaN  302.0000       NaN
-       NaN       NaN       NaN
-              NaN  279.0900  280.8300  285.9500  289.3200       NaN
-       NaN       NaN       NaN       NaN       NaN       NaN       NaN
-       NaN  290.9700       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       NaN       NaN       NaN       NaN  301.5500       NaN  302.5000
-       NaN       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       NaN       NaN       NaN       NaN  301.8300  302.0400  302.7900
-       NaN       NaN       NaN
-         272.0500       NaN       NaN       NaN       NaN       NaN
-       NaN       NaN       NaN       NaN  301.2900       NaN  301.9700
-       301.7100       NaN       NaN
-              NaN       NaN       NaN  287.3200       NaN       NaN
-       NaN       NaN       NaN  302.7900  300.9400  299.7300  301.7100
-       NaN       NaN       NaN
-              NaN       NaN       NaN  289.3300  293.4500       NaN
-       NaN       NaN  300.8200       NaN       NaN  298.2900       NaN
-       300.2600       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       298.9000       NaN  300.2400       NaN       NaN       NaN
-       NaN  299.9300  296.5700       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       297.4600  300.6900  299.1300       NaN  296.7700       NaN
-       297.7800  299.0400       NaN       NaN
-              NaN       NaN       NaN       NaN       NaN       NaN
-       NaN       NaN       NaN       NaN       NaN  297.0400       NaN
-       295.0100       NaN       NaN
+
 ----
 
-Plotting
+=== Plotting
 
 The data values are rotated 90 degrees (because netCDF uses C notion
 of row-major order but Matlab uses column-major order).
@@ -535,89 +505,11 @@ Set the range of the color bar and the colormap
 ----
 
 Here's the plot. It lacks a coastline because we want to show access without
-requiring any of the optional Matlab packages that provide coastlines. It _is_
+requiring any of the optional Matlab packages that provide coastlines. However,
+the North and South American continents are clearly visible. It _is_
 possible to download the coastlines and plot them, but that is beyond the scope
 of this tutorial.
 
-image::plot_2_A_BETTER_PLOT.png[width=450]
+image::plot_2_A_Better_plot.png[width=450]
 
 _fini_
-
-
-
-
-
-
-
-===================OLD =====================
-
-
-From the above we can see that the `sst_data` array is loaded with
-fill values and that the data values will otherwise need to be scaled
-to be used in any real computation unless we are very careful with the
-math.
-
-Let's replace the fill value with Nan and scale all the values that are
-not NaN. We use logical indexing to find all the fill value elements.
-Then name a mask of all the values that are not NaN and scale those:
-
-[source,matlab]
-----
-% Set fill values to NaN; we will use the mask again
->> fv_mask = data == fill_value;
->> sst_data(fv_mask) = NaN;
-
-% Apply the scale factor and offset to non-NaN elements only
->> sst_data(fv_mask) = scale_factor * sst_data(fv_mask) + add_offset;
-----
-
-Let's look at the same sub-sampled part of the sst_data array now:
-
-[source,matlab]
-----
->> data(1:150:2400, 1:150:2400)
-
-ans =
-
-  16×16 int16 matrix
-
-     273     273     273     273     273     273     273    2606    2404     273     273    2378     273     273     273     273
-     273     273     273     273     273     273     273    2625    2392     273     273     273    2170     273     273     273
-     273     273     273     273     273     273    2400     273    2268     273     273    2527     273     273     273     273
-     273     273     273     273     273     273     273     273    2280     273     273    2759     273     273     273     273
-     273     273     273     273     273     273    2190     273     273     273     273     273     273     273     273     273
-     273     273     273     273    1641     273    2095     273     273     273    2955    3072     273     273     273     273
-     273     273     273     273    1704    1785     273     273     273     273     273    2885     273     273     273     273
-     273     594     768    1280    1617     273     273     273     273     273     273     273     273     273    1782     273
-     273     273     273     273     273     273     273     273     273     273    2840     273    2935     273     273     273
-     273     273     273     273     273     273     273     273     273     273    2868    2889    2964     273     273     273
-    -110     273     273     273     273     273     273     273     273     273    2814     273    2882    2856     273     273
-     273     273     273    1417     273     273     273     273     273    2964    2779    2658    2856     273     273     273
-     273     273     273    1618    2030     273     273     273    2767     273     273    2514     273    2711     273     273
-     273     273     273     273     273     273    2575     273    2709     273     273     273     273    2678    2342     273
-     273     273     273     273     273     273    2431    2754    2598     273    2362     273    2463    2589     273     273
-     273     273     273     273     273     273     273     273
-     273     273     273    2389     273    2186     273     273
-
-----
-
-Now lets plot those geo-referenced data:
-
-[source,matlab]
-----
->> [lon, lat] = meshgrid(lon_data, lat_data);
->> imagesc(lon(1,:), lat(:,1), data);
->> colorbar;
-
-% But the plot is upside down - this is often the case since many
-%  datasets store valus in the latitude array starting with the
-%  smallest values (i.e., the southern hemisphere) first.
-
->> data_prime = flipud(data)
-----
-
-
-  
-
-
-
