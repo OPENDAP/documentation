@@ -11,18 +11,19 @@
 // #
 // #
 == Overview
-This document describes how to configure DAP clients to work with data servers
-that require use authentication. The document is divided into four sections. This
-Overview provides a brief introduction to the topic and some background on commonly
-used clients. The remaining sections provide information on three different
-authentication systems in use today: NASA's Earthdata Login, LDAP and Shibboleth.
+This document describes how to configure DAP clients to access data servers
+that require users to be authenticated. The document is divided into four
+sections. This Overview provides a brief introduction to the topic and some
+background on commonly used clients. The remaining sections provide information
+on three different authentication systems in use today: NASA's Earthdata Login,
+LDAP and Shibboleth.
 
 Many users access DAP servers using a browser as their primary software
 interface. However, there is also a growing group of users that utilize either:
 
 * A "smart" tool. Where "smart" means that the tool understands how to interact
 with a DAP service and construct DAP queries for data and use that in higher
-level  client side activities like GUI based graphs, image display, selection,
+level client side activities like GUI based graphs, image display, selection,
 navigation, etc.
 * A command line tool such as "wget" or "curl" that can be used to extract data
 from a DAP service, but the URL construction is left to the user or other software.
@@ -50,11 +51,10 @@ server requires user authentication. The rest of these clients listed here use
 a file called `.netrc` to store credentials. The `.netrc` file is a simple text
 file and is described in detail in <<netrc,Our friend, the _.netrc_ file>>.
 
-In some cases, DAP client software will use the `.dodsrc` file to store important
-authentication information. The `.dodsrc` file is a simple text file and is
-typically located in the users home directory. For the client software listed
-here, only the Unidata-based clients use the `.dodsrc` file. Their documentation
-provides more information about the `.dodsrc` file. See
+Some DAP client software applications (those that utilize one of UNIDATA's
+NetCDF libraries to provide remote data access) will use the `.dodsrc` file to
+store important authentication related information. The `.dodsrc` file is a simple
+text file and is typically located in the users home directory. See
 <<dodsrc,_ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_>>
 for more information about the `.dodsrc` file.
 
@@ -243,21 +243,21 @@ in from the associated DAP service with the following _curl_ command:
 [source,sh]
 ----
 #!/bin/bash
-curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+touch cookie_file
+curl -n -c cookie_file -b cookie_file -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
-What is happening here?
+What is happening here? In this request cURL is both authenticating and
+maintaining a session with the remote server (this is accomplished by telling
+cURL to load and save cookies from the same file, _cookie_file_ )
 
--k:: This tells _cURL_ to accept self-signed certificates. This is ok for
-working with trusted (as in your own) "test" services but should be removed
-for working with production systems. Because: Security, Chain-Of-Trust, etc.
+`-n` :: This tells _cURL_ to authenticate using the _~/.netrc_ file you
+created/updated.
 
--n:: This tells _cURL_ to use that _~/.netrc_ file you created.
+`-c cookie_file` :: This tells _cURL_ to stash cookies in the file _cookie_file_
 
--c edlCookies:: This tells _cURL_ to stash cookies in the file _edlCookies_
+`-b cookie_file` :: This tells _cURL_ to read cookies from the file _cookie_file_
 
--b edlCookies:: This tells _cURL_ to read cookies from the file _edlCookies_
-
--L:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
+`-L` :: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
 must for any Single Sign On (SSO) authentication flow, such as OAuth2.
 
 NOTE: Do not use the  ``--location-trusted`` option. It will cause
@@ -273,7 +273,7 @@ multiple instances of the _--url_ parameter:
 [source,sh]
 ----
 #!/bin/bash
-curl -k -n -c edlCookies -b edlCookies -L \
+curl -k -n -c cookie_file -b cookie_file -L \
     --url https://opendap.earthdata.nasa.gov/ \
     --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds \
     --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
@@ -286,9 +286,9 @@ reauthenticate with EDL once it's authenticated the first time:
 [source,sh]
 ----
 #!/bin/bash
-curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/
-curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
-curl -k -n -c edlCookies -b edlCookies -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
+curl -k -n -c cookie_file -b cookie_file -L --url https://opendap.earthdata.nasa.gov/hyrax/
+curl -k -n -c cookie_file -b cookie_file -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+curl -k -n -c cookie_file -b cookie_file -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/coads_climatology.nc.dds
 ----
 
 === _wget_
@@ -308,27 +308,24 @@ Consider this _wget_ command:
 [source,sh]
 ----
 #!/bin/bash
-wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+wget  --load-cookies cookie_file --save-cookies cookie_file --keep-session-cookie https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 
-What's happening here?
+What is happening here? In this request _wget__ is both authenticating and
+maintaining a session with the remote server (the latter is accomplished by telling
+wget to load and save cookies from the same file, _cookie_file_)
 
---load-cookies cookies :: Load cookies from the file "cookies"
---save-cookies cookies :: Save cookies to the file "cookies"
+--load-cookies cookie_file :: Load cookies from the file "cookie_file"
+--save-cookies cookie_file :: Save cookies to the file "cookie_file"
 --keep-session-cookie :: Save session cookies.
---no-check-certificate :: Do not check the authenticity of the (self-signed)
-certificates. This is good for testing against your own servers running with
-self-signed certificates in that this switch will allow you to experience
-success when interacting with such servers. However, this switch breaks the
-*chain of trust* and may allow bad things to happen if used on the open
-internets. Thus, for regular use, do not include this switch!
-https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds:: The URL to retrieve.
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds :: The URL to retrieve.
 
 Here's the request:
 [source,sh]
 ----
 #!/bin/bash
-wget  --load-cookies cookies --save-cookies cookies --keep-session-cookie --no-check-certificate https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
+touch cookie_file # Make sure the cookie file exists
+wget --load-cookies cookie_file --save-cookies cookie_file --keep-session-cookie  https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 Here's the output:
 [source,sh]
@@ -387,32 +384,30 @@ request.
 
 [id=dodsrc]
 === _ncdump_, _nccopy_, _Matlab_, and other applications that use _NetCDF-C_
+Applications built with one of UNIDATA's NetCDF libraries may require, in
+addition to a _~/.netrc_ file, a _.dodsrc_ file to be present in the users home
+directory in order for the application to successfully authenticate during
+remote data access activities.
+https://docs.unidata.ucar.edu/nug/current/dap2.html[You can learn more about
+the _.dodsrc_ file at UNIDATA's NetCDF and DAP2 page.]
 
-The following works with the `ncdump` and `nccopy` command line applications
-that come bundled with the netcdf-c library. This content was developed using
-NetCDF-4.9.0. Previous versions may not work.
-
-The online documentation for version
-https://docs.unidata.ucar.edu/netcdf-c/4.8.1/index.html[netcdf-c-4.8.1] contains
-instructions written by UNIDATA for
-https://docs.unidata.ucar.edu/netcdf-c/4.8.1/md_auth.html[configuring authentication].
-Oddly, the
-https://docs.unidata.ucar.edu/netcdf-c/current/[online documentation most for
-the current netcdf-c release, 4.9.2 at the time of this writing, no longer
-contains an authentication/authorization discussion.]
+////
+// There's different special file for DAP4
+https://docs.unidata.ucar.edu/nug/current/dap4.html[The _~/.daprc_ file is the
+UNIDATA's DAP4 version of the DAP2 _~/.dodsrc_ file.]
+////
 
 Summary ::
 * Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
 * Edit the `~/.netrc` file and associate your EDL credentials with the
 EDL service endpoint.
-
-Next, create as needed and edit the file _~/.dodsrc_ so that it tells DAP
+* Next create (as needed) and then edit the file _~/.dodsrc_ so that it tells DAP
 clients to use the _.netrc_ file for password information:
 
 [source,apache]
 ----
-HTTP.COOKIEJAR=/Users/jimg/.cookies
-HTTP.NETRC=/Users/jimg/.netrc
+HTTP.COOKIEJAR=/home/your_home_dir/cookie_file
+HTTP.NETRC=/home/your_home_dir/.netrc
 ----
 
 Here is a typical _.dodsrc_ file.
@@ -426,7 +421,7 @@ USE_CACHE=0
 MAX_CACHE_SIZE=20
 MAX_CACHED_OBJ=5
 IGNORE_EXPIRES=0
-CACHE_ROOT=/Users/jimg/.dods_cache/
+CACHE_ROOT=/home/your_home_dir/.dods_cache/
 DEFAULT_EXPIRES=1
 ALWAYS_VALIDATE=1
 # Request servers compress responses if possible?
@@ -438,8 +433,8 @@ DEFLATE=0
 # AIS_DATABASE=<file or="" url="">
 
 # Earth Data Login and LDAP login information
-HTTP.COOKIEJAR=/Users/jimg/.cookies
-HTTP.NETRC=/Users/jimg/.netrc
+HTTP.COOKIEJAR=/home/your_home_dir/cookie_file
+HTTP.NETRC=/home/your_home_dir/.netrc
 ----
 
 For other NeCDF-C built applications ::
@@ -450,6 +445,19 @@ same as this `ncdump` example. That is, both EDL and LDAP-backed
 HTTP/S-Basic authentication should work by reading credentials from the `.netrc`
 file given that the `.dodsrc` file is set to point to them.
 __
+
+NOTE: This was tested with the `ncdump` and `nccopy` command line applications
+that come bundled with the netcdf-c library. This content was developed using
+NetCDF-4.9.0. Previous versions may not work.
+
+NOTE: The online documentation for version
+https://docs.unidata.ucar.edu/netcdf-c/4.8.1/index.html[netcdf-c-4.8.1] contains
+instructions written by UNIDATA for
+https://docs.unidata.ucar.edu/netcdf-c/4.8.1/md_auth.html[configuring authentication].
+Oddly, the
+https://docs.unidata.ucar.edu/netcdf-c/current/[online documentation most for
+the current netcdf-c release, 4.9.2 at the time of this writing, no longer
+contains an authentication/authorization discussion.]
 
 === _Integrated Data Viewer (IDV)_
 
@@ -589,7 +597,7 @@ Hyrax server with the following _curl_ command:
 [source,sh]
 ----
 #!/bin/bash
-curl -k -n -c ldapCookies -b ldapCookies  --url https://some.ldap.tester/opendap
+curl -k -n -c ldapCookies -b cookie_file  --url https://some.ldap.tester/opendap
 ----
 
 What is happening here?
@@ -598,8 +606,8 @@ What is happening here?
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
 -n:: This tells _curl_ to use that _~/.netrc_ file we created.
--c ldapCookies:: This tells _curl_ to stash cookies in the file _ldapCookies_
--b ldapCookies:: This tells _curl_ to read cookies from the file _ldapCookies_
+-c cookie_file:: This tells _curl_ to stash cookies in the file _cookie_file_
+-b cookie_file:: This tells _curl_ to read cookies from the file _cookie_file_
 --url https://130.56.244.153/opendap:: The desired URL, protected LDAP
 authentication.
 
@@ -621,8 +629,8 @@ endpoint.
 use the _~/.netrc_ file for password information.
 [source,apache]
 ----
-HTTP.COOKIEJAR=/Users/jimg/.cookies
-HTTP.NETRC=/Users/jimg/.netrc
+HTTP.COOKIEJAR=/home/your_home_dir/cookie_file
+HTTP.NETRC=/home/your_home_dir/.netrc
 ----
 
 === _Integrated Data Viewer (IDV)_ ===
@@ -830,5 +838,7 @@ Shibboleth, but the operation for end-users will likely be the same.
 // #############################################################################
 // #############################################################################
 
+
+== Appendix: How does this work?
 
 
