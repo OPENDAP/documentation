@@ -246,7 +246,7 @@ in from the associated DAP service with the following _curl_ command:
 touch cookie_file
 curl -n -c cookie_file -b cookie_file -L --url https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
-What is happening here? In this request cURL is both authenticating and
+What is happening here? :: In this request cURL is both authenticating and
 maintaining a session with the remote server (this is accomplished by telling
 cURL to load and save cookies from the same file, _cookie_file_ )
 
@@ -311,7 +311,7 @@ Consider this _wget_ command:
 wget  --load-cookies cookie_file --save-cookies cookie_file --keep-session-cookie https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds
 ----
 
-What is happening here? In this request _wget__ is both authenticating and
+What is happening here? :: In this request _wget_ is both authenticating and
 maintaining a session with the remote server (the latter is accomplished by telling
 wget to load and save cookies from the same file, _cookie_file_)
 
@@ -596,10 +596,13 @@ Hyrax server with the following _curl_ command:
 [source,sh]
 ----
 #!/bin/bash
-curl -k -n -c ldapCookies -b cookie_file  --url https://some.ldap.tester/opendap
+curl -k -n -c cookie_file -b cookie_file  --url https://some.ldap.tester/opendap
 ----
 
-What is happening here?
+What is happening here? :: In this request cURL is both authenticating and
+maintaining a session with the remote server (this is accomplished by telling
+cURL to load and save cookies from the same file, _cookie_file_ )
+
 
 `-k` :: This tells _curl_ to accept self-signed certificates. This is ok for
 working with trusted (as in your own) "test" services but should be removed
