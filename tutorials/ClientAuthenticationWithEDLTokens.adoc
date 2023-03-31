@@ -67,10 +67,11 @@ You can utilize your EDL token with cURL request as follows:
 export url="https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds"
 echo "url: ${url}" >&2
 
+# Load the EDL token file contents into the shell variable 'auth_hdr'
 export auth_hdr=$(cat edl_token_auth.hdr)
 echo "auth_hdr: ${auth_hdr}" >&2
 
-curl -c ~/edlCookies -b ~/edlCookies -L -H "${auth_hdr}" "${url}"
+curl -c ~/cookie_file -b ~/cookie_file -L -H "${auth_hdr}" "${url}"
 ----
 
 What is happening here?
@@ -79,9 +80,9 @@ What is happening here?
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
 
-`-c edlCookies`:: This tells _cURL_ to stash cookies in the file _edlCookies_
+`-c cookie_file`:: This tells _cURL_ to stash cookies in the file _cookie_file_
 
-`-b edlCookies`:: This tells _cURL_ to read cookies from the file _edlCookies_
+`-b cookie_file`:: This tells _cURL_ to read cookies from the file _cookie_file_
 
 `-L`:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
 must for any Single Sign On (SSO) authentication flow, such as OAuth2.
@@ -96,7 +97,7 @@ the HTTP request sent to the origin server, `${url}` in the example above.
 //###########################################################################
 == _wget_
 
-In this example we will also utilize the `edl_token_auth.hdr` file the we
+In this example we will also utilize the `edl_token_auth.hdr` file that we
 created earlier.
 
 Consider this _wget_ command:
@@ -110,12 +111,12 @@ echo "url: ${url}" >&2
 export auth_hdr=$(cat edl_token_auth.hdr)
 echo "auth_hdr: ${auth_hdr}" >&2
 
-wget --load-cookies ./cookie_jar --save-cookies ./cookie_jar --keep-session-cookie --header="${auth_hdr}" "${url}"
+wget --load-cookies cookie_file --save-cookies cookie_file --keep-session-cookie --header="${auth_hdr}" "${url}"
 ----
 What's happening withb `wget` here?
 
-`--load-cookies cookies` :: Load cookies from the file "./cookie_jar"
-`--save-cookies cookies` :: Save cookies to the file "./cookie_jar"
+`--load-cookies cookies` :: Load cookies from the file "cookie_file"
+`--save-cookies cookies` :: Save cookies to the file "cookie_file"
 `--keep-session-cookie` :: Save session cookies.
 `--header "${auth_hdr}"` :: Send the value of the environment variable `auth_hdr`
 along with the rest of the headers in each HTTP request.  The supplied header

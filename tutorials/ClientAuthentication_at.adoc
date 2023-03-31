@@ -315,9 +315,9 @@ What is happening here? In this request _wget__ is both authenticating and
 maintaining a session with the remote server (the latter is accomplished by telling
 wget to load and save cookies from the same file, _cookie_file_)
 
---load-cookies cookie_file :: Load cookies from the file "cookie_file"
---save-cookies cookie_file :: Save cookies to the file "cookie_file"
---keep-session-cookie :: Save session cookies.
+`--load-cookies cookie_file` :: Load cookies from the file "cookie_file"
+`--save-cookies cookie_file` :: Save cookies to the file "cookie_file"
+`--keep-session-cookie` :: Save session cookies.
 https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds :: The URL to retrieve.
 
 Here's the request:
@@ -545,8 +545,7 @@ button. Panoply was then able to access the requested resource.
 PyDAP includes an extension mechanism so that it can interact with
 different kinds of authentication systems. This system is very flexible: we
 were able to use it to add support for both LDAP and EDL using HTTP/S Basic
-authentication. The same scheme could be used to add support for Shibboleth,
-although it would take additional development work (described in general below).
+authentication.
 
 Summary ::
 * Create a `~/.netrc` file as described in <<netrc,the .netrc section above>>
@@ -602,13 +601,13 @@ curl -k -n -c ldapCookies -b cookie_file  --url https://some.ldap.tester/opendap
 
 What is happening here?
 
--k:: This tells _curl_ to accept self-signed certificates. This is ok for
+`-k` :: This tells _curl_ to accept self-signed certificates. This is ok for
 working with trusted (as in your own) "test" services but should be removed
 for working with production systems. Because: Security, Chain-Of-Trust, etc.
--n:: This tells _curl_ to use that _~/.netrc_ file we created.
--c cookie_file:: This tells _curl_ to stash cookies in the file _cookie_file_
--b cookie_file:: This tells _curl_ to read cookies from the file _cookie_file_
---url https://130.56.244.153/opendap:: The desired URL, protected LDAP
+`-n` :: This tells _curl_ to use that _~/.netrc_ file we created.
+`-c cookie_file` :: This tells _curl_ to stash cookies in the file _cookie_file_
+`-b cookie_file` :: This tells _curl_ to read cookies from the file _cookie_file_
+`--url` https://130.56.244.153/opendap :: The desired URL, protected LDAP
 authentication.
 
 NOTE: That the credentials are sent with every request so secure transport is a
