@@ -1,6 +1,16 @@
 
 = OPeNDAP Data Access Client Tutorials
 
+== Client Software Authentication
+Some data providers, most notably NASA, require data access requests be
+authenticated. This means you have to a user account with the institution and
+any software client application working on your behalf (browser, cURL, etc)
+must be provided with user credentials or tokens either through dynamic user
+interaction or configuration.
+
+* link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[
+You can learn about DAP Client Software Authentication here.]
+
 == Command line clients
 These clients are invoked from a shell and are typically used in an automated
 data access activity, possibly written as a shell script.
