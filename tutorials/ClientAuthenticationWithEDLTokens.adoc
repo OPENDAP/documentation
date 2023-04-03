@@ -23,7 +23,7 @@ new. Some very flexible clients like `cURL` and `wget` can easily adapt to the c
 in authentication procedure by simply taking an EDL token and submitting it as
 part of an Authorization request header.
 
-Other data access client software has no API or UI through which an EDL token
+Other data access client software have no API or UI through which an EDL token
 might be introduced and used in an authorization header.
 
 //###########################################################################
