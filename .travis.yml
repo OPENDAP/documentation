@@ -41,8 +41,9 @@ after_failure:
 
 after_success:      
   - |
-    cd output ; mv README.html index.html ; ls -l ; cp -R ../images images
-    mkdir -p tutorials/matlab_images ; cp -R ../tutorials/matlab_images tutorials/matlab_images 
+    cd output; ls -lR
+    mv README.html index.html
+    cp -R ../images images; cp -R ../tutorials/matlab_images tutorials/matlab_images 
   - git init
   - git config --global user.name "The-Robot-Travis"
   - git config --global user.email "npotter@opendap.org"
