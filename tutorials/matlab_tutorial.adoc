@@ -1,6 +1,6 @@
 = Using Matlab with OPeNDAP
 {docdate}
-:imagesdir: ./matlab_images
+:imagesdir: ../images/tutorials/matlab_images
 :source-highlighter: rouge
 :toc: left
 :toclevels: 3
