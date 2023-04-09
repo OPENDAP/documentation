@@ -441,7 +441,7 @@ DEFAULT_EXPIRES=1
 ALWAYS_VALIDATE=1
 # Request servers compress responses if possible?
 # 1 (yes) or 0 (false).
-DEFLATE=0
+DEFLATE=1
 # Proxy configuration:
 # PROXY_SERVER=<protocol>,<[username:password@]host[:port]>
 # NO_PROXY_FOR=<protocol>,<host|domain>
