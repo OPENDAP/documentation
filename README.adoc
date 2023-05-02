@@ -18,9 +18,22 @@ provides general information about the OPeNDAP software, the two
 versions of the Data Access Protocol (DAP) and information about
 access to remote data made available using DAP.
 
-== Data Access Tutorials
+== link:https://opendap.github.io/documentation/tutorials/DataAccessTutorials.html[Data Access Tutorials]
 The link:https://opendap.github.io/documentation/tutorials/DataAccessTutorials.html[Data Access Tutorials]
 show how to use various software clients to access data using the DAP web API.
+
+== Client Authentication
+
+Many institutions now require that you (or more accurately, your software client)
+must authenticate before access to data will be permitted. This is notably true
+for all NASA assets: Authentication is required for data access.
+
+* link:https://opendap.github.io/documentation/tutorials/ClientAuthentication.html[
+You can learn about DAP Client Software Authentication here.]
+
+* link:https://opendap.github.io/documentation/tutorials/ClientAuthenticationWithEDLTokens.html[
+You can learn about how to use NASA's EDL tokens for Client Software Authentication here.]
+
 
 == Hyrax Installation and Configuration Guide
 
