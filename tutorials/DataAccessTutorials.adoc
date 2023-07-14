@@ -25,19 +25,27 @@ Python clients like PyDAp are best explained in a Jupyter (aka iPython) notebook
 You  can click the associated image:https://mybinder.org/badge_logo.svg[fit=line]
 binder badge  to run the notebook in your browser.
 
-* link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap2_basic.ipynb[PyDAP w/DAP2]
-image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap2_basic.ipynb"] -
-An iPython notebook tutorial for PyDAP with DAP2 access examples.
+*  link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/0.NASA_EDL_Login.ipynb[Earthdata Login and Configuration]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/NASA-tutorials/main?labpath=tutorials%2F0.NASA_EDL_Login.ipynb"] -
+An iPython notebook tutorial to help with the NASA Earthdata Login and configuration for OPeNDAP.
 
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/pydap_dap4_basic.ipynb[PyDAP w/DAP4]
-image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2Fpydap_dap4_basic.ipynb"] -
-An iPython notebook tutorial for PyDAP with DAP4 data access examples
-
-*  link:https://github.com/OPENDAP/notebooks/blob/master/tutorials/netCDF4_tutorial.ipynb[NetCDF-python w/DAP4]
-image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/notebooks/master?labpath=tutorials%2FnetCDF4_tutorial.ipynb"] -
+*  link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/1.netcdf_tutorial.ipynb[NetCDF-python w/DAP4]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/NASA-tutorials/main?labpath=tutorials%2F1.netcdf_tutorial.ipynb"] -
 An iPython notebook tutorial for remote data access using NetCDF Python. When
 NetCDF is used to access a remote dataset it does so by making DAP4 queries
 to the remote service.
+
+*  link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/2.xarray_netcdf_tutorial.ipynb[Xarray and netCDF4 w/DAP4]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/NASA-tutorials/main?labpath=tutorials%2F2.xarray_netcdf_tutorial.ipynb"] -
+An iPython notebook tutorial for remote data access using Xarray.
+
+*  link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/3.pydap_dap4_basic.ipynb[PyDAP w/DAP4]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/NASA-tutorials/main?labpath=tutorials%2F3.pydap_dap4_basic.ipynb"] -
+An iPython notebook tutorial for PyDAP with DAP4 data access examples
+
+* link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/4.pydap_dap2_basic.ipynb[PyDAP w/DAP2]
+image:https://mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/NASA-tutorials/main?labpath=tutorials%2F4.pydap_dap2_basic.ipynb"] -
+An iPython notebook tutorial for PyDAP with DAP2 access examples.
 
 == Matlab
 * link:https://opendap.github.io/documentation/tutorials/matlab_tutorial.html[Matlab Tutorial for remote data access] (beta).
@@ -49,7 +57,6 @@ link:https://opendap.github.io/documentation/tutorials/TutorialDatasets.html[Tut
 page.
 
 == _Coming Soon_
-* XArray Python tutorial (notebook)
 * DAP4 PyDAP Python sub-setting large datasets (notebook)
 * Using the cURL command line to access data (shell)
 * Panoply Tutorial for remote data access.
