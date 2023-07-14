@@ -40,7 +40,7 @@ NetCDF is used to access a remote dataset it does so by making DAP4 queries
 to the remote service.
 
 == Matlab
-* link:https://opendap.github.io/documentation/tutorials/matlab_tutorial.html[Matlab Tutorial for remote data access].
+* link:https://opendap.github.io/documentation/tutorials/matlab_tutorial.html[Matlab Tutorial for remote data access] (beta).
 
 == Tutorial Datasets
 Several datasets are used in these tutorials and some general information about
