@@ -49,7 +49,7 @@ image:https://colab.research.google.com/assets/colab-badge.svg[fit=line, link="h
 An iPython notebook tutorial for PyDAP with DAP4 data access examples
 
 * link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/4.pydap_dap2_basic.ipynb[PyDAP w/DAP2]
-image:https://colab.research.google.com/assets/colab-badge.svg[fit=line, link="https://colab.research.google.com/github/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/   4.pydap_dap2_basic.ipynb"] -
+image:https://colab.research.google.com/assets/colab-badge.svg[fit=line, link="https://colab.research.google.com/github/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/4.pydap_dap2_basic.ipynb"] -
 An iPython notebook tutorial for PyDAP with DAP2 access examples.
 
 == Matlab
