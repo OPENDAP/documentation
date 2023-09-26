@@ -26,6 +26,15 @@ part of an Authorization request header.
 Other data access client software have no API or UI through which an EDL token
 might be introduced and used in an authorization header.
 
+NOTE: Recent changes in the way that the Hyrax DAP service utilizes EDL tokens
+means that clients are no longer required to follow redirects or maintain
+session state by managing cookies. However, maintaining session state
+(managing cookies) will produce better request performance when your client is
+making multiple requests of the service. If a session is not maintained by the
+requesting client the service will vailidate the EDL each time a request is
+made. This may add 500ms - 2000ms to the service's response time.
+
+
 //###########################################################################
 //###########################################################################
 //###########################################################################
@@ -60,10 +69,22 @@ Authorization: Bearer TOKEN_VALUE
 //###########################################################################
 == _curl_ (Command line _cURL_)
 
-You can utilize your EDL token with cURL request as follows:
+Recent changes in the way that the Hyrax service utilizes EDL tokens means that
+the clients are no longer required to follow redirects or maintain session state
+by managing cookies.
+
+Here are two examples with command line cURL. One that uses EDL tokens and
+maintains sessions and a second that uses only the EDL
+
+
+=== cURL with EDL Token and session cookies.
+You can utilize your EDL token with a commandline cURL request that will
+maintain a session so that subsequent requests will be serviced more quickly.
 [source,sh]
 ----
 #!/bin/bash
+# cURL example, uses sessions, no redirects.
+#
 export url="https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds"
 echo "url: ${url}" >&2
 
@@ -71,26 +92,54 @@ echo "url: ${url}" >&2
 export auth_hdr=$(cat edl_token_auth.hdr)
 echo "auth_hdr: ${auth_hdr}" >&2
 
-curl -c ~/cookie_file -b ~/cookie_file -L -H "${auth_hdr}" "${url}"
+curl -c ~/cookie_file -b ~/cookie_file -H "${auth_hdr}" "${url}"
 ----
 
 What is happening here?
-
-`-k`:: This tells _cURL_ to accept self-signed certificates. This is ok for
-working with trusted (as in your own) "test" services but should be removed
-for working with production systems. Because: Security, Chain-Of-Trust, etc.
 
 `-c cookie_file`:: This tells _cURL_ to stash cookies in the file _cookie_file_
 
 `-b cookie_file`:: This tells _cURL_ to read cookies from the file _cookie_file_
 
-`-L`:: This option (aka _--location_) tells _cURL_ to follow redirects, which is a
-must for any Single Sign On (SSO) authentication flow, such as OAuth2.
+`-H` "${auth_hdr}":: The -H option adds its parameter value as a request header in
+the HTTP request sent to the origin server, `${url}` in the example above.
+Because the Authorization header contains space characters, the double quotes
+around the value *required*.
+
+`${url}`:: The URL to dereference and retrieve.
+
+NOTE: The client need not follow redirects (`-L`) for the Hyrax DAP service. With
+other servers ymmv.
+
+=== cURL with only the EDL Token.
+You can utilize your EDL token with a command line cURL request without
+maintaining sessions.
+[source,sh]
+----
+#!/bin/bash
+# cURL example, no session, no redirects.
+#
+export url="https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.dds"
+echo "url: ${url}" >&2
+
+# Load the EDL token file contents into the shell variable 'auth_hdr'
+export auth_hdr=$(cat edl_token_auth.hdr)
+echo "auth_hdr: ${auth_hdr}" >&2
+
+curl -H "${auth_hdr}" "${url}"
+----
+
+What is happening here?
 
 `-H` "${auth_hdr}":: The -H option adds its parameter value as a request header in
 the HTTP request sent to the origin server, `${url}` in the example above.
+Because the Authorization header contains space characters, the double quotes
+around the value are a must.
 
 `${url}`:: The URL to dereference and retrieve.
+
+NOTE: The client need not follow redirects (`-L`) for the Hyrax DAP service. With
+other servers ymmv.
 
 //###########################################################################
 //###########################################################################
@@ -98,7 +147,12 @@ the HTTP request sent to the origin server, `${url}` in the example above.
 == _wget_
 
 In this example we will also utilize the `edl_token_auth.hdr` file that we
-created earlier.
+created earlier. And, like in the cURL example there will be two examples, one
+in which wget maintains a session using cookies, and one where it does not. And,
+as with cURL, the maintaining a session will provide better performance on
+subsequent requests.
+
+=== `wget` with EDL Token and a session.
 
 Consider this _wget_ command:
 
@@ -113,11 +167,35 @@ echo "auth_hdr: ${auth_hdr}" >&2
 
 wget --load-cookies cookie_file --save-cookies cookie_file --keep-session-cookie --header="${auth_hdr}" "${url}"
 ----
-What's happening withb `wget` here?
+What's happening with `wget` here?
 
 `--load-cookies cookies` :: Load cookies from the file "cookie_file"
 `--save-cookies cookies` :: Save cookies to the file "cookie_file"
 `--keep-session-cookie` :: Save session cookies.
+`--header "${auth_hdr}"` :: Send the value of the environment variable `auth_hdr`
+along with the rest of the headers in each HTTP request.  The supplied header
+is sent as-is, which means it must contain name and value separated by colon,
+and must not contain newlines.
+`${url}`:: The URL to retrieve, in this case
+https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.das
+
+=== `wget` with only the EDL Token.
+
+Consider this _wget_ command:
+
+[source,sh]
+----
+#!/bin/bash
+export url="https://opendap.earthdata.nasa.gov/hyrax/data/nc/fnoc1.nc.das"
+echo "url: ${url}" >&2
+
+export auth_hdr=$(cat edl_token_auth.hdr)
+echo "auth_hdr: ${auth_hdr}" >&2
+
+wget --header="${auth_hdr}" "${url}"
+----
+What's happening with `wget` here?
+
 `--header "${auth_hdr}"` :: Send the value of the environment variable `auth_hdr`
 along with the rest of the headers in each HTTP request.  The supplied header
 is sent as-is, which means it must contain name and value separated by colon,
