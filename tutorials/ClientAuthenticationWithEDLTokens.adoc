@@ -18,10 +18,10 @@ header. All the data access clients that we have been tested with EDL
 authentication have been working because the EDL authentication endpoints support
 the most fundamental type of web authentication, HTTP BASIC.
 
-The introduction of EDL tokens means a move away from the HTTP and into something
-new. Some very flexible clients like `cURL` and `wget` can easily adapt to the change
-in authentication procedure by simply taking an EDL token and submitting it as
-part of an Authorization request header.
+The introduction of EDL tokens means a move away from HTTP BASIC authentication
+and into something new. Some very flexible clients like `cURL` and `wget` can
+easily adapt to the change in authentication procedure by simply taking an EDL
+token and submitting it as part of an Authorization request header.
 
 Other data access client software have no API or UI through which an EDL token
 might be introduced and used in an authorization header.
@@ -31,9 +31,8 @@ means that clients are no longer required to follow redirects or maintain
 session state by managing cookies. However, maintaining session state
 (managing cookies) will produce better request performance when your client is
 making multiple requests of the service. If a session is not maintained by the
-requesting client the service will vailidate the EDL each time a request is
-made. This may add 500ms - 2000ms to the service's response time.
-
+requesting client the service will validate the EDL token each time a request is
+made. This may add 500ms - 2000ms to every request/response cycle.
 
 //###########################################################################
 //###########################################################################
