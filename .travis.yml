@@ -8,7 +8,7 @@ before_install:
   - docker pull asciidoctor/docker-asciidoctor
 
 # Name the file explicitly until we sort out the organization of the
-# 'documentation' project. Removed the Hyrax Guide since it is nowin
+# 'documentation' project. Removed the Hyrax Guide since it is now in
 # its own project. jhrg 1/11/17
 
 env:
