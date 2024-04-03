@@ -228,7 +228,7 @@ print("auth_hdr: ", auth_hdr);
 # header:
 
 my_session = requests.Session()
-my_session.headers={"Authorization", auth_hdr}
+my_session.headers={"Authorization": auth_hdr}
 
 pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="dap4")
 
