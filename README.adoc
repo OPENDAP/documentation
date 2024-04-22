@@ -78,8 +78,15 @@ _gh-pages_ and _github.io_ and then link those pages here. See the
 _github.com/OPeNDAP/hyrax_guide_ repo and the entry above for
 _Master_Hyrax_Guide.html/pdf_ for an example.
 
-=== Automaic github.io updates
+=== Automatic github.io updates
 
-See link:http://mgreau.com/posts/2016/03/28/asciidoc-to-gh-pages-with-travis-ci-docker-asciidoctor.html[Convert AsciiDoc to HTML/PDF & publish to GitHub Pages with Travis CI and Asciidoctor Docker containers] for the low-down on how the automatic updates work. 
+See
+link:http://mgreau.com/posts/2016/03/28/asciidoc-to-gh-pages-with-travis-ci-docker-asciidoctor.html[Convert
+AsciiDoc to HTML/PDF & publish to GitHub Pages with Travis CI and
+Asciidoctor Docker containers] for the low-down on how the automatic
+updates work. 
 
-Another take on the same sort of process - updating gh-pages from a .travis.yml file - that does not use asciidoctor: link:http://www.steveklabnik.com/automatically_update_github_pages_with_travis_example/[Automatically Update GitHub Pages with Travis].
+Another take on the same sort of process - updating gh-pages from a
+.travis.yml file - that does not use asciidoctor:
+link:http://www.steveklabnik.com/automatically_update_github_pages_with_travis_example/[Automatically
+Update GitHub Pages with Travis].
