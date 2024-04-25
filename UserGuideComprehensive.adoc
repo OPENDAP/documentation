@@ -253,8 +253,8 @@ served. Data providers are free to join and to leave the system as doing so is c
 
 Similar to the World Wide Web, there are some
 disadvantages to the lack of central authority. If no one knows about a
-web site, no one will visit it. Similarly, listing a dataset in a
-central data catalog, such as the link:http://gcmd.nasa.gov/[Global Change Master Directory], can make data available to other researchers in a way that simply configuring an OPeNDAP server would not. You can contact the GCMD and submit 
+web site, no one will visit it. Similarly, listing a dataset metadata in a
+central data catalog, such as the link:https://www.earthdata.nasa.gov/learn/find-data/idn[International Directory Network (IDN)], can make data available to other researchers in a way that simply configuring an OPeNDAP server would not. You can contact the IDN and submit 
 your server to their catalog.
 // Replaced this with the above. jhrg
 // OPeNDAP provided a facility for registering a
