@@ -64,7 +64,7 @@ To convert to CM from adoc, use 'asciidoctor' and 'pandoc' like this:
     asciidoctor -b docbook5 -o quick_start_hack QuickStart.adoc
     pandoc -f docbook -t commonmark -o quick_start.cm quick_start_hack
 
-=== About opendap.github.io
+=== About opendap.github.io/documentation/
 
 The https://opendap.github.io/documentation/ site is populated with HTML and PDF
 documents that are automatically built any time an AsciiDoc file in
