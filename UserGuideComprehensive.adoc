@@ -1328,22 +1328,22 @@ process and thus reduce the network load of transmitting the given data to the c
 
 A constraint expression is appended to the target URL following a question mark, as in the following examples:
 
-.../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?sst%5B3%5D%5B4%5D%5B5%5D[Click here for sample output.]
+.../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst[3][4][5][Click here for sample output.]
 
 .../nc/sst.mnmean.nc.gz?sst[0:1][13:16][103:105]   
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?sst%5B0:1%5D%5B13:16%5D%5B103:105%5D[Click here for sample output.]
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B0:1%5D%5B13:16%5D%5B103:105%5D[Click here for sample output.]
 
 .../n.../ff/gsodock.dat?Time,Sea_Tempc/sst.mnmean.nc.gz?geogrid(sst,62,206,56,210,"19722<time<19755")
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?geogrid(sst,62,206,56,210,%2219722%3Ctime%3C19755%22)[Click here for sample output.]
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?geogrid(sst,62,206,56,210,%2219722%3Ctime%3C19755%22)[Click here for sample output.]
 
 .../ff/gsodock.dat?Time,Sea_Temp
-http://test.opendap.org/dap/data/ff/gsodock.dat.asc?Time,Sea_Temp[Click here for sample output.]
+http://test.opendap.org/dap/data/ff/gsodock.dat.ascii?Time,Sea_Temp[Click here for sample output.]
 
 .../ff/gsodock.dat?Time,Sea_Temp&Time%3C35234.1
-http://test.opendap.org/dap/data/ff/gsodock.dat.asc?Time,Sea_Temp&Time%3C35234.1[Click here for sample output.]
+http://test.opendap.org/dap/data/ff/gsodock.dat.ascii?Time,Sea_Temp&Time%3C35234.1[Click here for sample output.]
 
 .../ff/gsodock.dat?Time,Sea_Temp&Time%3C35234.1&Sea_Temp%3C18
-http://test.opendap.org/dap/data/ff/gsodock.dat.asc?Time,Sea_Temp&Time%3C35234.1&Sea_Temp%3C18[Click here for sample input.]
+http://test.opendap.org/dap/data/ff/gsodock.dat.ascii?Time,Sea_Temp&Time%3C35234.1&Sea_Temp%3C18[Click here for sample input.]
 
 CAUTION: An OPeNDAP data set can contain an extraordinary amount of
 data. You almost certainly do _not_ want to make an unconstrained
@@ -1562,11 +1562,11 @@ functions with no arguments to see a description of the arguments.
 
 For example...
 
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?version()
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?version()
 
 and...
 
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?geogrid()
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?geogrid()
 
 NOTE: When using functions, remember that a function used in a projection can return any value, but when used in a selection clause, it must either return a boolean value, or be part of a test that returns a boolean value.
 
@@ -1889,7 +1889,7 @@ that order below:
 [[NetCDFTools]]
 ==== NetCDF Compliant Tools (e.g., Matlab, R, IDL, IDV, and Panoply) ====
 
-Any tool that uses the C NetCDF API will work with OPeNDAP. For example, Matlab has built-in support for OPeNDAP; Matlab supported NetCDF calls can be used with xref:DAP[DAP] datasets. Other tools that are built on NetCDF API also read data from OPeNDAP servers. A free tool similar to Matlab, https://www.gnu.org/software/octave/[GNU Octave], is also supported. The https://www.r-project.org/[R Project] for Statistical Computing can also read data from OPeNDAP servers. The http://ferret.wrc.noaa.gov/Ferret[Ferret] and
+Any tool that uses the C NetCDF API will work with OPeNDAP. For example, Matlab has built-in support for OPeNDAP; Matlab supported NetCDF calls can be used with xref:DAP[DAP] datasets. Other tools that are built on NetCDF API also read data from OPeNDAP servers. A free tool similar to Matlab, https://www.gnu.org/software/octave/[GNU Octave], is also supported. The https://www.r-project.org/[R Project] for Statistical Computing can also read data from OPeNDAP servers. The https://ferret.pmel.noaa.gov/Ferret/[Ferret] and
 http://cola.gmu.edu/grads/[GrADS] free data analysis packages both
 support OPeNDAP. You can use these for dowloading OPeNDAP data and for
 examining it afterwards. (There are limitations. For example, Ferret may not be able to read datasets served as Sequence data.)
@@ -1962,7 +1962,7 @@ subsampled_data =
 This quick demo just scratches the surface of what the inteface can do! And, of course, you can use it to read local files if you have those as well.
 
 ===== Panoply =====
-Panoply plots geo-referenced and other arrays from http://www.unidata.ucar.edu/packages/netcdf/[netCDF], http://www.hdfgroup.org/[HDF], https://www.wmo.int/pages/prog/www/WMOCodes.html[GRIB], and other datasets. With Panoply 4 (and later) you can Explore remote OpenDAP catalogs and open datasets served from them. For example, if you click *File* > *Open* > *Open Remote Dataset* and then enter http://test.opendap.org/opendap/hyrax/data/nc/coads_climatology.nc you will see this:
+Panoply plots geo-referenced and other arrays from http://www.unidata.ucar.edu/packages/netcdf/[netCDF], https://www.hdfgroup.org/[HDF], https://www.wmo.int/pages/prog/www/WMOCodes.html[GRIB], and other datasets. With Panoply 4 (and later) you can Explore remote OpenDAP catalogs and open datasets served from them. For example, if you click *File* > *Open* > *Open Remote Dataset* and then enter http://test.opendap.org/opendap/hyrax/data/nc/coads_climatology.nc you will see this:
 
 .An OPeNDAP Dataset Displayed in Panoply
 image::./images/Panoply.png[]
@@ -2100,10 +2100,10 @@ version of the netCDF library.
 See the http://www.unidata.ucar.edu/software/netcdf/[netCDF home page] for information about how to use that library.
 
 ===== Python Library =====
-http://pydap.org[Pydap] is an implementation of the OPeNDAP client in
+https://pydap.github.io/pydap/[Pydap] is an implementation of the OPeNDAP client in
 pure Python. This is tremendously useful for scripting complicated
 applications with lots of download steps. This is not supported by the
-OPeNDAP group, so please refer to the http://pydap.org[Pydap site] for
+OPeNDAP group, so please refer to the https://pydap.github.io/pydap/[Pydap site] for
 more information about it.
 
 ===== JavaScript AJAX Client for DAP Services =====
