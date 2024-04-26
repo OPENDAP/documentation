@@ -1306,6 +1306,10 @@ http://www.unidata.ucar.edu/projects/THREDDS/tech/TDS.html[THREDDS Data Server] 
 
 Using OPeNDAP, you can subsample the data you are looking at. That is, you can request an entire data file or just a small piece of it.
 
+
+NOTE: The syntax on this subsection corresponds to the DAP2 implementation of OPeNDAP. We are migrating content into the documentation to also include extensive DAP4 information. For now, further information on DAP4 syntax can be inspected on the https://docs.opendap.org/index.php/DAP4_Specification[DAP4 Specification].
+
+
 ==== Selecting Data: Using Constraint Expressions ====
 
 The URL such as this one...
