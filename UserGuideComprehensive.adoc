@@ -1328,7 +1328,7 @@ process and thus reduce the network load of transmitting the given data to the c
 
 A constraint expression is appended to the target URL following a question mark, as in the following examples:
 
-.../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst[3][4][5][Click here for sample output.]
+.../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B3%5D%5B4%5D%5B5%5D[Click here for sample output.]
 
 .../nc/sst.mnmean.nc.gz?sst[0:1][13:16][103:105]   
 http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B0:1%5D%5B13:16%5D%5B103:105%5D[Click here for sample output.]
