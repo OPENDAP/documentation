@@ -1330,6 +1330,8 @@ A constraint expression is appended to the target URL following a question mark,
 
 .../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B3%5D%5B4%5D%5B5%5D[Click here for sample output.]
 
+NOTE: Constraint expressions are specified within the HTTP query portion of the URL. Because the syntax for constraint expressions involves characters that are not allowed on URLs, these characters must be escaped before being passed to the server. As a result, escaping of characters must then take place on the client side of the request. In the example above, the constraint expression that is being sent to the server is ?sst%5B3%5D%5B4%5D%5B5%5D .
+
 .../nc/sst.mnmean.nc.gz?sst[0:1][13:16][103:105]   
 http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B0:1%5D%5B13:16%5D%5B103:105%5D[Click here for sample output.]
 
