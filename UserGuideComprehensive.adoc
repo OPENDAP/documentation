@@ -253,8 +253,8 @@ served. Data providers are free to join and to leave the system as doing so is c
 
 Similar to the World Wide Web, there are some
 disadvantages to the lack of central authority. If no one knows about a
-web site, no one will visit it. Similarly, listing a dataset in a
-central data catalog, such as the link:http://gcmd.nasa.gov/[Global Change Master Directory], can make data available to other researchers in a way that simply configuring an OPeNDAP server would not. You can contact the GCMD and submit 
+web site, no one will visit it. Similarly, listing a dataset metadata in a
+central data catalog, such as the link:https://www.earthdata.nasa.gov/learn/find-data/idn[International Directory Network (IDN)], can make data available to other researchers in a way that simply configuring an OPeNDAP server would not. You can contact the IDN and submit 
 your server to their catalog.
 // Replaced this with the above. jhrg
 // OPeNDAP provided a facility for registering a
@@ -1306,6 +1306,10 @@ http://www.unidata.ucar.edu/projects/THREDDS/tech/TDS.html[THREDDS Data Server] 
 
 Using OPeNDAP, you can subsample the data you are looking at. That is, you can request an entire data file or just a small piece of it.
 
+
+NOTE: The syntax on this subsection corresponds to the DAP2 implementation of OPeNDAP. We are migrating content into the documentation to also include extensive DAP4 information. For now, further information on DAP4 syntax can be inspected on the https://docs.opendap.org/index.php/DAP4_Specification[DAP4 Specification].
+
+
 ==== Selecting Data: Using Constraint Expressions ====
 
 The URL such as this one...
@@ -1319,6 +1323,12 @@ may also choose to sample the dataset simply by modifying the submitted URL. The
 that the data set specified by the first part of the URL be sampled to
 select only the data of interest from a dataset.
 
+CAUTION: An OPeNDAP data set can contain an extraordinary amount of
+data. You almost certainly do _not_ want to make an unconstrained
+request to a data set without knowing something about it. Familiarize
+yourself with the xref:DDS[DDS] and xref:DAS[DAS] before asking for data.
+
+
 Because the expression modifies the URL used to access data, this works
 even for programs that do not have a built-in way to accomplish such
 selections. This can vastly reduce the amount of data a program needs to
@@ -1326,32 +1336,52 @@ process and thus reduce the network load of transmitting the given data to the c
 
 ==== Constraint Expression Syntax ====
 
-A constraint expression is appended to the target URL following a question mark, as in the following examples:
+A constraint expression is appended to the target URL following a question mark. Consider the following two examples, one for a Grid and another for a Sequence. 
 
-.../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?sst%5B3%5D%5B4%5D%5B5%5D[Click here for sample output.]
+Consider first the Array with URL
+
+----------------------------------------------------
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz
+----------------------------------------------------
+
+We can request single variables, and subsetting by index or values.
+
+.../nc/sst.mnmean.nc.gz?sst[3][4][5] http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B3%5D%5B4%5D%5B5%5D[Click here for sample output.]
+
+NOTE: Constraint expressions are specified within the HTTP query portion of the URL. Because the syntax for constraint expressions involves characters that are not allowed on URLs, these characters must be escaped before being passed to the server. As a result, escaping of characters must then take place on the client side of the request. In the example above, the constraint expression that is being sent to the server is ?sst%5B3%5D%5B4%5D%5B5%5D .
 
 .../nc/sst.mnmean.nc.gz?sst[0:1][13:16][103:105]   
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?sst%5B0:1%5D%5B13:16%5D%5B103:105%5D[Click here for sample output.]
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5B0:1%5D%5B13:16%5D%5B103:105%5D[Click here for sample output.]
 
-.../n.../ff/gsodock.dat?Time,Sea_Tempc/sst.mnmean.nc.gz?geogrid(sst,62,206,56,210,"19722<time<19755")
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?geogrid(sst,62,206,56,210,%2219722%3Ctime%3C19755%22)[Click here for sample output.]
+.../nc/sst.mnmean.nc.gz?geogrid(sst,62,206,56,210,"19722<time<19755")
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?geogrid(sst,62,206,56,210,%2219722%3Ctime%3C19755%22)[Click here for sample output.]
 
-.../ff/gsodock.dat?Time,Sea_Temp
-http://test.opendap.org/dap/data/ff/gsodock.dat.asc?Time,Sea_Temp[Click here for sample output.]
+In all the examples above, only the variable _sst_ was returned. To include the coordinate variables we have to explicitly include them in the constraint expression. For example
 
-.../ff/gsodock.dat?Time,Sea_Temp&Time%3C35234.1
-http://test.opendap.org/dap/data/ff/gsodock.dat.asc?Time,Sea_Temp&Time%3C35234.1[Click here for sample output.]
+.../nc/sst.mnmean.nc.gz?lat[4],lon[5],time[3],sst[3][4][5] http://test.opendap.org/opendap/data/nc/sst.mnmean.nc.gz.ascii?lat%5B4%5D,lon%5B5%5D,time%5B3%5D,sst%5B3%5D%5B4%5D%5B5%5D[Click here to see output]
 
-.../ff/gsodock.dat?Time,Sea_Temp&Time%3C35234.1&Sea_Temp%3C18
-http://test.opendap.org/dap/data/ff/gsodock.dat.asc?Time,Sea_Temp&Time%3C35234.1&Sea_Temp%3C18[Click here for sample input.]
+NOTE: Even though the array _sst_ index ordering is: _time_, _lat_ and _lon_, the coordinates are explicitly defined in the order _lat_, _lon_ and _time_ on the URL. This is because that is how these variables appear on the http://test.opendap.org/opendap/data/nc/sst.mnmean.nc.gz.html[DAP Response Form]. Including the variables in a different order will not result in an error, but it can lead to a slow response and performance. To get a better performance, we recommend to extract the URL interactively from the DAP Response Form when possible. For more see below under *projections*. 
 
-CAUTION: An OPeNDAP data set can contain an extraordinary amount of
-data. You almost certainly do _not_ want to make an unconstrained
-request to a data set without knowing something about it. Familiarize
-yourself with the xref:DDS[DDS] and xref:DAS[DAS] before asking for data.
 
-A constraint expression consists of two parts: a projection and a
-selection, separated by an ampersand (&). Either part may contain
+Consider now a Sequence with URL
+
+-----------------------------------------------
+http://test.opendap.org/dap/data/ff/gsodock.dat
+-----------------------------------------------
+
+
+.../ff/gsodock.dat?URI_GSO-Dock.Time,URI_GSO-Dock.Sea_Temp
+http://test.opendap.org/dap/data/ff/gsodock.dat.ascii?Time,Sea_Temp[Click here for sample output.]
+
+.../ff/gsodock.dat?URI_GSO-Dock.Time,URI_GSO-Dock.Sea_Temp&URI_GSO-Dock.Time<35234.1
+http://test.opendap.org/dap/data/ff/gsodock.dat.ascii?Time,Sea_Temp&Time%3C35234.1[Click here for sample output.]
+
+.../ff/gsodock.dat?URI_GSO-Dock.Time,URI_GSO-Dock.Sea_Temp&URI_GSO-Dock.Time<35234.1&URI_GSO-Dock.Sea_Temp<18
+http://test.opendap.org/dap/data/ff/gsodock.dat.ascii?Time,Sea_Temp&Time%3C35234.1&Sea_Temp%3C18[Click here for sample input.]
+
+
+Now that we have build some intuition about constraint expressions in the DAP2, we move to formally define them. A constraint expression consists of two parts: a *projection* and a
+*selection*, separated by an ampersand (&). Either part may contain
 several sub-expressions. Either part or both parts may be used.
 
 --------------------------------------------------
@@ -1562,11 +1592,11 @@ functions with no arguments to see a description of the arguments.
 
 For example...
 
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?version()
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?version()
 
 and...
 
-http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.asc?geogrid()
+http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?geogrid()
 
 NOTE: When using functions, remember that a function used in a projection can return any value, but when used in a selection clause, it must either return a boolean value, or be part of a test that returns a boolean value.
 
@@ -1889,7 +1919,7 @@ that order below:
 [[NetCDFTools]]
 ==== NetCDF Compliant Tools (e.g., Matlab, R, IDL, IDV, and Panoply) ====
 
-Any tool that uses the C NetCDF API will work with OPeNDAP. For example, Matlab has built-in support for OPeNDAP; Matlab supported NetCDF calls can be used with xref:DAP[DAP] datasets. Other tools that are built on NetCDF API also read data from OPeNDAP servers. A free tool similar to Matlab, https://www.gnu.org/software/octave/[GNU Octave], is also supported. The https://www.r-project.org/[R Project] for Statistical Computing can also read data from OPeNDAP servers. The http://ferret.wrc.noaa.gov/Ferret[Ferret] and
+Any tool that uses the C NetCDF API will work with OPeNDAP. For example, Matlab has built-in support for OPeNDAP; Matlab supported NetCDF calls can be used with xref:DAP[DAP] datasets. Other tools that are built on NetCDF API also read data from OPeNDAP servers. A free tool similar to Matlab, https://www.gnu.org/software/octave/[GNU Octave], is also supported. The https://www.r-project.org/[R Project] for Statistical Computing can also read data from OPeNDAP servers. The https://ferret.pmel.noaa.gov/Ferret/[Ferret] and
 http://cola.gmu.edu/grads/[GrADS] free data analysis packages both
 support OPeNDAP. You can use these for dowloading OPeNDAP data and for
 examining it afterwards. (There are limitations. For example, Ferret may not be able to read datasets served as Sequence data.)
@@ -1962,7 +1992,7 @@ subsampled_data =
 This quick demo just scratches the surface of what the inteface can do! And, of course, you can use it to read local files if you have those as well.
 
 ===== Panoply =====
-Panoply plots geo-referenced and other arrays from http://www.unidata.ucar.edu/packages/netcdf/[netCDF], http://www.hdfgroup.org/[HDF], https://www.wmo.int/pages/prog/www/WMOCodes.html[GRIB], and other datasets. With Panoply 4 (and later) you can Explore remote OpenDAP catalogs and open datasets served from them. For example, if you click *File* > *Open* > *Open Remote Dataset* and then enter http://test.opendap.org/opendap/hyrax/data/nc/coads_climatology.nc you will see this:
+Panoply plots geo-referenced and other arrays from http://www.unidata.ucar.edu/packages/netcdf/[netCDF], https://www.hdfgroup.org/[HDF], https://www.wmo.int/pages/prog/www/WMOCodes.html[GRIB], and other datasets. With Panoply 4 (and later) you can Explore remote OpenDAP catalogs and open datasets served from them. For example, if you click *File* > *Open* > *Open Remote Dataset* and then enter http://test.opendap.org/opendap/hyrax/data/nc/coads_climatology.nc you will see this:
 
 .An OPeNDAP Dataset Displayed in Panoply
 image::./images/Panoply.png[]
@@ -2100,10 +2130,10 @@ version of the netCDF library.
 See the http://www.unidata.ucar.edu/software/netcdf/[netCDF home page] for information about how to use that library.
 
 ===== Python Library =====
-http://pydap.org[Pydap] is an implementation of the OPeNDAP client in
+https://pydap.github.io/pydap/[Pydap] is an implementation of the OPeNDAP client in
 pure Python. This is tremendously useful for scripting complicated
 applications with lots of download steps. This is not supported by the
-OPeNDAP group, so please refer to the http://pydap.org[Pydap site] for
+OPeNDAP group, so please refer to the https://pydap.github.io/pydap/[Pydap site] for
 more information about it.
 
 ===== JavaScript AJAX Client for DAP Services =====
