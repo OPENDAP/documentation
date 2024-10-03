@@ -234,6 +234,9 @@ pd_dataset = pydap.client.open_url(dataset_url, session=my_session, protocol="da
 
 ----
 
+If you want to see it in action, you can go to PyDAP's static documentation and navigate to https://pydap.github.io/pydap/notebooks/Authentication.html[Basic Authentication] under Examples. Other Example notebooks can further illustrate workflows starting with Token-based authentication.
+
+
 :leveloffset: -1
 == Clients that do not work with EDL tokens
 :leveloffset: +1
