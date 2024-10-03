@@ -21,12 +21,12 @@ data access activity, possibly written as a shell script.
 *  link:https://opendap.github.io/documentation/tutorials/nccopy_tutorial.html[nccopy tutorial]
 
 == Python client tutorials
-Among the most stable and widely used within the Python ecosystem are NetCDF and https://github.com/pydap/pydap[PyDAP]. Xarray, a widely popular package within the Pangeo ecosystem uses both as a backend `engine`, and both NetCDF and PyDAP are required dependencies for Xarray, which means installing Xarray installs NetCDF and PyDAP by default.  Between the two packages, we recommend getting started with PyDAP to best exploit OPeNDAP resources, because PyDAP has the following characteristics:
+Among the most stable and widely used within the Python ecosystem are NetCDF and https://pydap.github.io/pydap/intro.html[PyDAP]. Xarray, a widely popular package within the Pangeo ecosystem uses both as a backend `engine`, and both NetCDF and https://pydap.github.io/pydap/intro.html[PyDAP] are required dependencies for Xarray, which means installing Xarray installs NetCDF and https://pydap.github.io/pydap/intro.html[PyDAP] by default.  Between the two packages, we recommend getting started with https://pydap.github.io/pydap/intro.html[PyDAP] to best exploit OPeNDAP resources, because PyDAP has the following characteristics:
 
 * Pure python implementation of the DAP protocol.
-* Ppen-source, developed and maintained by the OPeNDAP team and the broad PyDAP/OPeNDAP community.
-* Packs its own lightweight (pydap) server.
-* Server-side and data-proximmate subsetting. OPeNDAP servers are highly specialized to subset the original dataset. With PyDAP, a user can add constraint expressions to the URL, a powerful tool once you get familiarize with.
+* Open-source, developed and maintained by the OPeNDAP team and the broad PyDAP/OPeNDAP community.
+* Has its own lightweight server implementation.
+* Server-side and data-proximmate subsetting. OPeNDAP servers are highly specialized to subset the original dataset. With https://pydap.github.io/pydap/intro.html[PyDAP], a user can add constraint expressions to the URL, a powerful tool once you get familiarize with.
 
 
 Below are a combination of static and interactive resources. You can click the associated image image:https://static.mybinder.org/badge_logo.svg[fit=line] Binder badge to run the notebooks in your browser.
@@ -35,7 +35,9 @@ Below are a combination of static and interactive resources. You can click the a
 	- https://pydap.github.io/pydap/notebooks/Authentication.html[Token-based Authentication] (necessary for example to access NASAEarth data).
 	- Tutorial workflows for accesing and plotting various NASA and Non-NASA data product (https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6], https://pydap.github.io/pydap/notebooks/ECCO.html[ECCOv4], https://pydap.github.io/pydap/notebooks/PACE.html[PACE] and https://pydap.github.io/pydap/notebooks/SWOT.html[SWOT]).
 
-* link:https://github.com/OPENDAP/ESIP2024/tree/main[Interactive jupyter notebooks] image:https://static.mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/ESIP2024/main"], showing similar workflows with PyDAP as that of its official documentation. The DAP2 example is that when working with https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6] data.
+* link:https://github.com/OPENDAP/ESIP2024/tree/main[Interactive jupyter notebooks] image:https://static.mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/ESIP2024/main"], showing similar workflows with PyDAP as that of its official documentation. The DAP2 example is that when working with https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6] data. 
+	- *Requirements*: https://urs.earthdata.nasa.gov/home[EDL] account, and create a token for authentication.
+	- *NOTE*: https://github.com/OPENDAP/ESIP2024/blob/main/binder/GetStarted.ipynb[GetStarted.ipynb] notebook should be executed first as it creates local file with https://urs.earthdata.nasa.gov/home[EDL] credentials needed to access data in the all other notebooks.
 
 
 Older python resource:
