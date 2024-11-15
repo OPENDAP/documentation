@@ -118,6 +118,10 @@ NOTE: Because you will rarely want to request an entire archive,
 OPeNDAP provides sophisticated sub-sampling capabilities, and you need
 to know something about the data in order to use them.
 
+
+NOTE: For more advanced users, we also recommend checkout out the https://opendap.github.io/documentation/tutorials/DataAccessTutorials.html[tutorials] documents to check more advanced Python cases, as well as the section on Authentication.
+
+
 === An Easy Way: Using the Browser-Based OPeNDAP Server Dataset Request Form ===
 
 OPeNDAP includes a way to sample data that makes writing a constraint
