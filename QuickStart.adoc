@@ -127,7 +127,7 @@ DAP4 Dataset Request Form that simplifies the process for sampling data.
 
 [[DAPRequestForm]]
 .DAP4 Data Request form for the dataset (to see the Request Form, click link:http://test.opendap.org:8080/opendap/atlas03/ATL03_20181228015957_13810110_003_01.h5.dmr.html[here]) 
-image::DRF_ATLAS03.png[]
+image::DRF_ATLAS03.png[align="center"]
 
 The OPeNDAP Server DAP4 Dataset Request Form has four main sections. To learn more about the
 basic Data Request form go to link:https://www.opendap.org/support/online-help-files/[OPeNDAP Website Resource].
@@ -147,9 +147,9 @@ Together, these can greatly speed up the response and significantly reduce the a
 
 The DAP4 Request Form has an interactive feature to build a new URL that represents the 
 subset dataset. For example, consider that you are only interested in plotting one of the track 
-as s function of time. Say Data within the Group `gt3r`, and within it the time, longitude and
+as a function of time. Say Data within the Group `gt3r`, and within it the time, longitude and
 latitude within the `heights` subgroup. You check the boxes related the three variables
-of interest, with their following link:https://opendap.github.io/dap4-specification/DAP4.html#_fully_qualified_names[Fully Qualifying Names]
+of interest, with their following link:https://opendap.github.io/dap4-specification/DAP4.html#_fully_qualified_names[Fully Qualifying Names]:
 
 ```
 /gt3r/heights/delta_time
@@ -161,8 +161,9 @@ of interest, with their following link:https://opendap.github.io/dap4-specificat
 And the resulting URL on the DataURL box becomes:
 
 ```
-dataURL + ?dap4.ce=/gt3r/heights/delta_time;/gt3r/heights/lat_ph;/gt3r/heights/lon_ph
+dataURL + ?dap4.ce=/gt3r/heights/delta_time[0:1:4548381];/gt3r/heights/lat_ph[0:1:4548381];/gt3r/heights/lon_ph[0:1:4548381]
 ```
+NOTE: the `+` in the URL above implies concatenation of the two strings. One can also ommit the hyperslabs in the Constraint Expression: `?dap4.ce=/gt3r/heights/delta_time;/gt3r/heights/lat_ph;/gt3r/heights/lon_ph`. The semi-colon `;` is used to separate variable names. The two options are identicals. The hyperslab allows for spatial subsetting, but the square brackets NEED to be ESCAPED by Client APIs. PyDAP, for example, does that.
 
 The URL above is the original URL plus a Constraint Expression (*CE*). You can pass that URL
 to a client API (like PyDAP) and it will request from Hyrax the (much reduced) _DMR_ associated only
@@ -176,14 +177,13 @@ different. The variable selection boxes allow you to enter relational
 expressions for each variable. Apart from that, the function is
 exactly the same.
 
-image::Gsodock-html.png[]
+[[Gsodock]]
+.Data Request Form for a Sequence (click http://test.opendap.org/dap/data/ff/gsodock.dat.html[here] to see a live "sequence" form)
+image::Gsodock-html.png[align="center"]
 
-Click http://test.opendap.org/dap/data/ff/gsodock.dat.html[here] to see
-a live "sequence" form. Click the checkboxes to choose which data
-types you want returned, and then add constraint expressions as desired.
-The data file contains a day's record of changing water properties off
+Click the checkboxes to choose which data types you want returned, and then add constraint expressions as desired. The data file contains a day's record of changing water properties off
 a dock in Rhode Island. If you click the _Depth_ and _Time_ boxes (as in
-the figure), you will get a record of the tide going in and out twice. You
+the xref:Gsodock[figure 3]), you will get a record of the tide going in and out twice. You
 can add conditions by entering values in the text boxes. See what you
 get when you limit the selection to records where the Depth is greater
 than 2 meters.
@@ -200,6 +200,8 @@ will look at data's DMR. This provides a description of the "shape" of the data,
 types, and attributes. You get a dataset's _DMR_ by appending *.dmr.xml* to the URL, 
 which is an _xml_ document. 
 
+NOTE: The _xml_ is a interactive document that allows to click and collapse the information on the _DMR_. xref:Reynolds_dmr[Figure 4] has all the _nodes_ associated with _Attributes_ collapsed. 
+
 For example, consider the much simpler http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.dmr[Reynolds Dataset] from NOAA, describing mean sea surface temperature. Click
 http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.dmr.xml[here] to see
 an example of an OPeNDAP DMR for the REYNOLDS Dataset
@@ -207,22 +209,19 @@ at `sst.mnmean.nc.gz.dmr.xml`. The (collapsed) _DMR_ looks like this:
 
 [[Reynolds_dmr]]
 .XML browser view the _DMR_ of the Reynolds Dataset.
-image::Reynolds_dmr.png[]
+image::Reynolds_dmr.png[align="center"]
 
 
-NOTE: The _xml_ is a interactive document that allows to click and collapse the information on the _DMR_. xref:Reynolds_dmr[Figure 3] has all the _nodes_ associated with _Attributes_ collapsed. 
-
-
-From the sst.mnmean.nc.gz DMR in xref:Reynolds_dmr[Figure 3], you can see that the dataset consists of:
+From the sst.mnmean.nc.gz DMR in xref:Reynolds_dmr[Figure 4], you can see that the dataset consists of:
 
 
 * Dataset declaration.
 * Dimensions declaration by their name and size
-* Numeric types of the _Array_ data with appropriate _Dimension_ and _Attribute_ declarations in their nodes (not visible on xref:Reynolds_dmr[Figure 3]).
+* Numeric types of the _Array_ data with appropriate _Dimension_ and _Attribute_ declarations in their nodes (not visible on xref:Reynolds_dmr[Figure 4]).
 * Global Attributes declaration.
 
 
-The _DMR_ in xref:Reynolds_dmr[Figure 3] broadly allows another interactive inspection
+The _DMR_ in xref:Reynolds_dmr[Figure 4] broadly allows another interactive inspection
 of a remote dataset.
 
 
@@ -243,21 +242,21 @@ The URL with the constraint expression, along with the added `.dmr.xml` is:
 http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.dmr.xml?dap4.ce=/sst
 ```
 
-This URL on a browser results in the DMR shown in xref:Reynolds_dmr_sst[Figure 4].
+This URL on a browser results in the DMR shown in xref:Reynolds_dmr_sst[Figure 6].
 
 [[Reynolds_dmr_sst]]
 .DMR showing only the variable `sst` and the attributes of the dataset.
-image::Reynolds_dmr_sst.png[]
+image::Reynolds_dmr_sst.png[align='center']
 
 A savvy User can now use the client API along with the above Constrained URL, to speed up their
 exploration and analysis.
 
 
 Lastly, going back to the original ATLAS03 dataset with over 80 Groups, and many more variables
-referenced in xref:DAPRequestForm[Figure 2], the CE to discard all variables except `delta_time`, `lon_ph` and `lat_ph` from the responsed, yields the following (_XML_) _DMR_
+referenced in xref:DAPRequestForm[Figure 2], the CE to discard all variables except `delta_time`, `lon_ph` and `lat_ph` from the response, yields the following (_XML_) _DMR_
 
 [[Atlas03_dmr_constrained]]
-.DMR showing 3 variables inside the nested Group hierarcy `/gt3r/heights/`.
+.DMR showing 3 variables inside the nested Group hierarcy `/gt3r/heights/` (in this case we use the `firefox` browser which allows a more collapsable view of the DMR than `Google Chrome`)
 image::ATLAS03_ConstrainedDMR.png[]
 
 
@@ -283,6 +282,7 @@ indicate a subscript range. For example,
 http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?time%5b0:6%5d[http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?time[0:6\]]
 will produce a time vector that looks like this:
 
+.Peak at the Reynolds data on the browser, only a subset of the `time` variable is requested by the CE.
 image::Reynolds_time_vector.png[]
 
 If you are interested in the Reynolds dataset, you are probably more
@@ -293,6 +293,7 @@ sample the sst grid, you just add a dimension for time:
 http://test.opendap.org/dap/data/nc/sst.mnmean.nc.gz.ascii?sst%5b0:1%5d%5b13:16%5d%5b103:105%5d[here]
 to see this example in action. You will see something like this:
 
+.Peak at the Reynolds data on the browser, a subset of the `sst` variable is requested by the CE.
 image::Reynolds_sst.png[]
 
 Notice that when you ask for part of an OPeNDAP grid, you get the array
@@ -334,6 +335,7 @@ Click
 http://test.opendap.org/opendap/data/nc/sst.mnmean.nc.gz.ascii?geogrid(sst,62,206,56,210,%2219722%3Ctime%3C19755%22)[here]
 to see this in action. The results look like this:
 
+.Same as Figure 9, but in this case the CE used `geogrid()`.
 image::Reynolds_sst_geogrid.png[]
 
 The Syntax for `geogrid()` is: "geogrid(grid variable, upper latitude, left longitude, lower latitude,
@@ -391,6 +393,7 @@ the second form when Hyrax can guess the values using data set metadata.
 
 http://test.opendap.org/opendap/data/nc/sst.mnmean.nc.gz.ascii?linear_scale(geogrid(sst,78,0,56,10,%22time=19723%22),0.01,0)[...nc.gz.ascii?linear_scale(geogrid(sst,78,0,56,10,"time=19723"),0.01,0)] produces the following:
 
+.Same as Figure 9, now the CE makes use of `geogrid()` and use `linear_scale` as `Server Side Functions`.
 image::Reynolds_sst_linear_scale_geogrid.png[]
 
 ==== Working With Sequence Data ====
@@ -418,10 +421,12 @@ measurements of each of the twelve variables.
 
 http://test.opendap.org/dap/data/ff/gsodock.dat.dds[Ask for the DDS], and you will see the twelve variables, all contained in a Sequence called URI_GSO-Dock:
 
+.DDS for the entire sequence (DAP2 response)
 image::Gsodock-dds.png[]
 
 http://test.opendap.org/dap/data/ff/gsodock.dat.das[The DAS] contains the units for each data type and some additional information:
 
+.FAS for the entire Sequence (DAP2 response)
 image::Gsodock-das.png[]
 
 To select the data you want from a server, use a constraint
@@ -456,7 +461,7 @@ Use Google to search for 'OPeNDAP Hyrax' or to search for 'OPeNDAP <terms>' or '
 
 === GCMD ===
 
-The http://gcmd.gsfc.nasa.gov[Global Change Master Directory] provides
+The https://gcmd.earthdata.nasa.gov/[Global Change Master Directory] provides
 a huge amount of earth science data and catalogs OPeNDAP URLs for the
 datasets that have them. You can search on "OPeNDAP" from the main
 page to find many of these datasets.
