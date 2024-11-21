@@ -9,11 +9,11 @@
 
 :quick-start-doc: QuickStart.html
 
-:hyrax-doc: http://docs.opendap.org/index.php/Hyrax
-:hyrax-bes-conf-doc: http://docs.opendap.org/index.php/Hyrax_-_BES_Configuration
-:hyrax-olfs-conf-doc: http://docs.opendap.org/index.php/Hyrax_-_OLFS_Configuration
-:hyrax-thredds-conf-doc: http://docs.opendap.org/index.php/Hyrax_-_THREDDS_Configuration
-:hyrax-multi-bes-doc: http://docs.opendap.org/index.php/Hyrax_-_Configuring_The_OLFS_To_Work_With_Multiple_BES%27s
+:hyrax-doc: https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html
+:hyrax-bes-conf-doc: https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#bess-configuration
+:hyrax-olfs-conf-doc: https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#OLFS-config
+:hyrax-thredds-conf-doc: https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#THREDDS-config
+:hyrax-multi-bes-doc: https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#config-hyrax-mult-BESs
 :libdap-doc: http://docs.opendap.org/index.php/Libdap
 
 == About This Guide == 
@@ -1757,22 +1757,20 @@ sending requests directly to the BES.
 
 ===== Installing Hyrax =====
 
-The two parts of link:{hyrax-doc}[Hyrax] are installed by
-the same script. However, because they are discrete, they may require
-different kinds of attention from an administrator. Testing OLFS
-requires a working BES, so it is best to start the post-unpacking
-process with the BES.
+Hyrax can be installed in three distinct ways:
 
-.Installing BES
-The BES is a standalone server. Its installation involves parking its
-code somewhere to be run as a daemon and configuring your system to
-execute it.
+. https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#dockerhub[Docker Installation (Recommended)]
 
-After that, there are several configuration options that you will need
+. https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#binariesLinux[(pre-compiled) Linux binaries]
+
+. https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#source[Buiding from Source (Github)]
+
+We strongly recommend using the Docker installation approach for installing Hyrax as it involves  two simple steps that, in combination, take less that 1 minute install and run Hyrax data server. Such installation can be deployed on the cloud, or a local Linux (RHEL8) or OSX (macOS) desktop computer. For more details on the installation process we referr to the https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html#Download_and_Install_Hyrax[Hyrax Guide]
+
+
+After the installation process, there are several configuration options that you will need
 to address by installing software on your computer and by editing the
-link:{hyrax-bes-conf-doc}[Hyrax configuration file],
-called bes.xml. Details of these options are in the Hyrax documentation, but following are the
-decisions you'll have to make:
+link:{hyrax-bes-conf-doc}[Hyrax configuration file], called `site.conf`. Details of these options are in the Hyrax documentation, but following are the decisions you'll have to make:
 
 What kind of data:: Hyrax is equipped to serve data stored in C and Java netCDF file formats. Each different format requires
   its own handler, and your computer must have shared libraries
@@ -2093,6 +2091,16 @@ The OPeNDAP libraries are functional equivalents of each other. They are
 derived from separate code bases, but they do the same thing. They are
 provided in different languages for the convenience of the implementer.
 
+===== Python Library =====
+https://pydap.github.io/pydap/[Pydap] is an implementation of the OPeNDAP client in
+pure Python. This is tremendously useful for scripting complicated
+applications with lots of download steps. Pydap is a backend engine to the popular
+xarray package, which means learning about pydap's best practices will help
+better understand best practices for using xarray for accessing OPeNDAP servers. 
+
+For more information about pydap, including tutorials, go to the https://pydap.github.io/pydap/[Pydap documentation site].
+
+
 ===== C++ Client Library =====
 The http://opendap.org/download/libdap++.html[C++ library], also called
 libdap, was the original client implementation of the OPeNDAP protocol.
@@ -2129,12 +2137,6 @@ version of the netCDF library.
 
 See the http://www.unidata.ucar.edu/software/netcdf/[netCDF home page] for information about how to use that library.
 
-===== Python Library =====
-https://pydap.github.io/pydap/[Pydap] is an implementation of the OPeNDAP client in
-pure Python. This is tremendously useful for scripting complicated
-applications with lots of download steps. This is not supported by the
-OPeNDAP group, so please refer to the https://pydap.github.io/pydap/[Pydap site] for
-more information about it.
 
 ===== JavaScript AJAX Client for DAP Services =====
 https://github.com/omarbenhamid/jsdap[This library] is designed to enable URL based AJAX querying of DAP datasets.
