@@ -22,6 +22,8 @@ This guide introduces important concepts behind the OPeNDAP data
 model and Web API as well as the clients and servers that
 use them. While it is not a reference for any particular client or server, you will find links to particular clients and servers in it.
 
+WARNING: This guide mostly describes the https://zenodo.org/records/10794666[DAP2.0 protocol], an older protocol that has been superseeded by the https://opendap.github.io/dap4-specification/DAP4.html[DAP4 protocol]. The DAP4 protocol is a mature data model that can handle broader data types and container types compared to DAP2. Moreover, out DAP4 Hyrax data server provides S3 support. We are working on improving this guide. The https://opendap.github.io/documentation/QuickStart.html[QuickStart Guide] contains broad but useful information about the two distinct DAP protocols.
+
 == What is OPeNDAP ==
 
 OPeNDAP provides a way for researchers to access scientific data
