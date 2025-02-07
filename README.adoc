@@ -55,14 +55,22 @@ access and manipulation layer of the Hyrax data server.
 
 == Notes about this repository
 
-=== Building CommonMark from AsciiDoc
+=== How to build the documentation
 
-Quick note about coverting to CommonMark Markdown from AsciiDoc.
+The documentation is built by Travis CI with every PR which executs `asciidoctor`. Travis converts the `.adoc` source files to `.html` and then pushes these to GitHub Pages where the 
+documentation is hosted.
 
-To convert to CM from adoc, use 'asciidoctor' and 'pandoc' like this:
+When proposing changes to the documentation, we recommend first test these by building the documentation on your local computer. To do that, you will need `asciidoctor` installed
+in your system.
 
-    asciidoctor -b docbook5 -o quick_start_hack QuickStart.adoc
-    pandoc -f docbook -t commonmark -o quick_start.cm quick_start_hack
+Say you are proposing changes to the `QuickStart.adoc`. On your computer then run the following command:
+
+```
+asciidoctor QuickStart.adoc
+```
+
+You can now inspect the build on your local machine by running on your terminal `open QuickStart.html`, or simply by pasting `file://<file_path>/QuickStart.html` onto any browser
+(`<file_path>` is the location of the `QuickStart.html` file on your filesystem. You can get this by running `pwd` in the same directory as your `QuickStart.html` file.)
 
 === About opendap.github.io/documentation/
 
