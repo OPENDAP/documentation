@@ -1,4 +1,3 @@
-
 = image:OPeNDAP-Logo-red.svg[width=350] Quick Start
 :Leonard Porrello <lporrel@gmail.com>:
 {docdate}
