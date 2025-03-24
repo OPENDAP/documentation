@@ -1,4 +1,4 @@
-= Data Access With _nccopy_
+= image:OPeNDAP-Logo-red.svg[width=350] Data Access With _nccopy_
 {docdate}
 :imagesdir: ../images
 :source-highlighter: rouge

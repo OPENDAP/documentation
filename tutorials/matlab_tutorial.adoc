@@ -1,4 +1,4 @@
-= Using Matlab with OPeNDAP
+= image:../../OPeNDAP-Logo-red.svg[width=350] Using Matlab with OPeNDAP
 {docdate}
 :imagesdir: ../images/tutorials/matlab_images
 :source-highlighter: rouge

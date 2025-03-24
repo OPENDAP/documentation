@@ -1,4 +1,4 @@
-= Tutorial Datasets
+= image:OPeNDAP-Logo-red.svg[width=350]Tutorial Datasets
 {docdate}
 :imagesdir: ../images
 :source-highlighter: rouge

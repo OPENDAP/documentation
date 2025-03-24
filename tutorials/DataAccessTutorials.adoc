@@ -1,6 +1,6 @@
 
-= OPeNDAP Data Access Client Tutorials
-
+= image:OPeNDAP-Logo-red.svg[width=350] Data Access Client Tutorials
+:imagesdir: ../images
 == Client Software Authentication
 Some data providers, most notably NASA, require data access requests be
 authenticated. This means you have to a user account with the institution and

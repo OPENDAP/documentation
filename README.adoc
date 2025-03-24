@@ -1,5 +1,6 @@
 
-= OPeNDAP AsciiDoc site
+= image:OPeNDAP-Logo-red.svg[width=350]  Documentation
+:imagesdir: ./images
 The most recent build of some of the OPeNDAP documentation.
 
 == Quick Start 

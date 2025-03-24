@@ -1,4 +1,4 @@
-= How to use EDL authorization tokens for data access.
+= image:OPeNDAP-Logo-red.svg[width=350]How to use EDL authorization tokens for data access.
 {docdatetime}
 :imagesdir: ../images
 :source-highlighter: rouge

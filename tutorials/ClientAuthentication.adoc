@@ -1,4 +1,4 @@
-= Authentication For DAP Clients
+= image:OPeNDAP-Logo-red.svg[width=350] Authentication For DAP Clients
 {docdatetime}
 :imagesdir: ../images
 :source-highlighter: rouge

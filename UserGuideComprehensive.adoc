@@ -1,6 +1,7 @@
-= User Guide - OPeNDAP Documentation
+= image:OPeNDAP-Logo-red.svg[width=350] User Guide
 :Leonard Porrello <lporrel@gmail.com>:
 {docdate}
+:imagesdir: ./images
 :numbered:
 :toc:
 
