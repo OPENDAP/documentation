@@ -17,7 +17,7 @@ OPeNDAP, Inc.
 [[top]]
 
 = OPeNDAP Lightweight Frontend Service (olfs)
-
+link:https://opendap.github.io/documentation/technical/olfs.html[*See the rendered olfs document here*].
 [[overview]]
 == Overview
 The OPeNDAP Lightweight Frontend Service (*_olfs_*) is the public/outward facing component of the Hyrax server.
