@@ -221,7 +221,7 @@ The servlet implementations subclass HttpServlet. The servlets implement the var
 - `BuildDmrppServlet.java` - This service can be used to have Hyrax create and reqturn a dmr++ document for a particular dataset. _It seems to be the case that this service has been "overwhelmed by events" (OBE) and might be retired_.
 
 * Package: *opendap.coreServlet*
-- `DispatchServlet.java` - This service is the core Hyrax service that uses a number of DispatchHanlder implementations to define it's core functionality.
+- `DispatchServlet.java` - This service is the primary Hyrax service and uses a number of DispatchHandler implementations to provide DAP, file access, and other services.
 - `DocServlet.java` - This service provides client access to the static documents held by the *_olfs_* such as image, css, and javascript files.
 
 * Package: *opendap.gateway*
@@ -238,10 +238,10 @@ The servlet implementations subclass HttpServlet. The servlets implement the var
 
 [[dispatch-handlers]]
 == Dispatch Handlers
-These classes implement the `opendap.coreSevlet.DispatchHandle` interface and are used by the `CoreServlet` to direct the client requests to the appropriate software for response.
+These classes implement the `opendap.coreSevlet.DispatchHandler` interface and are used by the `CoreServlet` to direct the client requests to the appropriate software for generation and transmission of the response.
 
 * Package: *opendap.bes*
-- `BesDapDispatcher.java` - This _DispatchHandler_ implementation provides the core DAP2 and DAP4 services for Hyrax, which includes data access services and the production of the HTML Data Request Forms. It does this by utilizing a collection of _Dap4Responder_ implementations. Each of which handles a very specific task, typically commanding the BES to produce a particular response.
+- `BesDapDispatcher.java` - This _DispatchHandler_ implementation provides the DAP2 and DAP4 services for Hyrax, which includes data access services and the production of the HTML Data Request Forms. It does this by utilizing a collection of _Dap4Responder_ implementations. Each of which handles a very specific task, typically commanding the BES to produce a particular response.
 - `BESThreddsDispatchHandler.java` - This DispatchHandler uses a combination of the BES `showNode`  interface, and a XSL transform file along with state information  to generate THREDDS client catalog responses and return them to the user.
 - `DirectoryDispatchHandler.java` - This DispatchHandler uses the BES `showNode`  interface, and a XSL transform file to produce the browser navigable "blue-bar" pages that express the data holdings of the service as a directed graph.
 - `FileDispatchHandler.java` - Used to transmit files from the BES to the user. If the source file is seen as a data file byt the BES this will be blocked unless specifically enabled in the _olfs.xml_ configuration file by uncommenting the `<AllowDirectDataSourceAccess />` element.
