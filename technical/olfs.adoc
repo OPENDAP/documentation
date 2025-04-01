@@ -74,7 +74,9 @@ One might ask: How does all this "claiming" work? _Through the magic of regular 
 Finally, the chosen responder will set the HTTP response headers appropriately (media types etc.) and then use the BesApi to build and issue a request to the target BES. This is done using a OPeNDAPClient object. The request is passed with the response output stream, and the OPeNDAPClient handles the transmission of the request and then the reception and retransmission of the BES response back to the client.
 
 ==== Service Conflation Issue
-_All this checking and "claiming" seems so involved._ Yes. Yes it is. And it's partially a byproduct of the conflation of services. If I were to design it again I would follow the lead os the THREDDS Data Server (TDS) and separate the services using a URL path prefix something like:
+_All this checking and "claiming" seems so involved._ Yes. Yes it is. And it's partially a byproduct of the conflation of services. If I were to design it again I would follow the example set by the THREDDS Data Server (TDS) and separate the services using a URL path prefix something like:
+
+(Where *_path_* is a resource_id in the BES)
 
 * _opendap/catalog/path_ - Would produce a browser navigable HTML catalog of the servers holdings.
 * _opendap/thredds/path_ - Would produce a machine-readable/traversable THREDDS client catalog (XML) of the servers holdings.
@@ -111,12 +113,12 @@ Hard to know if this even gets used in the real world, so I'm going to skip long
 
 [[resources]]
 == Resources
-In the project directory you can find the resources included with the *_olfs_* when it's packaged for deployment. The default resources are located in _olfs/resources/hyrax_ these include *_js_*, *_jsp_*, *_xml_*, *_jnlp_*, and *_xslt_* files.
+In the project directory you can find the resources included with the *_olfs_* when it's packaged for deployment. The default resources are located in _olfs/resources/hyrax_ these include *_js_*, *_jsp_*, *_xml_*, *_jnlp_*, *_xslt_*, and various *_xml_* files.
 
 Some of the directories within resource may or may not be in use, ymmv.
 
 === olfs/resources/hyrax/`xsl`
-A lot of the HTML produced by the server is built using the transforms found in this directory. I think that as of now that all the files are hooked up to code in the server, but I suspect some of the things that use the *_xslt_* files may not be used themselves.
+A lot of the HTML produced by the server is built using the transforms found in this directory. At this moment (04/01/25) I know that all the files are hooked up to code in the server, but I suspect some of the things that use the *_xslt_* files may not be used themselves.
 
 ==== Version
 * *_version.xsl_* - This is imported by nearly all the XSL transform docs, and is used inject Hyrax version. When the builds are run, the key string `@HyraxVersion@` is replaced with the Version string value.
