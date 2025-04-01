@@ -122,7 +122,7 @@ defined by that API to access the data, which is typically stored on the
 same host machine. Some APIs are somewhat more sophisticated than this, but their general operation is similar.
 
 .The Architecture of a Data Analysis Package
-image::./images/Unlinked.png[]
+image::Unlinked.png[align="center"]
 
 The operation of an OPeNDAP client is illustrated in the The Architecture of a Data Analysis Package Using OPeNDAP figure, shown below. Here, the _same program_ that was used in The Architecture of a Data Analysis Package
 figure (above) has been modified to use one of the OPeNDAP API libraries.
@@ -134,7 +134,7 @@ OPeNDAP version of that library.) This will create a program that
 accepts URLs as well as file pathnames to identify needed data. (See xref:OPeNDAP_Client[OPeNDAP Client] in this guide).
 
 .The Architecture of a Data Analysis Package Using OPeNDAP
-image::./images/Linked.png[]
+image::Linked.png[align="center"]
 
 OPeNDAP also provides data translation functionality. Data from the
 original data file is translated by the OPeNDAP server into the OPeNDAP
@@ -771,7 +771,7 @@ of the points in the grid, the precise location of each column and row
 must be described.
 
 .A Sample of an Irregular Grid of Data
-image::./images/Grid.png[]
+image::Grid.png[]
 
 The secondary vectors in the Grid data type provide a solution to this
 problem. Each member of these vectors associates a value for all the
@@ -1256,14 +1256,14 @@ resulting URL into another browser, or use one of the buttons on the
 form to download data.
 
 .OPeNDAP Server Data Access Form
-image::./images/Reynolds_ifh.png[]
+image::Reynolds_ifh.png[]
 
 If a server receives a URL that either ends in a slash (/) or
 contents.html, it returns a web page that looks like a standard web
 browser's directory view.
 
 .Sample Directory View
-image::./images/Test.oopendap.org_directory_view.png[]
+image::Test.oopendap.org_directory_view.png[]
 
 Each link in the directory view opens up the WWW service version of that
 data.
@@ -1740,7 +1740,7 @@ authorization-checking and responding to catalog and bot requests. It
 can also construct complex data requests from multiple requests from its
 parner server.
 
-image::./images/HyraxArchitecture.jpg[]
+image::HyraxArchitecture.jpg[]
 
 This "engine room" server, called the **B**ack **E**nd **S**erver (BES), does
 only one thing: it provides data. It is designed to do it fast. It handles
@@ -1996,12 +1996,12 @@ This quick demo just scratches the surface of what the inteface can do! And, of 
 Panoply plots geo-referenced and other arrays from http://www.unidata.ucar.edu/packages/netcdf/[netCDF], https://www.hdfgroup.org/[HDF], https://www.wmo.int/pages/prog/www/WMOCodes.html[GRIB], and other datasets. With Panoply 4 (and later) you can Explore remote OpenDAP catalogs and open datasets served from them. For example, if you click *File* > *Open* > *Open Remote Dataset* and then enter http://test.opendap.org/opendap/hyrax/data/nc/coads_climatology.nc you will see this:
 
 .An OPeNDAP Dataset Displayed in Panoply
-image::./images/Panoply.png[]
+image::Panoply.png[]
 
 If you then click, *SEA SURFACE TEMPERATURE*, you will see this:
 
 .Panoply Displaying OPeNDAP Data
-image::./images/Panoply_Graph.png[]
+image::Panoply_Graph.png[]
 
 NOTE: Using the URL for the root of a server, you can open a dataset catalog and examine the entire contents of the server.
 
