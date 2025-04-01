@@ -29,13 +29,13 @@ Among the most stable and widely used within the Python ecosystem are NetCDF and
 * Server-side and data-proximmate subsetting. OPeNDAP servers are highly specialized to subset the original dataset. With https://pydap.github.io/pydap/intro.html[PyDAP], a user can add constraint expressions to the URL, a powerful tool once you get familiarize with.
 
 
-Below are a combination of static and interactive resources. You can click the associated image image:https://static.mybinder.org/badge_logo.svg[fit=line] Binder badge to run the notebooks in your browser.
+Below are a combination of static and interactive resources. You can click the associated image image:badge_logo.svg[fit=line] Binder badge to run the notebooks in your browser.
 
 * PyDAP's https://pydap.github.io/pydap/intro.html[documentation] - Inside you will find static tutorials, mostly with DAP4 protocol. Some of the example include working with Constraint Expressions.
 	- https://pydap.github.io/pydap/notebooks/Authentication.html[Token-based Authentication] (necessary for example to access NASAEarth data).
 	- Tutorial workflows for accesing and plotting various NASA and Non-NASA data product (https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6], https://pydap.github.io/pydap/notebooks/ECCO.html[ECCOv4], https://pydap.github.io/pydap/notebooks/PACE.html[PACE] and https://pydap.github.io/pydap/notebooks/SWOT.html[SWOT]).
 
-* link:https://github.com/OPENDAP/ESIP2024/tree/main[Interactive jupyter notebooks] image:https://static.mybinder.org/badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/ESIP2024/main"], showing similar workflows with PyDAP as that of its official documentation. The DAP2 example is that when working with https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6] data. 
+* link:https://github.com/OPENDAP/ESIP2024/tree/main[Interactive jupyter notebooks] image:badge_logo.svg[fit=line, link="https://mybinder.org/v2/gh/OPENDAP/ESIP2024/main"], showing similar workflows with PyDAP as that of its official documentation. The DAP2 example is that when working with https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6] data.
 	- *Requirements*: https://urs.earthdata.nasa.gov/home[EDL] account, and create a token for authentication.
 	- *NOTE*: https://github.com/OPENDAP/ESIP2024/blob/main/binder/GetStarted.ipynb[GetStarted.ipynb] notebook should be executed first as it creates local file with https://urs.earthdata.nasa.gov/home[EDL] credentials needed to access data in the all other notebooks.
 
@@ -43,13 +43,13 @@ Below are a combination of static and interactive resources. You can click the a
 Older python resource:
 
 *  link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/1.netcdf_tutorial.ipynb[NetCDF-python w/DAP4]
-image:https://colab.research.google.com/assets/colab-badge.svg[fit=line, link="https://colab.research.google.com/github/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/1.netcdf_tutorial.ipynb"] -
+image:colab-badge.svg[fit=line, link="https://colab.research.google.com/github/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/1.netcdf_tutorial.ipynb"] -
 An iPython notebook tutorial for remote data access using NetCDF Python. When
 NetCDF is used to access a remote dataset it does so by making DAP4 queries
 to the remote service.
 
 *  link:https://github.com/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/2.xarray_netcdf_tutorial.ipynb[Xarray and netCDF4 w/DAP4]
-image:https://colab.research.google.com/assets/colab-badge.svg[fit=line, link="https://colab.research.google.com/github/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/2.xarray_netcdf_tutorial.ipynb"] -
+image:colab-badge.svg[fit=line, link="https://colab.research.google.com/github/OPENDAP/NASA-tutorials/blob/main/tutorials/colab/2.xarray_netcdf_tutorial.ipynb"] -
 An iPython notebook tutorial for remote data access using Xarray.
 
 
