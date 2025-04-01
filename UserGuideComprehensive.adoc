@@ -122,7 +122,7 @@ defined by that API to access the data, which is typically stored on the
 same host machine. Some APIs are somewhat more sophisticated than this, but their general operation is similar.
 
 .The Architecture of a Data Analysis Package
-image::Unlinked.png[align="center"]
+image::Unlinked.jpg[align="center"]
 
 The operation of an OPeNDAP client is illustrated in the The Architecture of a Data Analysis Package Using OPeNDAP figure, shown below. Here, the _same program_ that was used in The Architecture of a Data Analysis Package
 figure (above) has been modified to use one of the OPeNDAP API libraries.
@@ -134,7 +134,7 @@ OPeNDAP version of that library.) This will create a program that
 accepts URLs as well as file pathnames to identify needed data. (See xref:OPeNDAP_Client[OPeNDAP Client] in this guide).
 
 .The Architecture of a Data Analysis Package Using OPeNDAP
-image::Linked.png[align="center"]
+image::Linked.jpg[align="center"]
 
 OPeNDAP also provides data translation functionality. Data from the
 original data file is translated by the OPeNDAP server into the OPeNDAP
