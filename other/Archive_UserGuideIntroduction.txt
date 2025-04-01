@@ -113,7 +113,7 @@ defined by that API to access the data, which is typically stored on the
 same host machine. Some APIs are somewhat more sophisticated than this,
 of course, but their general operation is as simple.
 
-../index.php/File:Unlinked.png[image:../images/7/76/Unlinked.png[actual
+../index.php/File:Unlinked.jpg[image:../images/7/76/Unlinked.jpg[actual
 size]]
 
 The Architecture of a Data Analysis Package
@@ -133,7 +133,7 @@ OPeNDAP version of that library.) This will create a program that
 accepts URLs as well as file pathnames to identify data to be read. (See
 link:../index.php/UserGuideClient[the OPeNDAP Client]).
 
-../index.php/File:Linked.png[image:../images/8/87/Linked.png[actual
+../index.php/File:Linked.jpg[image:../images/8/87/Linked.jpg[actual
 size]]
 
 The Architecture of a Data Analysis Package Using OPeNDAP
