@@ -121,10 +121,12 @@ Some of the directories within resource may or may not be in use, ymmv.
 A lot of the HTML produced by the server is built using the transforms found in this directory. At this moment (04/01/25) I know that all the files are hooked up to code in the server, but I suspect some of the things that use the *_xslt_* files may not be used themselves.
 
 ==== Version
-* *_version.xsl_* - This is imported by nearly all the XSL transform docs, and is used inject Hyrax version. When the builds are run, the key string `@HyraxVersion@` is replaced with the Version string value.
+* *_version.xsl_* - This is imported by nearly all the XSL transform docs, and is used to inject the Hyrax version string. When the builds are run, the key string `@HyraxVersion@` is replaced with the Version string value.
 
 
 ==== IFH Production
+The IFH pages creation
+
 * *_dap2ifh.xsl_* - Builds the DAP2 Data Request Form response from a DMR and passed parameters from the OLFS
 * *_dap4ifh.xsl_* - Builds the DAP4 Data Request Form response from a DMR and passed parameters from the OLFS
 
@@ -430,6 +432,19 @@ This allows non-authenticated users to look around , and when something bad happ
 * *_RemotePDP_* - Defines a policy decision point somewhere on the internet. With a remote PDP the server sends the uid,
 authContext, url path, query , and http verb (GET, POST, etc.) and the remote PDP responds with permitted or not permitted.
 * *_SimplePDP_* - _"Simple is often better"_ - Ned Greene 1984 This is the policy decision point that we use. It is locally hostsed and configured.
+
+== The IFH
+Here's a simple picture that shows how the DAP4 IFGH is produced. The DAP2 IFH production process is nearly identical, but deprecated.
+
+image:technical/olfs.jpg[width=640]
+
+What this picture does not capture is the hot mess inside the *_dap4ifh.xsl_* operation. The XSL takes the DMR and builds a javascript program that enables the form page to operate. On of the tasks is to create javascript variable names for the things in the DMR that can be selected, namely variables. And subset, like Arrays (and soon Dimensions). There are known issues with the current approach. One issue is the XSL seeks to use the actual variable names in the DMR as the javascript variable names, and that's a problem because the allowed characters in javascript variable names encompass just a small subset of the allowed characters in a DAP4 Variable | Attribute | Dimension name. For example, a variable name containing a space character is allowable in DAP4, but it will break this code because the space isn't allowed in javascript variable names. This is a legacy approach that needs to be refactored so that the DMR variable names are available for display purposes, but under the hood the associated javascript variable name "safe". Personally I would like to keep some form of the original name just because reading the resulting code in the Form response is hard enough without anonymizing the variable names!
+
+=== Constraint Issues
+There are problems with the way the form builds dap4 constraint expressions.
+
+* *Special characters* - When characters like the space character occur in a variable name, that name must be surrounded by double quotes in the dap4 constraint. The form needs to detect these characters and double quote these names as needed. https://opendap.github.io/dap4-specification/DAP4.html#_fully_qualified_names[What's that?] https://opendap.github.io/dap4-specification/DAP4.html#_constraints[A list?] You want List?
+* *Dimension based subsetting* - The currently requires that the user provide a subsetting expression for every variable, even if they are linked by shared Dimensions. The form should allow subsetting by Dimension: The user creates a subset expression for just the dimensions and then all the selected variables are subset based on the dimensions subset. This would be and advanced IFH assignment.
 
 [[testing]]
 == Testing
