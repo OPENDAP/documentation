@@ -445,6 +445,7 @@ There are problems with the way the form builds dap4 constraint expressions.
 
 * *https://bugs.earthdata.nasa.gov/browse/HYRAX-1070[Special characters]* - When characters like the space character occur in a variable name, that name must be surrounded by double quotes in the dap4 constraint. The form needs to detect these characters and double quote these names as needed. https://opendap.github.io/dap4-specification/DAP4.html#_fully_qualified_names[What's that?] https://opendap.github.io/dap4-specification/DAP4.html#_constraints[A list?] You want List?
 * *Dimension based subsetting* - The IFH currently requires that the user provide a subsetting expression for every variable, even if the variables have common shared Dimensions. The form should allow subsetting by Dimension: The user creates a subset expression for just the Dimensions and then all the selected variables are subset based on the Dimension subsets. This would be and advanced IFH assignment.
+* https://bugs.earthdata.nasa.gov/browse/HYRAX-461[Subset expressions should be simplified] - If the user selects an array and the subset expression in the form is asking for every element, then the array index subset expression should be elided from the constraint expression.
 
 [[testing]]
 == Testing
