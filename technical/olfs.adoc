@@ -434,7 +434,7 @@ authContext, url path, query , and http verb (GET, POST, etc.) and the remote PD
 * *_SimplePDP_* - _"Simple is often better"_ - Ned Greene 1984 This is the policy decision point that we use. It is locally hostsed and configured.
 
 == The IFH
-Here's a simple picture that shows how the DAP4 IFGH is produced. The DAP2 IFH production process is nearly identical, but deprecated.
+Here's a simple picture that shows how the DAP4 IFH is produced. The DAP2 IFH production process is nearly identical, but deprecated.
 
 image:technical/olfs.jpg[width=640]
 
