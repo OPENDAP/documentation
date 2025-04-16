@@ -1,5 +1,8 @@
-Configuration of BES Modules - OPeNDAP Documentation
-====================================================
+= Configuration of BES Modules
+:icons: font
+OPeNDAP
+
+{docdate}
 
 [[firstHeading]]
 Configuration of BES Modules
@@ -67,8 +70,8 @@ Hack the module's Makefile.am so that CPPFLAGS and LIBADD reference the
 correct places given that the code will build w/o bes first being
 installed
 
-code,de1---------------------------------------------------------------------------
-code,de1
+[source,make]
+----
 if DAP_MODULES
 AM_CPPFLAGS = -I$(top_srcdir)/dispatch -I$(top_srcdir)/dap $(DAP_CFLAGS)
 LIBADD = $(DAP_SERVER_LIBS) $(DAP_CLIENT_LIBS)
@@ -76,15 +79,15 @@ else
 AM_CPPFLAGS = $(BES_CPPFLAGS) # or wahtever was set here or in ..._CPPFLAGS
 LIBADD = $(BES_DAP_LIBS)      # and ..._LIBADD
 endif
----------------------------------------------------------------------------
+----
 
 then
 
-code,de1------------------------------------------------------------------------------
-code,de1
+[source,make]
+----
 # comment this out to force use of AM_CPPFLAGS libcsv_module_la_CPPFLAGS = ...
 libcsv_module_la_LIBADD = $(LIBADD)
-------------------------------------------------------------------------------
+----
 
 For unit-test code you may need to add some of the bes code to the link
 line. To do that, use the makefile variables:
@@ -98,12 +101,11 @@ where you almost certainly want to use $BES_DISPATCH_LIB $BES_EXTRA_LIBS
 
 Look for a line like
 
-code,de1-------------------------------------------------------------
-code,de1
+[source,make]
+----
 xml_data_handler.conf: xml_data_handler.conf.in config.status
--------------------------------------------------------------
-
-and add _$(top_srcdir)/_ in front of _config.status_
+----
+and add `$(top_srcdir)/` in front of `config.status`
 
 If the module uses _besstandalone,_ add _bes.conf.modules.in_ to the
 EXTRA_DIST variable in the _Makefile.am._
@@ -111,7 +113,7 @@ EXTRA_DIST variable in the _Makefile.am._
 3 Changes to the module's _configure.ac_
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add "AM_CONDITIONAL([DAP_MODULES], [false])" to the modules configure.ac
+Add `AM_CONDITIONAL([DAP_MODULES], [false])` to the modules configure.ac
 
 If the module uses autotest to run a set of regression tests using
 _besstandalone,_ add generation of _bes.conf_ from _bes.conf.in._ You'll
@@ -121,22 +123,22 @@ this page.
 4 Additions to the module's files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add __bes.conf.modules.in__. The key parts of this file that are
+Add _bes.conf.modules.in_. The key parts of this file that are
 different from the existing _bes.conf.in_ are:
 
-code,de1----------------------------------------------------------------------------
-code,de1
+[source,make]
+----
 BES.modules=dap,cmd,csv
 BES.module.dap=@abs_top_builddir@/dap/.libs/libdap_module.so
 BES.module.cmd=@abs_top_builddir@/xmlcommand/.libs/libdap_xml_module.so
 BES.module.csv=@abs_top_builddir@/modules/csv_handler/.libs/libcsv_module.so
- 
+
 BES.Catalog.catalog.RootDirectory=@abs_top_srcdir@/modules/csv_handler
 BES.Data.RootDirectory=/dev/null
-----------------------------------------------------------------------------
+----
 
 Note how the BES libraries are referenced
-(__@abs_top_builddir@/dap/.libs/...__ ...) and how the
+(_@abs_top_builddir@/dap/.libs/..._ ...) and how the
 _BES.Catalog.catalog.RootDirectory_ is specified.
 
 Add a _.gitignore_
@@ -148,20 +150,20 @@ Make sure to add the _bes.conf.modules.in_ file to git.
 
 Add files to be build by BES' configure:
 
-code,de1--------------------------------------------------------------------------------------------------------------------
-code,de1
-    AC_CONFIG_FILES([
-    ...
-    modules/dap-server/Makefile
-    modules/dap-server/asciival/Makefile
-    modules/dap-server/asciival/unit-tests/Makefile
-    modules/dap-server/asciival/unit-tests/test_config.h
-    modules/dap-server/www-interface/Makefile
- 
-    modules/dap-server/bes-testsuite/bes.conf:modules/dap-server/bes-testsuite/bes.conf.modules.in    ...])
- 
-    AC_CONFIG_FILES([modules/dap-server/www-interface/js2h.pl], [chmod +x modules/dap-server/www-interface/js2h.pl])
---------------------------------------------------------------------------------------------------------------------
+[source,configure]
+-----
+AC_CONFIG_FILES([
+...
+modules/dap-server/Makefile
+modules/dap-server/asciival/Makefile
+modules/dap-server/asciival/unit-tests/Makefile
+modules/dap-server/asciival/unit-tests/test_config.h
+modules/dap-server/www-interface/Makefile
+
+modules/dap-server/bes-testsuite/bes.conf:modules/dap-server/bes-testsuite/bes.conf.modules.in    ...])
+
+AC_CONFIG_FILES([modules/dap-server/www-interface/js2h.pl], [chmod +x modules/dap-server/www-interface/js2h.pl])
+-----
 
 using the trusty cut and paste and prefixing them all with _modules/<dir
 name>._ Put that in the the AM_COND_IF that's at the _configure.ac_
@@ -192,16 +194,16 @@ _modules/Makefile.am_ as a subdir.
 
 double check the _.gitignore_ file and that you have _git add_ the
 _bes.conf.modules.in_ file::
-  git status
+  `git status`
 commit changes to the local repo::
-  git commit -a
+  `git commit -a`
 push those local changes to the remote repo and set this new branch to
 be the one the code tracks::
-  git push --set-upstream origin modules
+  ``g``it push --set-upstream origin modules`
 check the bes and commit there::
-  git commit -a
+  `git commit -a`
 and push those changes (the upstream repo was already set)::
-  git push
+  `git push`
 
 8 Git Hacks
 ~~~~~~~~~~~
@@ -209,11 +211,11 @@ and push those changes (the upstream repo was already set)::
 To manage an empty dir in git, put a .gitignore file in it that ignores
 everything except itself:
 
-code,de1---------------------------------------------------------------------
-code,de1
+[source,git]
+----
 # Ignore everything in this directory; this hack enables git to track
 # and fetch, etc., an otherwise empty directory.
 *
 # Except this file
 !.gitignore
----------------------------------------------------------------------
+----
