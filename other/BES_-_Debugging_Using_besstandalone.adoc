@@ -63,26 +63,31 @@ so files developed for one can be used with the other.
 A sample command file that asks the BES for a DDS response (from
 $prefix/src/modules/hdf4_handler/bes-testsuite):
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <request reqID="some_unique_value" >
-        <setContext name="dap_format">dap2</setContext>
-        <setContainer name="data" space="catalog">/data/1990-S1700101.HDF.gz</setContainer>
-        <define name="d">
-        <container name="data" />
-        </define>
-        <get type="dds" definition="d" />
-    </request>
-
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<request reqID="some_unique_value" >
+    <setContext name="dap_format">dap2</setContext>
+    <setContainer name="data" space="catalog">/data/1990-S1700101.HDF.gz</setContainer>
+    <define name="d">
+    <container name="data" />
+    </define>
+    <get type="dds" definition="d" />
+</request>
+----
 Here's how to run these commands using the server and __bescmdln__:
+[source,sh]
+----
+besctl start
 
-    besctl start
-
-    bescmdln -h localhost -p 10022 -i 1990-S1700101.HDF.dds.bescmd
+bescmdln -h localhost -p 10022 -i 1990-S1700101.HDF.dds.bescmd
+----
 
 Here's the version using besstandalone:
-
-    besstandalone -c bes.conf -i 1990-S1700101.HDF.dds.bescmd
-
+[source,sh]
+----
+besstandalone -c bes.conf -i 1990-S1700101.HDF.dds.bescmd
+----
 Note that if you try this you will see that most of the regression tests
 use bes command files that reference local data and the paths are a bit
 different than when those same data sets are installed in a running
@@ -99,15 +104,18 @@ access using besstandalone (there are other ways too, see the
 link:../index.php/Hyrax_Admin_Interface[Hyrax Admin Interface]). Here's
 an example of instrumentation:
 
-    void
-    HDF4Module::initialize(const string & modname)
-    {
-        BESDEBUG("h4", "Initializing HDF4 module " << modname << endl) ;
-     
-        BESRequestHandler *handler = new HDF4RequestHandler(modname);
-        BESRequestHandlerList::TheList()->add_handler(modname, handler);
-     
-        ...
+[source,c++]
+----
+void
+HDF4Module::initialize(const string & modname)
+{
+    BESDEBUG("h4", "Initializing HDF4 module " << modname << endl) ;
+
+    BESRequestHandler *handler = new HDF4RequestHandler(modname);
+    BESRequestHandlerList::TheList()->add_handler(modname, handler);
+
+    ...
+----
 
 The instrumentation macro is __BESDEBUG__. To 'turn on' this and see the
 output, start _besstandalone_ using the _-d_ option. When you specify
@@ -116,9 +124,10 @@ output sink for the debugging information and one or more 'selector
 names'. An example will make things clearer. To see the output from the
 above BESDEBUG call, you would pass this option to besstandalone: _-d
 "cerr,h4"_. Here's how you would run it:
-
-    besstandalone -d "cerr,h4" -c bes.conf -i 1990-S1700101.HDF.dds.bescmd
-
+[source,sh]
+----
+besstandalone -d "cerr,h4" -c bes.conf -i 1990-S1700101.HDF.dds.bescmd
+----
 Of course, _cerr_ is C++'s standard error output sink; you can use
 _cout_ or the name of a file instead. Also, you can list a number of
 selectors, so your handler may have separate BESDEBUG calls for
@@ -137,18 +146,21 @@ object returned by the bes so that the data values are rendered as ASCII
 that looks like.
 
 Given:
-
-    <?xml version="1.0" encoding="UTF-8"?>
-    <request reqID="some_unique_value" >
-        <setContext name="dap_format">dap2</setContext>
-        <setContainer name="data" space="catalog">/data/foo2.hdf.gz</setContainer>
-        <define name="d">
-        <container name="data" />
-        </define>
-        <get type="dods" definition="d" />
-    </request>
-
-    besstandalone -d "cerr,h4" -c bes.conf -i foo2.hdf.data.bescmd | getdap -M -
-
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<request reqID="some_unique_value" >
+    <setContext name="dap_format">dap2</setContext>
+    <setContainer name="data" space="catalog">/data/foo2.hdf.gz</setContainer>
+    <define name="d">
+    <container name="data" />
+    </define>
+    <get type="dods" definition="d" />
+</request>
+----
+[source,sh]
+----
+besstandalone -d "cerr,h4" -c bes.conf -i foo2.hdf.data.bescmd | getdap -M -
+----
 Where the option _-M_ tells getdap to strip off any MIME headers in the
 response and the dash tells it to read from stdin.
