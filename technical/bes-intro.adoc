@@ -1,0 +1,64 @@
+= BES Introduction
+:James Gallagher <jgallagher@opendap.org>:
+{docdate}
+:icons: font
+:imagesdir: ../images/bes-technical
+:numbered:
+:toc:
+
+== Introduction
+This document describes the Back End Server (BES) that is used by Hyrax to
+read data, build response, perform data subsetting operations and run small
+compute tasks that are proximate to data. The BES makes up the lower two tiers
+of the Hyrax data server.
+
+The BES software was initially designed and written at the High Altitude Observatory
+(HAO) of the University Corporation for Atmosphere Research (UCAR) in the early
+2000s by Jose Garcia, Patrick West, and Peter Fox.
+
+.The Hyrax Data Server Architecture
+[#img-hyrax-arch]
+image::Hyrax-Architecture.png["Hyrax Architecture"]
+
+The BES Framework and modules shown in <<img-hyrax-arch>> are the subject of this
+document. The _Module_ components of the BES are where the data- and response-specific
+behavior of the BES are encoded. The _Framework_ is the orchestration engine of the
+BES. It interprets a command from the OLFS, plans how to build the requested response
+from the named data and how data are passed from one module to another.
+
+In a broad sense, there are two kinds of modules: those that read from a data source
+(called a _BESContainer_) and those that build responses. The BES natively supports
+the OPeNDAP _DAP2_ and _DAP4_ data protocols as well as an extensible set of file
+formats that includes NetCDF3 and 4, JPEG2000, GeoTiff, ASCII/CSV and XML. Modules
+can not only read from files on a POSIX file system, but they can read from SQL databases,
+S3 and similar Web Object Stores (WOS) and other kinds of remote servers.
+
+.BES Framework Overview
+[#img-bes-class]
+image::BES-Framework-Classes.png[BES Class OVerview]
+
+More detail of the BES Framework is shown in <<img-bes-class>>.
+
+.BES Classes used for Command Processing
+[#img-bes-classes]
+image::BES-Classes-ATM.png[BES Command Processing]
+
+== BES Containers and Container Storage
+The BES using the abstraction of _Containers_ that hold data to enable all the BES modules
+that read data to work with all the different kinds of data stores (files, S3, etc.) the BES
+is configured to use. To understand the flow of control the the BES Framework manages,
+it is important to understand how instances of BESContainer are used to abstract different
+types of data.
+
+=== The components
+. A module (a concrete instance of the BESAbstractModule class)
+. A container object (a concrete instance of BESContainer)
+. A container storage object (a specialization of BESContainerStorageVolatile)
+. BES configuration parameters, usually in a `.conf` test file
+. An XML command document that includes a `<container name="..." space="...">` element
+
+
+
+
+
+
