@@ -1,17 +1,15 @@
-= BES Aggregation - OPeNDAP Documentation
-:icons: font
-OPeNDAP
-
+= BES Aggregation
+:James Gallagher <jgallagher@opendap.org>:
 {docdate}
-
+:icons: font
+:numbered:
+:toc:
 
 [[firstHeading]]
 BES Aggregation
 ---------------
 
-From OPeNDAP Documentation
-
-:NOTE:
+[NOTE]
 This document describes a feature of the Back End Server (BES) that
 is not currently completely supported. With some effort, it could be
 made more complete. Because multi-container response procesing is only
@@ -135,7 +133,7 @@ For example:
 Typically, the name of the aggregation engine is the same as the name of
 your module. In this example, modname would be "someHandler".
 
-4 Writing your `aggregate` method
+4 Writing your _aggregate_ method
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The aggregate method is the only method that you need to implement. This
