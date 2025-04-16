@@ -1,11 +1,22 @@
-BES Aggregation - OPeNDAP Documentation
-=======================================
+= BES Aggregation - OPeNDAP Documentation
+:icons: font
+OPeNDAP
+
+{docdate}
+
 
 [[firstHeading]]
 BES Aggregation
 ---------------
 
 From OPeNDAP Documentation
+
+:NOTE:
+This document describes a feature of the Back End Server (BES) that
+is not currently completely supported. With some effort, it could be
+made more complete. Because multi-container response procesing is only
+supported for DAP2, the featrue works only for DAP2 responses
+amd nod for DAP4.
 
 By default there are no aggregation engines installed with the BES. But
 there is a mechanism to register your own aggregation engine. This page
@@ -31,7 +42,7 @@ definition using those containers adding constraints and specifying an
 aggregation engine to use and an aggregation command, and then a get
 command to grab the containers, constrain them, and then aggregate. The
 command would look something like this:
-
+[source,xml]
 ----------------------------------------------------------------------------
 <?xml version="1.0" encoding="UTF-8"?>
 <request reqID="some_unique_value" >
@@ -40,16 +51,16 @@ command would look something like this:
     <setContainer name="c3" space="catalog">/data/nc/fnoc3.nc</setContainer>
     <setContainer name="c4" space="catalog">/data/nc/fnoc4.nc</setContainer>
     <define name="d">
-    <container name="c1">
+        <container name="c1">
             <constraint>u</constraint>
         </container>
-    <container name="c2">
+        <container name="c2">
             <constraint>u</constraint>
         </container>
-    <container name="c3">
+        <container name="c3">
             <constraint>u</constraint>
         </container>
-    <container name="c4">
+        <container name="c4">
             <constraint>u</constraint>
         </container>
         <aggregate handler="someHandler" cmd="someCommand" />
@@ -70,16 +81,15 @@ no requirements for the command.
 The first step is to create an aggregation class that inherits from
 BESAggregationServer. The minimum that must be defined in this new class
 is the following:
-
+[source,c++]
 -------------------------------------------------------------------------
-class MyAggregationServer : public BESAggregationServer
+class MyAggregationServer: public BESAggregationServer
 {
 public:
-                       MyAggregationServer( string handler_name )
-                              : BESAggregationServer( handler_name ) {} ;
-    virtual            ~MyAggregationServer() {} ;
+    MyAggregationServer( string handler_name ) : BESAggregationServer( handler_name ) {};
+    virtual ~MyAggregationServer() {};
 
-    virtual void       aggregate( BESDataHandlerInterface &dhi ) ;
+    virtual void aggregate( BESDataHandlerInterface &dhi );
 
     static BESAggregationServer *AggBuilder( string handler_name );
 };
@@ -90,13 +100,13 @@ request comes in to aggregate, the BES takes that name and looks up a
 function in the aggregation factory with that name (someHandler) and
 calls that function. That function will return a new instance of
 BESAggregationServer. The function called will be AggBuilder. The
-function AggBuilder would look something liket his:
-
+function AggBuilder would look something liket this:
+[source,c++]
 ------------------------------------------------------
 BESAggregationServer *
 MyAggregationServer::AggBuilder( string handler_name )
 {
-    return new MyAggregationServer( handler_name ) ;
+    return new MyAggregationServer( handler_name );
 }
 ------------------------------------------------------
 
@@ -116,10 +126,10 @@ BESAggFactory. This should be done in your Module class' initialize
 method.
 
 For example:
-
+[source,c++]
 ------------------------------------------------------------------------------------------
     BESDEBUG( "mydebug", "    adding " << modname << " aggregation" << endl )
-    BESAggFactory::TheFactory()->add_handler( modname, MyAggregationServer::AggBuilder ) ;
+    BESAggFactory::TheFactory()->add_handler( modname, MyAggregationServer::AggBuilder );
 ------------------------------------------------------------------------------------------
 
 Typically, the name of the aggregation engine is the same as the name of
@@ -133,34 +143,35 @@ is the method that gets called to aggregate the resulting DataDDS
 object. The DataDDS object is stored in the BESDataHandlerInterface
 instance passed to your method. Here is an example of getting the
 DataDDS out of the BESDataHandlerInterface.
-
+[source,c++]
 -------------------------------------------------------------------------------
 void
 NCESGAggregationServer::aggregate( BESDataHandlerInterface &dhi )
 {
-    if( dhi.action == "das" )
+    if ( dhi.action == "das" )
     {
-        string err = "DAS is not a valid request type in aggregated datasets" ;
-        throw BESInternalError( err, __FILE__, __LINE__ ) ;
+        string err = "DAS is not a valid request type in aggregated datasets";
+        throw BESInternalError( err, __FILE__, __LINE__ );
     }
 
-    BESResponseObject *resp = dhi.response_handler->get_response_object() ;
-    BESDataDDSResponse *bdds = dynamic_cast<BESDataDDSResponse *>(resp) ;
-    if( !bdds )
+    BESResponseObject *resp = dhi.response_handler->get_response_object();
+    BESDataDDSResponse *bdds = dynamic_cast<BESDataDDSResponse *>(resp);
+    if ( !bdds )
     {
-        string err = "response object is not a DataDDS" ;
-        throw BESInternalError( err, __FILE__, __LINE__ ) ;
+        string err = "response object is not a DataDDS";
+        throw BESInternalError( err, __FILE__, __LINE__ );
     }
-    DataDDS *dds = bdds->get_dds() ;
-    if( !dds )
+    DataDDS *dds = bdds->get_dds();
+    if ( !dds )
     {
-        string err = "dap response object is not a DataDDS" ;
-        throw BESInternalError( err, __FILE__, __LINE__ ) ;
+        string err = "dap response object is not a DataDDS";
+        throw BESInternalError( err, __FILE__, __LINE__ );
     }
 
-    ....
+    ...
     your code here
-    .....
+    ...
+}
 -------------------------------------------------------------------------------
 
 Once you have the DataDDS you have all of the data that has been read in
@@ -169,7 +180,7 @@ the following manner. For each of the containers defined in the BES
 request (in our example, c1, c2, c3, and c4) there will be a structure
 containing the data for that container. So, in our example, you would
 have:
-
+[source,c++]
 -------------------------------------------------
 Dataset {
     Structure {
@@ -190,14 +201,14 @@ Dataset {
 The result of your aggregation will be a new DataDDS object that will
 take the place of the one you got out. The end of your function might
 look something like this:
-
+[source,c++]
 ----------------------------------------------------------------------
-    ....
+    ...
     your code here
     ...
-    BESDataDDSResponse *my_bdata = new BESDataDDSResponse( my_data ) ;
-    dhi.response_handler->set_response_object( my_bdata ) ;
-    delete bdds ;
+    BESDataDDSResponse *my_bdata = new BESDataDDSResponse( my_data );
+    dhi.response_handler->set_response_object( my_bdata );
+    delete bdds;
 }
 ----------------------------------------------------------------------
 

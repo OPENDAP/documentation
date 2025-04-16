@@ -1,5 +1,8 @@
-BES - Debugging Using besstandalone - OPeNDAP Documentation
-===========================================================
+= BES - Debugging Using besstandalone
+:icons: font
+OPeNDAP
+
+{docdate}
 
 [[firstHeading]]
 BES - Debugging Using besstandalone
