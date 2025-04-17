@@ -1,10 +1,17 @@
 = BES Introduction
 :James Gallagher <jgallagher@opendap.org>:
 {docdate}
-:icons: font
-:imagesdir: ../images/bes-technical
 :numbered:
+:docinfo: shared
+:icons: font
+:tabsize: 4
+:indent: 4
+:doctype: book
+:imagesdir: ../images/bes-technical
 :toc:
+:xrefstyle: short
+:homepage: www.opendap.org
+[[top]]
 
 == Introduction
 This document describes the Back End Server (BES) that is used by Hyrax to
@@ -18,7 +25,7 @@ The BES software was initially designed and written at the High Altitude Observa
 
 .The Hyrax Data Server Architecture
 [#img-hyrax-arch]
-image::Hyrax-Architecture.png["Hyrax Architecture"]
+image::Hyrax-Architecture.svg["Hyrax Architecture"]
 
 The BES Framework and modules shown in <<img-hyrax-arch>> are the subject of this
 document. The _Module_ components of the BES are where the data- and response-specific
@@ -35,13 +42,124 @@ S3 and similar Web Object Stores (WOS) and other kinds of remote servers.
 
 .BES Framework Overview
 [#img-bes-class]
-image::BES-Framework-Classes.png[BES Class OVerview]
+image::BES-Framework-Classes.svg[BES Class OVerview]
 
 More detail of the BES Framework is shown in <<img-bes-class>>.
 
 .BES Classes used for Command Processing
 [#img-bes-classes]
-image::BES-Classes-ATM.png[BES Command Processing]
+image::BES-Classes-ATM.svg[BES Command Processing]
+
+== BES Modules and Component Assembly
+A module is an instance of BESAbstractModule is linked as a run-time loadable module. For example,
+<<#img-nc-module>> shows how the `NCModule` class inherits from the BESAbstractModule class. The
+NCModule is the base of the module that reads data from the netCDF3 and 4 files,
+see <<src-nc-module>>.
+
+.The NCModule Class
+[#img-nc-module]
+image::classNCModule__coll__graph.png[NCModule collaboration diagram]
+
+The code in the implementation of, e.g., NCModule is used by the BES daemon to initialize
+the model at startup. Each specialization of BESAbstractModule should define `initialize()`
+and `terminate()`. The initialize() method is used when the module is first loaded. It performs
+all the startup actions the module needs. In <<src-nc-module>> the initialize() method makes
+some objects and passes those to methods that will add them to BES List (see Section
+<<sec-bes-lists>>) classes. The classes
+and the Lists are not important right now - just know that when a module is loaded, the
+initialize() method is run.
+
+When the daemon shuts down, each Module is 'unloaded' and its terminate() method is run. That is
+not shown in the listing, but you can find it in the GitHub repo _OPENDAP/bes_ or in the
+https://opendap.github.io/bes/html/classes.html[online reference documentation].
+
+=== How Modules are Loaded
+In the BES daemon, a _master listener_ is started, the configuration files are read, the BES Keys
+(our name for the configuration parameters) are parsed, and all of the modules are loaded.
+The details of the server startup operations are discussed in Section <<sec-startup>>, BES Startup.
+
+One detail you will need to know, common to all modules, is that an extern C function named `maker()`
+must be included. This function is used when the module is loaded to make an instance of the Module
+class. Once the instance is made, a pointer to the module is stored in an instance of BESModuleApp.
+The BESModuleApp also contains the `loadModules()` method that runs each module's initialize()
+method.
+
+=== What You Need to Know About Modules
+The process of loading and unloading modules is interesting, but it is performed by parts of the
+BES framework that are rarely modified. You need to know that the initialize() and terminate()
+methods and the maker() _virtual constructor_ must be included in a Module implementation.
+
+In addition to the code of the module, the correct entries in the BES Keys must be made. To be
+loaded, a module must have two BES keys set correctly. The first is that the name of the module
+must be included in the comma separated list of names set to the `BES.modules` key. The module
+can have any name (assuming valid syntax) so long as it is not already in use. There is one
+Key called BES.Modules for the entire BES. See <<src-mod-keys>>.
+
+The second BES Key is formed using the module name as a suffix to `BES.module`. The value of
+this key is full path to the shared object file that holds the module software and that will
+be loaded by the BESModuleApp using the unix/Linux `dload()` system call.
+
+In the example <<src-mod-keys>>, the module name is `nc` so the BES Key that holds the path
+of the shared object files is `BES.module.nc`. The one key that lists all the modules is
+`BES.modules` (plural) while the key that unique
+for each module is `BES.module.<mod name>` (singular).
+
+[NOTE]
+In the <<src-nc-module>> example, the `modname` parameter passed to initialize() is the module
+name set in the BES Keys BES.modules and BES.module.<mod name>. It is important to be consistent
+with this name since it is literally the text string that forms the association between various
+parts of the module components. Follow the convention of always using that name in the calls
+shown in the example.
+
+.Example BES Keys for a Module
+[#src-mod-keys]
+[source,sh]
+----
+BES.modules += nc
+BES.module.nc = /Users/jimg/src/opendap/hyrax_git/build/lib/bes/libnc_module.so
+----
+
+.Source from NCModule.cc
+[#src-nc-module]
+[source,c++]
+----
+#define NC_CATALOG "catalog"
+
+void NCModule::initialize(const string & modname)
+{
+    BESDEBUG("nc", "Initializing NC module " << modname << endl);
+
+    BESRequestHandler *handler = new NCRequestHandler(modname);
+    BESRequestHandlerList::TheList()->add_handler(modname, handler);
+
+    BESDapService::handle_dap_service(modname);
+
+    if (!BESCatalogList::TheCatalogList()->ref_catalog( NC_CATALOG)) {
+        BESCatalogList::TheCatalogList()->add_catalog(new BESCatalogDirectory( NC_CATALOG));
+    }
+    else {
+        BESDEBUG("nc", "    catalog already exists, skipping" << endl);
+    }
+
+    if (!BESContainerStorageList::TheList()->ref_persistence( NC_CATALOG)) {
+        BESContainerStorageList::TheList()->add_persistence(new BESFileContainerStorage( NC_CATALOG));
+    }
+    else {
+        BESDEBUG("nc", "    storage already exists, skipping" << endl);
+    }
+
+    BESDebug::Register("nc");
+
+    BESDEBUG("nc", "Done Initializing NC module " << modname << endl);
+}
+
+...
+
+extern "C" BESAbstractModule * maker()
+{
+	return new NCModule;
+}
+----
 
 == BES Containers and Container Storage
 The BES using the abstraction of _Containers_ that hold data to enable all the BES modules
@@ -52,13 +170,36 @@ types of data.
 
 === The components
 . A module (a concrete instance of the BESAbstractModule class)
-. A container object (a concrete instance of BESContainer)
 . A container storage object (a specialization of BESContainerStorageVolatile)
+. A container object (a concrete instance of BESContainer)
 . BES configuration parameters, usually in a `.conf` test file
 . An XML command document that includes a `<container name="..." space="...">` element
 
+=== BESContainerStorage
+.BESContainerStorageVolatile and BESFileContainerStorage
+[#img-container-storage]
+image::classBESFileContainerStorage__coll__graph.png[BESFileContainerStorage collaboration diagram]
 
+=== BESContainer
+.BESContainer and the Concrete BESFileContainer
+[#img-file-container]
+image::classBESFileContainer__coll__graph.png[BESFileContainer collaboration diagram]
 
+== BES Lists
+[#sec-bes-lists]
+The BES uses a number of singleton `*List` classes to manage named collections of objects that
+will be used during command planning and evaluation.
 
+*_TBD_*
 
+== BES Response Handlers
+[#sec-resp-hand]
+*_TBD_*
 
+== BES Transmitters
+[#sec-bes-trans]
+*_TBD_*
+
+== BES Server Startup
+[#sec-startup]
+*_TBD_*
