@@ -55,10 +55,10 @@ The link:https://opendap.github.io/bes/html/[Back End Server (BES)] is the modul
 access and manipulation layer of the Hyrax data server.
 
 === About the BES
-Technical link:https://opendap.github.io/technical/bes-intro.html[documentation about the BES]
+Technical link:https://opendap.github.io/documentation/technical/bes-intro.html[documentation about the BES]
 describes the relationship between the BES and the OLFS, how the BES orchestration framework
 is built and how the BES can be extended to support different data formats, different data sources
-(files, databases, Wen Object Stores, etc.) and return both DAP2/4 and file format responses.
+(files, databases, Web Object Stores, etc.) and return both DAP2/4 and file format responses.
 
 == Libdap library documentation
 The link:https://opendap.github.io/libdap4/html/[libdap library documentation] provides reference information for our
