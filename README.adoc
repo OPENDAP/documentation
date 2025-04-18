@@ -42,17 +42,27 @@ The
 link:https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.html[Hyrax Installation and Configuration Guide]
 link:https://opendap.github.io/hyrax_guide/Master_Hyrax_Guide.pdf[(PDF)]
 provides information about the Hyrax Data Server. In this guide you
-will find a description of the server's featrues and all of its
-configuration parameters. Also described in teh guide are other web
+will find a description of the server's features and all of its
+configuration parameters. Also described in the guide are other web
 services that Hyrax provides, including WMS and WCS.
+
+== The OLFS: Hyrax's top-tier
+The link:https://opendap.github.io/documentation/technical/olfs.html[OPeNDAP Lightweight Frontend Server (OLFS)]
+Is the top-tier of the Hyrax data server.
+
+== BES Data Server Framework
+The link:https://opendap.github.io/bes/html/[Back End Server (BES)] is the modular framework used to build the data
+access and manipulation layer of the Hyrax data server.
+
+=== About the BES
+Technical link:https://opendap.github.io/technical/bes-intro.html[documentation about the BES]
+describes the relationship between the BES and the OLFS, how the BES orchestration framework
+is built and how the BES can be extended to support different data formats, different data sources
+(files, databases, Wen Object Stores, etc.) and return both DAP2/4 and file format responses.
 
 == Libdap library documentation
 The link:https://opendap.github.io/libdap4/html/[libdap library documentation] provides reference information for our
 implementation of DAP2 and DAP4.
-
-== BES data server framework
-The link:https://opendap.github.io/bes/html/[Back End Server (BES)] is the modular framework used to build the data
-access and manipulation layer of the Hyrax data server.
 
 == Notes about this repository
 
@@ -82,7 +92,7 @@ the documentation repo is updated on the master branch.
 This page comes from the _github.com/OPeNDAP/documentation_
 repository, but it contains links to other pages from other OPeNDAP
 github documentation repositories (e.g., _hyrax\_guide_). To add new
-documention from a new repo, first arrange to publish its content via
+documentation from a new repo, first arrange to publish its content via
 _gh-pages_ and _github.io_ and then link those pages here. See the
 _github.com/OPeNDAP/hyrax_guide_ repo and the entry above for
 _Master_Hyrax_Guide.html/pdf_ for an example.
