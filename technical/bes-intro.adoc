@@ -6,16 +6,18 @@
 :icons: font
 :tabsize: 4
 :indent: 4
-:doctype: book
+:doctype: article
 :imagesdir: ../images/bes-technical
 :toc:
+:toclevels: 3
 :xrefstyle: short
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
 :homepage: www.opendap.org
-[[top]]
 
 == Introduction
-This document describes the Back End Server (BES) that is used by Hyrax to
-read data, build response, perform data subsetting operations and run small
+This document describes the Back End Server (BES) used by Hyrax to
+read data, build response, perform data subsetting operations, and run small
 compute tasks that are proximate to data. The BES makes up the lower two tiers
 of the Hyrax data server.
 
@@ -60,13 +62,13 @@ see <<src-nc-module>>.
 [#img-nc-module]
 image::classNCModule__coll__graph.png[NCModule collaboration diagram]
 
-The code in the implementation of, e.g., NCModule is used by the BES daemon to initialize
+The BES daemon uses the code in the implementation of, e.g., NCModule to initialize
 the model at startup. Each specialization of BESAbstractModule should define `initialize()`
 and `terminate()`. The initialize() method is used when the module is first loaded. It performs
 all the startup actions the module needs. In <<src-nc-module>> the initialize() method makes
 some objects and passes those to methods that will add them to BES List (see Section
 <<sec-bes-lists>>) classes. The classes
-and the Lists are not important right now - just know that when a module is loaded, the
+and the Lists are not important right now—know that when a module is loaded, the
 initialize() method is run.
 
 When the daemon shuts down, each Module is 'unloaded' and its terminate() method is run. That is
@@ -75,7 +77,7 @@ https://opendap.github.io/bes/html/classes.html[online reference documentation].
 
 === How Modules are Loaded
 In the BES daemon, a _master listener_ is started, the configuration files are read, the BES Keys
-(our name for the configuration parameters) are parsed, and all of the modules are loaded.
+(our name for the configuration parameters) are parsed, and all the modules are loaded.
 The details of the server startup operations are discussed in Section <<sec-startup>>, BES Startup.
 
 One detail you will need to know, common to all modules, is that an extern C function named `maker()`
@@ -101,7 +103,7 @@ be loaded by the BESModuleApp using the unix/Linux `dload()` system call.
 
 In the example <<src-mod-keys>>, the module name is `nc` so the BES Key that holds the path
 of the shared object files is `BES.module.nc`. The one key that lists all the modules is
-`BES.modules` (plural) while the key that unique
+`BES.modules` (plural) while the key that is unique
 for each module is `BES.module.<mod name>` (singular).
 
 [NOTE]
