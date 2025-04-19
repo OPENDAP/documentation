@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="author" content="OPeNDAP, Inc.">
+<title></title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--
+###############################################################################
+# Generate a nice TOC
+#
+# Thanks to StackOverflow user "rec",
+#     https://stackoverflow.com/users/2511197/rec
+# For this answer:
+#     https://stackoverflow.com/questions/34481638/how-to-use-tocify-with-asciidoctor-for-a-dynamic-toc
+# Which seems to be working nicely for us.
+#
+# The OPeNDAP Team
+###############################################################################
+-->
+
+<!-- Generate a nice TOC -->
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script>
+/*! jquery.tocify - v1.9.0 - 2013-10-01
+ * http://gregfranko.com/jquery.tocify.js/
+ * Copyright (c) 2013 Greg Franko; Licensed MIT
+ */
+    (function (e) {
+        "use strict"; e(window.jQuery, window, document)
+    })(function (e, t, s) {
+        "use strict"; var i = "tocify", o = "tocify-focus", n = "tocify-hover", a = "tocify-hide", l = "tocify-header", h = "." + l, r = "tocify-subheader", d = "." + r, c = "tocify-item", f = "." + c, u = "tocify-extend-page", p = "." + u; e.widget("toc.tocify", {
+            version: "1.9.0", options: {
+                context: "body", ignoreSelector: null, selectors: "h1, h2, h3", showAndHide: ! 0, showEffect: "slideDown", showEffectSpeed: "medium", hideEffect: "slideUp", hideEffectSpeed: "medium", smoothScroll: ! 0, smoothScrollSpeed: "medium", scrollTo: 0, showAndHideOnScroll: ! 0, highlightOnScroll: ! 0, highlightOffset: 40, theme: "bootstrap", extendPage: ! 0, extendPageOffset: 100, history: ! 0, scrollHistory: ! 1, hashGenerator: "compact", highlightDefault: ! 0
+            },
+            _create: function () {
+                var s = this; s.extendPageScroll = ! 0, s.items =[], s._generateToc(), s._addCSSClasses(), s.webkit = function () {
+                    for (var e in t) if (e && -1 !== e.toLowerCase().indexOf("webkit")) return ! 0; return ! 1
+                }
+                (), s._setEventHandlers(), e(t).load(function () {
+                    s._setActiveElement(! 0), e("html, body").promise().done(function () {
+                        setTimeout(function () {
+                                s.extendPageScroll = ! 1
+                            },
+                            0)
+                    })
+                })
+            },
+            _generateToc: function () {
+                var t, s, o = this, n = o.options.ignoreSelector; return t = -1 !== this.options.selectors.indexOf(",") ? e(this.options.context).find(this.options.selectors.replace(/ /g, "").substr(0, this.options.selectors.indexOf(","))): e(this.options.context).find(this.options.selectors.replace(/ /g, "")), t.length ?(o.element.addClass(i), t.each(function (t) {
+                    e(this).is(n) ||(s = e("<ul/>", {
+                        id: l + t, "class": l
+                    }).append(o._nestElements(e(this), t)), o.element.append(s), e(this).nextUntil(this.nodeName.toLowerCase()).each(function () {
+                        0 === e(this).find(o.options.selectors).length ? e(this).filter(o.options.selectors).each(function () {
+                            e(this).is(n) || o._appendSubheaders.call(this, o, s)
+                        }): e(this).find(o.options.selectors).each(function () {
+                            e(this).is(n) || o._appendSubheaders.call(this, o, s)
+                        })
+                    }))
+                }), undefined):(o.element.addClass(a), undefined)
+            },
+            _setActiveElement: function (e) {
+                var s = this, i = t.location.hash.substring(1), o = s.element.find('li[data-unique="' + i + '"]');
+                return i.length ?(s.element.find("." + s.focusClass).removeClass(s.focusClass), o.addClass(s.focusClass), s.options.showAndHide && o.click()):(s.element.find("." + s.focusClass).removeClass(s.focusClass), ! i.length && e && s.options.highlightDefault && s.element.find(f).first().addClass(s.focusClass)), s
+            },
+            _nestElements: function (t, s) {
+                var i, o, n; return i = e.grep(this.items, function (e) {
+                    return e === t.text()
+                }), i.length ? this.items.push(t.text() + s): this.items.push(t.text()), n = this._generateHashValue(i, t, s), o = e("<li/>", {
+                    "class": c, "data-unique": n
+                }).append(e("<a/>", {
+                    text: t.text()
+                })), t.before(e("<div/>", {
+                    name: n, "data-unique": n
+                })), o
+            },
+            _generateHashValue: function (e, t, s) {
+                var i = "", o = this.options.hashGenerator; if ("pretty" === o) {
+                    for (i = t.text().toLowerCase().replace(/\s/g, "-");
+                         i.indexOf("--") > -1;) i = i.replace(/--/g, "-");
+                    for (; i.indexOf(":-") > -1;) i = i.replace(/:-/g, "-")
+                } else i = "function" == typeof o ? o(t.text(), t): t.text().replace(/\s/g, "");
+                return e.length &&(i += "" + s), i
+            },
+            _appendSubheaders: function (t, s) {
+                var i = e(this).index(t.options.selectors), o = e(t.options.selectors).eq(i -1), n = + e(this).prop("tagName").charAt(1), a = + o.prop("tagName").charAt(1);
+                a > n ? t.element.find(d + "[data-tag=" + n + "]").last().append(t._nestElements(e(this), i)): n === a ? s.find(f).last().after(t._nestElements(e(this), i)): s.find(f).last().after(e("<ul/>", {
+                    "class": r, "data-tag": n
+                })).next(d).append(t._nestElements(e(this), i))
+            },
+            _setEventHandlers: function () {
+                var i = this; this.element.on("click.tocify", "li", function () {
+                    if (i.options.history &&(t.location.hash = e(this).attr("data-unique")), i.element.find("." + i.focusClass).removeClass(i.focusClass), e(this).addClass(i.focusClass), i.options.showAndHide) {
+                        var s = e('li[data-unique="' + e(this).attr("data-unique") + '"]');
+                        i._triggerShow(s)
+                    }
+                    i._scrollTo(e(this))
+                }), this.element.find("li").on({
+                    "mouseenter.tocify": function () {
+                        e(this).addClass(i.hoverClass), e(this).css("cursor", "pointer")
+                    },
+                    "mouseleave.tocify": function () {
+                        "bootstrap" !== i.options.theme && e(this).removeClass(i.hoverClass)
+                    }
+                }),(i.options.extendPage || i.options.highlightOnScroll || i.options.scrollHistory || i.options.showAndHideOnScroll) && e(t).on("scroll.tocify", function () {
+                    e("html, body").promise().done(function () {
+                        var o, n, a, l, h = e(t).scrollTop(), r = e(t).height(), d = e(s).height(), c = e("body")[0].scrollHeight; if (i.options.extendPage &&(i.webkit && h >= c - r - i.options.extendPageOffset || ! i.webkit && r + h > d - i.options.extendPageOffset) && ! e(p).length) {
+                            if (n = e('div[data-unique="' + e(f).last().attr("data-unique") + '"]'), ! n.length) return; a = n.offset().top, e(i.options.context).append(e("<div />", {
+                                "class": u, height: Math.abs(a - h) + "px", "data-unique": u
+                            })), i.extendPageScroll &&(l = i.element.find("li.active"), i._scrollTo(e('div[data-unique="' + l.attr("data-unique") + '"]')))
+                        }
+                        setTimeout(function () {
+                                var s, n = null, a = null, l = e(i.options.context).find("div[data-unique]");
+                                l.each(function (t) {
+                                    var s = Math.abs((e(this).next().length ? e(this).next(): e(this)).offset().top - h - i.options.highlightOffset);
+                                    return null == n || n > s ?(n = s, a = t, undefined): ! 1
+                                }), s = e(l[a]).attr("data-unique"), o = e('li[data-unique="' + s + '"]'), i.options.highlightOnScroll && o.length &&(i.element.find("." + i.focusClass).removeClass(i.focusClass), o.addClass(i.focusClass)), i.options.scrollHistory && t.location.hash !== "#" + s && t.location.replace("#" + s), i.options.showAndHideOnScroll && i.options.showAndHide && i._triggerShow(o, ! 0)
+                            },
+                            0)
+                    })
+                })
+            },
+            show: function (t) {
+                var s = this; if (! t.is(":visible")) switch (t.find(d).length || t.parent().is(h) || t.parent().is(":visible") ? t.children(d).length || t.parent().is(h) ||(t = t.closest(d)): t = t.parents(d).add(t), s.options.showEffect) {
+                    case "none": t.show();
+                        break; case "show": t.show(s.options.showEffectSpeed);
+                        break; case "slideDown": t.slideDown(s.options.showEffectSpeed);
+                        break; case "fadeIn": t.fadeIn(s.options.showEffectSpeed);
+                        break; default: t.show()
+                }
+                return t.parent().is(h) ? s.hide(e(d).not(t)): s.hide(e(d).not(t.closest(h).find(d).not(t.siblings()))), s
+            },
+            hide: function (e) {
+                var t = this; switch (t.options.hideEffect) {
+                    case "none": e.hide();
+                        break; case "hide": e.hide(t.options.hideEffectSpeed);
+                        break; case "slideUp": e.slideUp(t.options.hideEffectSpeed);
+                        break; case "fadeOut": e.fadeOut(t.options.hideEffectSpeed);
+                        break; default: e.hide()
+                }
+                return t
+            },
+            _triggerShow: function (e, t) {
+                var s = this; return e.parent().is(h) || e.next().is(d) ? s.show(e.next(d), t): e.parent().is(d) && s.show(e.parent(), t), s
+            },
+            _addCSSClasses: function () {
+                return "jqueryui" === this.options.theme ?(this.focusClass = "ui-state-default", this.hoverClass = "ui-state-hover", this.element.addClass("ui-widget").find(".toc-title").addClass("ui-widget-header").end().find("li").addClass("ui-widget-content")): "bootstrap" === this.options.theme ?(this.element.find(h + "," + d).addClass("nav nav-list"), this.focusClass = "active"):(this.focusClass = o, this.hoverClass = n), this
+            },
+            setOption: function () {
+                e.Widget.prototype._setOption.apply(this, arguments)
+            },
+            setOptions: function () {
+                e.Widget.prototype._setOptions.apply(this, arguments)
+            },
+            _scrollTo: function (t) {
+                var s = this, i = s.options.smoothScroll || 0, o = s.options.scrollTo, n = e('div[data-unique="' + t.attr("data-unique") + '"]');
+                return n.length ?(e("html, body").promise().done(function () {
+                    e("html, body").animate({
+                        scrollTop: n.offset().top -(e.isFunction(o) ? o.call(): o) + "px"
+                    }, {
+                        duration: i
+                    })
+                }), s): s
+            }
+        })
+    });
+</script>
+<!-- We do not need the tocify CSS because the asciidoc CSS already provides most of what we neeed -->
+
+<style>
+    .tocify-header {
+        font-style: italic;
+    }
+
+    .tocify-subheader {
+        font-style: normal;
+        font-size: 90%;
+    }
+
+    .tocify ul {
+        margin: 0;
+    }
+
+    .tocify-focus {
+        color: #7a2518;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .tocify-focus > a {
+        color: #7a2518;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        // Add a new container for the tocify toc into the existing toc so we can re-use its
+        // styling
+        $("#toc").append("<div id='generated-toc'></div>");
+        $("#generated-toc").tocify({
+            extendPage: true,
+            context: "#content",
+            highlightOnScroll: true,
+            hideEffect: "slideUp",
+            // Use the IDs that asciidoc already provides so that TOC links and intra-document
+            // links are the same. Anything else might confuse users when they create bookmarks.
+            hashGenerator: function(text, element) {
+                return $(element).attr("id");
+            },
+            // Smooth scrolling doesn't work properly if we use the asciidoc IDs
+            smoothScroll: false,
+            // Set to 'none' to use the tocify classes
+            theme: "none",
+            // Handle book (may contain h1) and article (only h2 deeper)
+            selectors: $( "#content" ).has( "h1" ).size() > 0 ? "h1,h2,h3,h4,h5" : "h2,h3,h4,h5",
+            ignoreSelector: ".discrete"
+        });
+
+        // Switch between static asciidoc toc and dynamic tocify toc based on browser size
+        // This is set to match the media selectors in the asciidoc CSS
+        // Without this, we keep the dynamic toc even if it is moved from the side to preamble
+        // position which will cause odd scrolling behavior
+        var handleTocOnResize = function() {
+            if ($(document).width() < 768) {
+                $("#generated-toc").hide();
+                $(".sectlevel0").show();
+                $(".sectlevel1").show();
+            }
+            else {
+                $("#generated-toc").show();
+                $(".sectlevel0").hide();
+                $(".sectlevel1").hide();
+            }
+        }
+
+        $(window).resize(handleTocOnResize);
+        handleTocOnResize();
+    });
+</script>
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1><span class="image"><img src="../images/OPeNDAP-Logo-red.svg" alt="OPeNDAP Logo red" width="350"></span></h1>
+<div class="details">
+<span id="author" class="author">OPeNDAP, Inc.</span><br>
+<span id="revdate">2025-04-19 02:05:07 UTC</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel0">
+<li><a href="#top">OPeNDAP Lightweight Frontend Service (olfs)</a>
+<ul class="sectlevel1">
+<li><a href="#overview">1. Overview</a></li>
+<li><a href="#whutdo">2. What does it Do?</a>
+<ul class="sectlevel2">
+<li><a href="#apis">2.1. Supported APIs:</a></li>
+<li><a href="#uiisnice">2.2. Supported User Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#assembly">3. How is the runtime code assembled?</a></li>
+<li><a href="#howwork">4. How? How does it work?</a>
+<ul class="sectlevel2">
+<li><a href="#_dap_requestresponse">4.1. DAP Request/Response</a>
+<ul class="sectlevel3">
+<li><a href="#_service_conflation_issue">4.1.1. Service Conflation Issue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_caching">5. Caching</a>
+<ul class="sectlevel2">
+<li><a href="#_requestcache">5.1. RequestCache</a></li>
+<li><a href="#_besnodecache">5.2. BesNodeCache</a></li>
+<li><a href="#_bessitemap_cache">5.3. BesSiteMap Cache</a></li>
+<li><a href="#_thredds_catalogmanager">5.4. Thredds CatalogManager</a></li>
+</ul>
+</li>
+<li><a href="#filters">6. Filters</a></li>
+<li><a href="#resources">7. Resources</a>
+<ul class="sectlevel2">
+<li><a href="#_olfsresourceshyraxxsl">7.1. olfs/resources/hyrax/<code>xsl</code></a>
+<ul class="sectlevel3">
+<li><a href="#_version">7.1.1. Version</a></li>
+<li><a href="#_ifh_production">7.1.2. IFH Production</a></li>
+<li><a href="#_browsable_catalog_ui">7.1.3. Browsable Catalog UI</a></li>
+<li><a href="#_thredds_catalog_production">7.1.4. THREDDS Catalog production</a></li>
+<li><a href="#_rdf_responses">7.1.5. RDF Responses</a></li>
+<li><a href="#_w10n">7.1.6. w10n</a></li>
+<li><a href="#_viewers">7.1.7. Viewers</a></li>
+<li><a href="#_obscure_dap4_things">7.1.8. Obscure DAP4 Things</a></li>
+</ul>
+</li>
+<li><a href="#_olfsresourceshyraxngap">7.2. olfs/resources/hyrax/<code>ngap</code></a></li>
+</ul>
+</li>
+<li><a href="#configuration">8. Configuration</a>
+<ul class="sectlevel2">
+<li><a href="#find-config">8.1. Locating the configuration at startup.</a></li>
+<li><a href="#olfs.xml">8.2. olfs.xml</a></li>
+<li><a href="#user-access.xml">8.3. user-access.xml</a></li>
+<li><a href="#logback">8.4. logback.xml and logback-test.xml</a></li>
+<li><a href="#catalog.xml">8.5. catalog.xml</a></li>
+<li><a href="#viewers.xml">8.6. viewers.xml</a></li>
+<li><a href="#webstart.xml">8.7. webstart.xml</a></li>
+</ul>
+</li>
+<li><a href="#servlets">9. Servlets</a></li>
+<li><a href="#dispatch-handlers">10. Dispatch Handlers</a></li>
+<li><a href="#dapresponders">11. DapResponders</a>
+<ul class="sectlevel2">
+<li><a href="#dap2responders">11.1. DAP2 Responders</a></li>
+<li><a href="#genericresponders">11.2. Generic Responders</a></li>
+<li><a href="#dap4responders">11.3. DAP4 Responders</a></li>
+</ul>
+</li>
+<li><a href="#authentication">12. Authentication/Authorization</a>
+<ul class="sectlevel2">
+<li><a href="#_controls">12.1. Controls</a>
+<ul class="sectlevel3">
+<li><a href="#_enable_authenticationauthorization">12.1.1. Enable Authentication/Authorization</a></li>
+<li><a href="#_configure_authenticationauthorization">12.1.2. Configure Authentication/Authorization</a></li>
+</ul>
+</li>
+<li><a href="#_authentication_aka_the_identity_provider_idp">12.2. Authentication - aka the Identity Provider (IdP)</a>
+<ul class="sectlevel3">
+<li><a href="#_edl_tokens">12.2.1. EDL Tokens</a></li>
+<li><a href="#_classes">12.2.2. Classes</a></li>
+</ul>
+</li>
+<li><a href="#_authorization_aka_the_policy_decision_point_pdp">12.3. Authorization - aka the Policy Decision Point (PDP)</a>
+<ul class="sectlevel3">
+<li><a href="#_classes_2">12.3.1. Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_the_ifh">13. The IFH</a>
+<ul class="sectlevel2">
+<li><a href="#_constraint_issues">13.1. Constraint Issues</a></li>
+</ul>
+</li>
+<li><a href="#testing">14. Testing</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="top" class="sect0">OPeNDAP Lightweight Frontend Service (olfs)</h1>
+<div class="openblock partintro">
+<div class="content">
+<div class="paragraph">
+<p><a href="https://opendap.github.io/documentation/technical/olfs.html"><strong>See the rendered olfs document here</strong></a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="overview">1. Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The OPeNDAP Lightweight Frontend Service (<strong><em>olfs</em></strong>) is the public/outward facing component of the Hyrax server.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="whutdo">2. What does it Do?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <strong><em>olfs</em></strong> provides a number of interfaces through which users and programmatic clients can request and subset data.</p>
+</div>
+<div class="sect2">
+<h3 id="apis">2.1. Supported APIs:</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.opendap.org/index.php/Aggregation_enhancements">Aggregation Service API</a> (<em>Does this even work? When was the last time we tried it?</em>)</p>
+</li>
+<li>
+<p><a href="https://www.earthdata.nasa.gov/s3fs-public/imported/ESE-RFC-004v1.1.pdf">DAP2 data access API</a></p>
+</li>
+<li>
+<p><a href="https://opendap.github.io/dap4-specification/DAP4.html">DAP4 data access API</a></p>
+</li>
+<li>
+<p><a href="https://www.ogc.org/publications/standard/wcs/">WCS 2.0 API</a></p>
+</li>
+<li>
+<p><a href="https://pds-imaging.jpl.nasa.gov/tools/w10n/">w10n data access api</a></p>
+</li>
+<li>
+<p><a href="https://docs.unidata.ucar.edu/tds/current/userguide/client_side_catalog_specification.html">THREDDS Client-Side Catalog API</a> for machine traversable catalog/inventories.</p>
+</li>
+<li>
+<p><strong>File Download Service</strong> - When this option is enabled the clients are allowed to download the underlying data files directly from the Hyrax service. Not super efficient use of Hyrax t.b.h. some (all?) of the on-prem NASA DAACs operate a separate download service for the data files.</p>
+</li>
+<li>
+<p><strong>Gateway service</strong> - This service allows the user to ask Hyrax to retrieve a remote dataset file and then provide DAP services for that file.</p>
+</li>
+<li>
+<p><strong><a href="https://opendap.earthdata.nasa.gov">NGAP DAP service</a></strong> - The NGAP DAP service is a NASA specific service that integrates into NASA&#8217;s NGAP service chain, providing a publicly accessible DAP service endpoint for their cloud deployed data holds. The NGAP DAP service utilizes the NASA Common Metadata Repository (CMR), Thin Egress Client (TEA), and AWS S3 to provide access to data using precomputed dmr++ files and HTTP Range GET commands to extract data values from files/objects held in S3. Note: The NGAP DAP service does not provide a traversable catalog/inventory of the data holdings.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="uiisnice">2.2. Supported User Interfaces</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Data Request Form (aka the <em>Interface From Hell</em>, aka the <em>IFH</em>)</strong>:  Both the DAP2 and DAP4 services provide a web UI that allows a user to build and execute data access requests. IFH pages are built by retrieving the metadata for the dataset from the BES as an XML document and then using an XSL transform to produce the IFH response from the metadata document.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://test.opendap.org:8080/opendap/ghrsst/20020602090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.h5.html">For the DAP2 IFH</a> a DDX (an XML encoding of DAP2 metadata) is used to build the form.</p>
+</li>
+<li>
+<p><a href="http://test.opendap.org:8080/opendap/ghrsst/20020602090000-JPL-L4_GHRSST-SSTfnd-MUR-GLOB-v02.0-fv04.1.h5.dmr.html">For the DAP4 IFH</a> the DMR document is used.</p>
+</li>
+<li>
+<p>Each case has its own XSLT which is conditioned by the <strong><em>olfs</em></strong> prior to the transformation step.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div id="browser_catalog" class="ulist">
+<ul>
+<li>
+<p><strong>Browser Navigable Catalog</strong>: The OLFS uses BES showNode commands to discover what the BES "catalog" (usually a filesystem but maybe not) contains. The BES responses are XML documents that the OLFS operates on with an XSL transform to produce <a href="http://test.opendap.org:8080/opendap/">the Hyrax "blue bar" browser navigation pages</a>. The server will try to return this page for any url path ending in <code>/</code> or in <code>/contents.html</code> Some parts of the catalog ui representation are controlled by the <strong><em>olfs.xml</em></strong> file used with the deployment. (See <a href="#configuration">Configuration</a>)</p>
+</li>
+</ul>
+</div>
+<div id="thredds_catalog" class="ulist">
+<ul>
+<li>
+<p><strong>THREDDS Catalogs, a machine-readable catalog</strong> <em>No Scraping Required!</em> The OLFS automatically provides a machine-readable THREDDS catalog for the inventory in its catalog. In fact, it uses the same inputs and only differs in the XSL from the browser navigable catalog described above to produce <a href="http://test.opendap.org:8080/opendap/catalog.xml">a THREDDS catalog response</a>. (See <a href="#browser_catalog">[browser_catalog]</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="assembly">3. How is the runtime code assembled?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The primary code pattern used by the <strong><em>olfs</em></strong> for implementing services is to subclass <em>HttpServlet</em> and create specialized implementations that utilize one or more <em>DispatchHandler</em> implementations to claim requests and respond to them. In some cases a servlet might utilize a single instance of <em>DispatchHandler</em> to run the show. For example, the servlet <em>opendap.build_dmrpp.BuildDmrppServlet</em> relies solely on <em>opendap.build_dmrpp.BuildDmrppDispatchHandler</em> and the servlet <em>opendap.wcs.v2.0.Servlet</em> relies solely on <em>opendap.wcs.v2.0.HttpGetHandler</em>. In other examples there are many <em>DispatchHandler</em> objects used by the servlet implementation. For example <em>opendap.coreServlet.DispatchServlet</em> uses about a dozen different <em>DispatchHandler</em> instances.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="howwork">4. How? How does it work?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It&#8217;s complicated, so first I&#8217;ll provide a simplified narrative of the request/response operation, and then I&#8217;ll add a couple of sections regarding other parts of the operation.</p>
+</div>
+<div class="sect2">
+<h3 id="_dap_requestresponse">4.1. DAP Request/Response</h3>
+<div class="paragraph">
+<p>Let&#8217;s look at how the primary servlet, <em>opendap.coreServlet.DispatchServlet</em>, handles an incoming DAP service request:</p>
+</div>
+<div class="paragraph">
+<p>In the <em>opendap.coreServlet.DispatchServlet.doGet()</em> method the code first handles some bookkeeping (such as producing a request id and starting the access log for the request) before iterating over an internal vector of <em>DispatchHandler</em> objects, asking each in turn if it can service the request. The first <em>DispatchHandler</em> to claim the request is then asked to service it and transmit the response. The order of the <em>DispatchHandler</em> objects in the vector is critical, as there are greedy <em>DispatchHandler</em> implementations (<em>FileDispatchHandler</em> for example) that will claim things that should/would have been claimed by the intended <em>DispatchHandler</em> if asked prior. The order is established in the <em>DispatchServlet.init()</em> method.</p>
+</div>
+<div class="paragraph">
+<p>If the request is for some type of DAP response then the <em>BesDapDispatcher</em> will claim it.</p>
+</div>
+<div class="paragraph">
+<p>Inside <em>BesDapDispatcher</em> there is a vector of <em>Dap4Responder</em> objects, each one associated with a particular DAP response type (such as: use DAP2 and return a netcdf-3 encoded response, use DAP4 and return the DMR response, etc.) The <em>BesDapDispatcher</em> iterates over its vector of <em>Dap4Responder</em> objects and hands the response duties to the first one that claims the request.</p>
+</div>
+<div class="paragraph">
+<p>One might ask: How does all this "claiming" work? <em>Through the magic of regular expressions!</em> Each of the <em>Dap4Responder</em> objects contains a primary regular expression which is used to match a URL path in the request. For example the <em>NormativeDMR</em> responder has something like this <code>^.*\.dmr$</code>. But it&#8217;s more complex because in DAP4 there are several different alternate encodings for the DMR (and the other response types as well) that a client might wish to receive. This is handled by having each normative responder hold a collection of alternative responders, each of which has its own suffix and regex. When <em>NormativeDMR</em> is built, it combines all of its alternative responder regex expression into a single combined regex. When <em>NormativeDMR</em> is asked if a request can be handled it simply evaluates the request URL path to see if it matches the combined regex. When the request is submitted for processing NormativeDMR locates the appropriate responder (using the individual regular expressions) and delegates the request to it.</p>
+</div>
+<div class="paragraph">
+<p>Finally, the chosen responder will set the HTTP response headers appropriately (media types etc.) and then use the BesApi to build and issue a request to the target BES. This is done using a OPeNDAPClient object. The request is passed with the response output stream, and the OPeNDAPClient handles the transmission of the request and then the reception and retransmission of the BES response back to the client.</p>
+</div>
+<div class="sect3">
+<h4 id="_service_conflation_issue">4.1.1. Service Conflation Issue</h4>
+<div class="paragraph">
+<p><em>All this checking and "claiming" seems so involved.</em> Yes. Yes it is. And it&#8217;s partially a byproduct of the conflation of services. If I were to design it again I would follow the example set by the THREDDS Data Server (TDS) and separate the services using a URL path prefix something like:</p>
+</div>
+<div class="paragraph">
+<p>(Where <strong><em>path</em></strong> is a resource_id in the BES)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>opendap/catalog/path</em> - Would produce a browser navigable HTML catalog of the servers holdings.</p>
+</li>
+<li>
+<p><em>opendap/thredds/path</em> - Would produce a machine-readable/traversable THREDDS client catalog (XML) of the servers holdings.</p>
+</li>
+<li>
+<p><em>opendap/dap4/path</em> - The DAP4 service and only the DAP4 service.</p>
+</li>
+<li>
+<p><em>opendap/dap2/path</em> - The DAP2 service and only the DAP2 service.</p>
+</li>
+<li>
+<p><em>opendap/file/path</em> - The file download service.</p>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I think each of these services might be implemented as a servlet. In Hyrax, all these services currently exist on the same URL path and a lot of the process described above is about the disambiguation of requests. I think this reorganization would reduce some of the code size and processing time, and potentially an ala-carte deployment where we can choose the services to include.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_caching">5. Caching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <strong><em>olfs</em></strong> utilizes a number of caches.</p>
+</div>
+<div class="sect2">
+<h3 id="_requestcache">5.1. RequestCache</h3>
+<div class="paragraph">
+<p>The RequestCache is used by every thread servicing a request. It&#8217;s an object cache. It allows objects to be passed from on part the execution stack to another with it being carried as a parameter. Each thread that&#8217;s servicing a request can safely put things it may need into the RequestCache. When the request/response is completed the RequestCache for the thread is cleared. (You can see this in the <code>opendap.coreServlet.DispatchServlet.doGet()</code> method)</p>
+</div>
+<div class="paragraph">
+<p>The vast majority of the usages of RequestCache are responders caching a MediaType object as a set-up for request execution. This way if an error occurs the error handling apparatus can make good choices about how to encode the error response for the client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_besnodecache">5.2. BesNodeCache</h3>
+<div class="paragraph">
+<p>To improve navigation performance, the <strong><em>olfs</em></strong> uses an in-memory LRU cache called BESNodeCache. This is used by the <strong><em>olfs</em></strong> to cache the BES responses to showNode commands (which is how the BES exposes it&#8217;s dynamic navigable catalogs). These entries are held for a configurable period of time before a new request for the cached entry will cause the entry to be refreshed. This is a thread safe cache available to all processing threads.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bessitemap_cache">5.3. BesSiteMap Cache</h3>
+<div class="paragraph">
+<p>The BesSiteMap class is used to get and maintain a site map file for use with robots.txt The file is refreshed based on a configurable time period.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_thredds_catalogmanager">5.4. Thredds CatalogManager</h3>
+<div class="paragraph">
+<p>Hard to know if this even gets used in the real world, so I&#8217;m going to skip longer explanation in favor of: For performance reasons the <strong><em>olfs</em></strong> can cache THREDDS catalogs in memory, and it is complicated when the catalogs need to be updated.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="filters">6. Filters</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>ClickJackFilter</em></strong> - Filter to stop the click jack hackery.</p>
+</li>
+<li>
+<p><strong><em>BotFilter</em></strong> - Can be used to block access from single ip addresses, domains, or whatever your desires and regex acumen allow you to express. See <strong><em>olfs.xml</em></strong> for configuration details.</p>
+</li>
+<li>
+<p><strong><em>IdFilter</em></strong> - Used for user authentication see <a href="#authentication">Authentication/Authorization</a></p>
+</li>
+<li>
+<p><strong><em>PEPFilter</em></strong> - Used for user authentication see <a href="#authentication">Authentication/Authorization</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="resources">7. Resources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the project directory you can find the resources included with the <strong><em>olfs</em></strong> when it&#8217;s packaged for deployment. The default resources are located in <em>olfs/resources/hyrax</em> these include <strong><em>js</em></strong>, <strong><em>jsp</em></strong>, <strong><em>xml</em></strong>, <strong><em>jnlp</em></strong>, <strong><em>xslt</em></strong>, and various <strong><em>xml</em></strong> files.</p>
+</div>
+<div class="paragraph">
+<p>Some of the directories within resource may or may not be in use, ymmv.</p>
+</div>
+<div class="sect2">
+<h3 id="_olfsresourceshyraxxsl">7.1. olfs/resources/hyrax/<code>xsl</code></h3>
+<div class="paragraph">
+<p>A lot of the HTML produced by the server is built using the transforms found in this directory. At this moment (04/01/25) I know that all the files are hooked up to code in the server, but I suspect some of the things that use the <strong><em>xslt</em></strong> files may not be used themselves.</p>
+</div>
+<div class="sect3">
+<h4 id="_version">7.1.1. Version</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>version.xsl</em></strong> - This is imported by nearly all the XSL transform docs, and is used to inject the Hyrax version string. When the builds are run, the key string <code>@HyraxVersion@</code> is replaced with the Version string value.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ifh_production">7.1.2. IFH Production</h4>
+<div class="paragraph">
+<p>The IFH pages creation</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>dap2ifh.xsl</em></strong> - Builds the DAP2 Data Request Form response from a DMR and passed parameters from the OLFS</p>
+</li>
+<li>
+<p><strong><em>dap4ifh.xsl</em></strong> - Builds the DAP4 Data Request Form response from a DMR and passed parameters from the OLFS</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_browsable_catalog_ui">7.1.3. Browsable Catalog UI</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>dap4Contents.xsl</em></strong> - Builds a DAP4 <strong><em>contents.html</em></strong> page.</p>
+</li>
+<li>
+<p><strong><em>node_contents.xsl</em></strong> - Builds a DAP2 <strong><em>contents.html</em></strong> page from a BES showNode response. (DirectoryDispatchHandler)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_thredds_catalog_production">7.1.4. THREDDS Catalog production</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>node_catalog.xsl</em></strong> - Builds THREDDS <strong><em>catalog.xml</em></strong> response from a BES showNode response. (ThreddsDispatchHandler)</p>
+</li>
+<li>
+<p><strong><em>besNodeToDatasetScanCatalog.xsl</em></strong> - The THREDDS Things, <strong><em>3T</em></strong>.</p>
+</li>
+<li>
+<p><strong><em>threddsCatalogIngest.xsl</em></strong> - <strong><em>3T</em></strong></p>
+</li>
+<li>
+<p><strong><em>threddsCatalogPresentation.xsl</em></strong> - <strong><em>3T</em></strong></p>
+</li>
+<li>
+<p><strong><em>threddsDatasetDetail.xsl</em></strong> - <strong><em>3T</em></strong></p>
+</li>
+<li>
+<p><strong><em>threddsMetadataDetail.xsl</em></strong> - <strong><em>3T</em></strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rdf_responses">7.1.5. RDF Responses</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>anyXml2Rdf.xsl</em></strong> - Used to produce both the DAP2 and DAP4 RDF responses for the server. Oddly this seems to be a pointless empty wrapper for <strong><em>xml2rdf.xsl</em></strong></p>
+</li>
+<li>
+<p><strong><em>xml2rdf.xsl</em></strong> - Simply included in <strong><em>anyXml2Rdf.xml</em></strong>  <code>&lt;xsl:include href="xml2rdf.xsl"/&gt;</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_w10n">7.1.6. w10n</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>showNodeToW10nCatalog.xsl</em></strong> - Makes w10n collection pages from a BES showNode response.</p>
+</li>
+<li>
+<p><strong><em>w10nDataset.xsl</em></strong> - makes w10n dataset pages from a DAP3.2 DDX from the BES.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_viewers">7.1.7. Viewers</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>webStartDataset.xsl</em></strong> - Used by the viewers servlet produce an available viewers page for a dataset.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_obscure_dap4_things">7.1.8. Obscure DAP4 Things</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>asyncResponse.xsl</em></strong> - Used by a prototype DAP4 asynchronous response implemented in dap4Responders.DataResponse.NormativeDR.handleStoreResultResponse(). <em>I bet this feature is never used.</em></p>
+</li>
+<li>
+<p><strong><em>datasetServices.xsl</em></strong> - Used to create the DAP4 Dataset Services Response page. <em>Probably not used</em>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_olfsresourceshyraxngap">7.2. olfs/resources/hyrax/<code>ngap</code></h3>
+<div class="paragraph">
+<p>The <em>olfs/resources/hyrax/ngap</em> directory contains the resources that we use amend/replace things from the regular build to produce our NGAP builds. Things like a custom landing page and the libraries to let us use <strong><em>memcached</em></strong> to manage session state in our multi-host deployments.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configuration">8. Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <strong><em>olfs</em></strong> utilizes several configuration files. The primary one, <em>olfs.xml</em>, controls <strong><em>olfs</em></strong> behavior and defines the locations of one or more BES services that are needed for the Hyrax to function.</p>
+</div>
+<div class="sect2">
+<h3 id="find-config">8.1. Locating the configuration at startup.</h3>
+<div class="paragraph">
+<p>When the server starts the code in <code>opendap.coreServlet.DispathServlet.init()</code> utilizes the ServletUtil class methods to locate the configuration. The <code>ServletUtil.getConfigPath()</code> method checks the following locations:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><em>/etc/olfs</em></p>
+</li>
+<li>
+<p><em>/usr/share/olfs</em></p>
+</li>
+<li>
+<p><em>$CATALINA_HOME/webapps/</em> deployment_context <em>/WEB-INF/conf</em></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If neither of the first two locations are located then the default configuration bundled in the war file will be used.</p>
+</div>
+<div class="paragraph">
+<p>If either of the first two locations is found, and if the configuration is not in that location, and the running service has write permission to the identified location, then the service will copy its default configuration to the identified location.This creates a configuration that can be easily modified by the operator and that will persist across updates and/or redeployments of the <strong><em>olfs</em></strong>.</p>
+</div>
+<div class="paragraph">
+<p>The <em>DispatchServlet.init()</em> method also loads a vector with new instances of its DispatchHandler objects that it will utilize to service requests. More on this below.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="olfs.xml">8.2. olfs.xml</h3>
+<div class="paragraph">
+<p>This file contains the core configuration for the <strong><em>olfs</em></strong>. It defines a number of service behaviors and also the location of the BES(s) to be used when handling requests.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="user-access.xml">8.3. user-access.xml</h3>
+<div class="paragraph">
+<p>This file is an authentication and permissions control file that allows the operator to deploy a service that can make use of OAUth2 Single Sign On (SSO) to authenticate users. The file also defines the various operational permissions the authenticated users will have (via groups and roles)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="logback">8.4. logback.xml and logback-test.xml</h3>
+<div class="paragraph">
+<p>These files provide the logging framework behaviors: Log file names, log file content, and what things will be logged at each logging level.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="catalog.xml">8.5. catalog.xml</h3>
+<div class="paragraph">
+<p>The top level static THREDDS client catalog for the machine traversable THREDDS service. This file nominally contains a catalog ref to the dynamically generated Hyrax THREDDS catalogs:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre class="nowrap">&lt;catalogRef xlink:href="/opendap/hyrax/catalog.xml" xlink:title="Hyrax Catalog" name="Hyrax Catalog" /&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It can be expanded to create a much more extensive static catalog by creating a filesystem tree of catalog files linked by the appropriate catalogRef elements.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="viewers.xml">8.6. viewers.xml</h3>
+<div class="paragraph">
+<p>This provides the configuration for the various Java Web Start applications (IDV Viewer, NetcdfToolsUI, etc.) and WebServiceHandlers (NcWMS, Godiva)</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="webstart.xml">8.7. webstart.xml</h3>
+<div class="paragraph">
+<p><strong><em>I think that this can be retired, but that assertion needs to be tested.</em></strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="servlets">9. Servlets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The servlet implementations subclass HttpServlet. The servlets implement the various services that the <strong><em>olfs</em></strong> supports. Some of these rely on one or more <em>DispatchHandler</em> implementations to perform the heavy lifting of answering the requests. There is not a one to one and onto relationship with things I think of as a service and the servlets. They all implement a service, but some implement several services.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Package: <strong>opendap.aggregation</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AggregationServlet.java</code> - Implements the <a href="https://docs.opendap.org/index.php/Aggregation_enhancements">Hyrax Aggregation Service API</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.auth</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>PDPService.java</code> - This standalone service is an implementation of a Policy Decision Point which can be used as part of an authentication and access permissions activity. I can be run on a remote system and asked if a particular user/group/role is allowed access to a particular resource.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.bes</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>BESSiteMapService.java</code> - This service uses the BES to construct and cache a Site Map of the data holdings in a particular deployment of Hyrax.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.build_dmrpp</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>BuildDmrppServlet.java</code> - This service can be used to have Hyrax create and return a dmr++ document for a particular dataset. <em>It seems to be the case that this service has been "overwhelmed by events" (OBE) and might be retired</em>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.coreServlet</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DispatchServlet.java</code> - This service is the primary Hyrax service and uses a number of DispatchHandler implementations to provide DAP, file access, and other services.</p>
+</li>
+<li>
+<p><code>DocServlet.java</code> - This service provides client access to the static documents held by the <strong><em>olfs</em></strong> such as image, css, and javascript files.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.gateway</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DispatchServlet.java</code> - Implements the Hyrax Gateway Service. <em>We should probably review this with an eye towards its retirement</em>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Package: opendap.viewers</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ViewersServlet.java</code> - This servlet is used create JavaWebStart documents that can can be utilized by a client to launch/access external applications such as <em>IdvViewer</em>, <em>NetCdfTools</em>, and <em>AutoPlot</em>. It can also direct users to externally running web services such as <em>NcWms</em> and/or <em>Godiva</em>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.w10n</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>W10nServlet.java</code> - Implements the <a href="https://pds-imaging.jpl.nasa.gov/tools/w10n/">w10n data access api</a> for the Hyrax data holdings.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.wcs.v2_0.http</strong> - <em>There are problems with WCS in general, and it would be worth evaluating the retirement potential for this package.</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Servlet.java</code> - Provides a WCS 2.0 implementation. This works, but requires the operator to perform configuration work for each "collection" in order to identify the domain and range variables for the collections datasets.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dispatch-handlers">10. Dispatch Handlers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These classes implement the <code>opendap.coreSevlet.DispatchHandler</code> interface and are used by the <code>CoreServlet</code> to direct the client requests to the appropriate software for generation and transmission of the response.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Package: <strong>opendap.bes</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>BesDapDispatcher.java</code> - This <em>DispatchHandler</em> implementation provides the DAP2 and DAP4 services for Hyrax, which includes data access services and the production of the HTML Data Request Forms. It does this by utilizing a collection of <em>Dap4Responder</em> implementations. Each of which handles a very specific task, typically commanding the BES to produce a particular response.</p>
+</li>
+<li>
+<p><code>BESThreddsDispatchHandler.java</code> - This DispatchHandler uses a combination of the BES <code>showNode</code>  interface, and a XSL transform file along with state information  to generate THREDDS client catalog responses and return them to the user.</p>
+</li>
+<li>
+<p><code>DirectoryDispatchHandler.java</code> - This DispatchHandler uses the BES <code>showNode</code>  interface, and a XSL transform file to produce the browser navigable "blue-bar" pages that express the data holdings of the service as a directed graph.</p>
+</li>
+<li>
+<p><code>FileDispatchHandler.java</code> - Used to transmit files from the BES to the user. If the source file is seen as a data file byt the BES this will be blocked unless specifically enabled in the <em>olfs.xml</em> configuration file by uncommenting the <code>&lt;AllowDirectDataSourceAccess /&gt;</code> element.</p>
+</li>
+<li>
+<p><code>VersionDispatchHandler.java</code> - This combines the BES version information and <strong><em>olfs</em></strong> version information to make and return a combined XML version document to the requestor.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.build_dmrpp</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>BuildDmrppDispatchHandler.java</code> -</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.coreServlet</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NoPostHandler.java</code> - This is used when POST request submissions are disabled, which is determined by the presence of the <code>&lt;HttpPost &#8230;&#8203;/&gt;</code> element in <em>olfs.xml</em> file.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.gateway</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>DispatchHandler.java</code> - This handler implements the <a href="https://docs.opendap.org/index.php/Gateway_Service">Gateway Service</a>. It is one of the DispatchHandlers loaded by the opendap.coreServlet.DispatchServlet</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.nciso</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>IsoDispatchHandler.java</code>- Deprecated (should be moved to <em>retired</em>)</p>
+</li>
+<li>
+<p><code>RubricDispatchHandler.java</code> - Deprecated (should be moved to <em>retired</em>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.ncml</strong> - <em>I think this whole package might be retired.</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NcmlDatasetDispatcher.java</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.ngap</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>NgapDispatchHandler.java</code> - This is the NGAP handler, a child od BEsDapDispatcher. It claims any request that begins with its prefix string (default: <em>ngap/</em>) and then uses it&#8217;s parent class and a specialization of the BesApi, NgapBesApi, to build BES commands to service the request.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.threddsHandler</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>StaticCatalogDispatch.java</code> - The <strong><em>olfs</em></strong> server static THREDDS client catalogs, and this is the class that does this. Static catalogs exist on the host filesystem and are integrated with the dynamic catalogs built by interacting with the BES.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.wcs.v2_0.http</strong> - <em>I think we should retire this package.</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>FormHandler.java</code></p>
+</li>
+<li>
+<p><code>HttpGetHandler.java</code></p>
+</li>
+<li>
+<p><code>SoapHandler.java</code></p>
+</li>
+<li>
+<p><code>XmlRequestHandler.java</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dapresponders">11. DapResponders</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The abstract class Dap4Responder class embodies a number of general operations needed for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Identifying requests that should be handled by an instance of the class.</p>
+</li>
+<li>
+<p>HTTP client/server content negotiation for DAP4 (DAP2 doesn&#8217;t support this)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><em>This could use a refactor to condense the hierarchy of inheritance from 4 classes to 2.</em>)</p>
+</div>
+<div class="sect2">
+<h3 id="dap2responders">11.1. DAP2 Responders</h3>
+<div class="paragraph">
+<p>Responders that handle all the DAP2 things. All are children of Dap4Responder. Yeah. I know. Go figure.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Package: <strong>opendap.bes.dap2Responders</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Ascii.java</code> - Uses the BES to produce and transmit the DAP2 ASCII encoded data response.</p>
+</li>
+<li>
+<p><code>CovJson.java</code> - Uses the BES to produce and transmit the DAP2 Coverage JSON encoded data response.</p>
+</li>
+<li>
+<p><code>CsvData.java</code> - Uses the BES to produce and transmit the DAP2 CSV encoded data response (which is fundamentally the same as the DAP2 ASCII response).</p>
+</li>
+<li>
+<p><code>Dap2Data.java</code> - Uses the BES to produce and transmit the DAP2 data response.</p>
+</li>
+<li>
+<p><code>Dap2IFH.java</code> - Uses the BES to retrieve the DAP3.2 DDX XML document. This is fed, along with injected state information, into an XSL transform to produce the DAP2 Data Request Form (aka the Interface From Hell, aka the IFH) and transmit form page to the requesting client.</p>
+</li>
+<li>
+<p><code>DAS.java</code> - Uses the BES to produce and transmit the DAP2 DAS response.</p>
+</li>
+<li>
+<p><code>DatasetInfoHtmlPage.java</code> - Uses the BES to produce and transmit the DAP2 Dataset Info Page response.</p>
+</li>
+<li>
+<p><code>DDS.java</code> - Uses the BES to produce and transmit the DAP2 DDS response.</p>
+</li>
+<li>
+<p><code>DDX.java</code> - Uses the BES to produce and transmit the DAP3.2 DDX response (unique to Hyrax, not part of the DAP2 specification, a stepping stone to DAP4).</p>
+</li>
+<li>
+<p><code>GeoTiff.java</code> - Uses the BES to produce a DAP2 data response and encode it as a GeoTiff file.</p>
+</li>
+<li>
+<p><code>GmlJpeg2000.java</code> - Uses the BES to produce a DAP2 data response and encode it as a GMLJpeg2000 file.</p>
+</li>
+<li>
+<p><code>Ijson.java</code> - Uses the BES to produce a DAP2 data response and encode it as an "instance" json (.ijsn) response.</p>
+</li>
+<li>
+<p><code>Iso19115.java</code> - Uses the BES to produce a DAP3.2 DDX response and then applies an XSL transform to produce ISO-19115 metadata document.</p>
+</li>
+<li>
+<p><code>Iso19115Rubric.java</code> - Uses the BES to produce a DAP3.2 DDX response and then applies an XSL transform to produce an HTML page the shows how the metadata does and does not conform to the ISO-19115 expectations.</p>
+</li>
+<li>
+<p><code>Json.java</code> - Uses the BES to produce a DAP2 data response and encode it as a json (.json) response.</p>
+</li>
+<li>
+<p><code>Netcdf3.java</code> - Uses the BES to produce a DAP2 data response and encode it as a netcdf-3 file.</p>
+</li>
+<li>
+<p><code>Netcdf4.java</code> - Uses the BES to produce a DAP2 data response and encode it as a netcdf-4 file.</p>
+</li>
+<li>
+<p><code>RDF.java</code> - Uses the BES to produce a DAP3.2 DDX response and then applies an XSL transform to an HTML page to represent the document as RDF.</p>
+</li>
+<li>
+<p><code>XmlData.java</code> - Uses the BES to produce a DAP2 data response and encode it as an XML document.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="genericresponders">11.2. Generic Responders</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Package: <strong>opendap.bes.dap4Responders</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>FileAccess.java</code> - Used to transmit files from the BES to the requesting client.</p>
+</li>
+<li>
+<p><code>Version.java</code> - Builds and returns the Hyrax combined version response document (XML).</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dap4responders">11.3. DAP4 Responders</h3>
+<div class="paragraph">
+<p>Responders that handle all the DAP4 things.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Package: <strong>opendap.bes.dap4Responders.DataResponse</strong> This package contains responders that return data in various encodings.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CovJsonDR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as Coverage JSON (may not have a companion implementation in the BES)</p>
+</li>
+<li>
+<p><code>CsvDR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as CSV.</p>
+</li>
+<li>
+<p><code>GeoTiffDR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as a GeoTiff file.</p>
+</li>
+<li>
+<p><code>GmlJpeg2000DR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as a GML JPEG 2000 file.</p>
+</li>
+<li>
+<p><code>IjsonDR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as instance JSON (.ijsn)".</p>
+</li>
+<li>
+<p><code>JsonDR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as JSON.</p>
+</li>
+<li>
+<p><code>Netcdf3DR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as a netcdf-3 file. Note that the netcdf-3 data model is a subset of the DAP4 data model and not all DAP4 data content m,ay encoded as netcdf-3.</p>
+</li>
+<li>
+<p><code>Netcdf4DR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as a netcdf-4 file.</p>
+</li>
+<li>
+<p><code>NormativeDR.java</code> - Uses the BES to produce and transmit the normative  DAP4 data response.</p>
+</li>
+<li>
+<p><code>XmlDR.java</code> - Uses the BES to produce and transmit the DAP4 data response encoded as an XML data response.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.bes.dap4Responders.DatasetMetadata</strong> This package contains responders that return metadata in various encodings.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>HtmlDMR.java</code> - Uses the BES to produce and return the DMR response which is used, along with an XSL transform and several state variable to produce the DAP4 Data Request Form.</p>
+</li>
+<li>
+<p><code>IjsonDMR.java</code> - Uses the BES to produce and transmit the DAP4 metadata response encoded as an instance JSON (.ijsn).</p>
+</li>
+<li>
+<p><code>JsonDMR.java</code> - Uses the BES to produce and transmit the DAP4 metadata response encoded as JSON.</p>
+</li>
+<li>
+<p><code>NormativeDMR.java</code> - Uses the BES to produce and transmit the normative DAP4 metadata response (XML).</p>
+</li>
+<li>
+<p><code>RdfDMR.java</code>  - Uses the BES to produce and transmit the DAP4 metadata response encoded as RDF.</p>
+</li>
+<li>
+<p><code>XmlDMR.java</code>  - Uses the BES to produce and transmit the DAP4 metadata response encoded as XML.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.bes.dap4Responders.DatasetServices</strong> This package contains responders that return the DAP4 Dataset Service Response (DSR) in various encodings. <em>I think at this opoint this package is obviated as the DSR while defined in the DAP4 specification does not enjoy any know useful implementation.</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>HtmlDSR.java</code>  - Uses the BES to retrieve the DSR response and return it encoded as HTML by using a XSL transform.</p>
+</li>
+<li>
+<p><code>NormativeDSR.java</code> - Uses the BES to produce and transmit the DSR response (XML).</p>
+</li>
+<li>
+<p><code>XmlDSR.java</code> - Uses the BES to produce and transmit the DSR response (XML).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Package: <strong>opendap.bes.dap4Responders.Iso19115</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>IsoDMR.java</code>- Uses the BES to produce a DAP4 DMR response and then applies an XSL transform to produce ISO-19115 metadata document.</p>
+</li>
+<li>
+<p><code>IsoRubricDMR.java</code> - Uses the BES to produce a DAP4 DMR response and then applies an XSL transform to produce an HTML page the shows how the metadata does and does not conform to the ISO-19115 expectations.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="authentication">12. Authentication/Authorization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For NASA deployments OLFS can be configured to provide authentication services using an (almost) OAuth2 implementation in the <strong><em>opendap.auth</em></strong> package. The implementation follows the Identity Provider (IdP) plus Policy Decision Point (PDP) pattern.</p>
+</div>
+<div class="sect2">
+<h3 id="_controls">12.1. Controls</h3>
+<div class="paragraph">
+<p>You must first build an authentication/authorization enabled the web archive file, and then you will need to configure the deployment.</p>
+</div>
+<div class="sect3">
+<h4 id="_enable_authenticationauthorization">12.1.1. Enable Authentication/Authorization</h4>
+<div class="paragraph">
+<p>To enable authentication: Edit the file <strong><em>resources/hyrax/WEB-INF/web.xml</em></strong> to enable to two authentication filters <strong><em>IdFilter</em></strong> and <strong><em>PEPFilter</em></strong>. Then the service must be rebuilt and a new WAR file generated with this change in place.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_configure_authenticationauthorization">12.1.2. Configure Authentication/Authorization</h4>
+<div class="paragraph">
+<p>All the configuration happens in the <strong><em>user-access.xml</em></strong> file located in the configuration directory.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_authentication_aka_the_identity_provider_idp">12.2. Authentication - aka the Identity Provider (IdP)</h3>
+<div class="paragraph">
+<p>Authentication is the operation wherein a users software client establishes that it is working on behalf of a particular user. Use the abstract class <strong><em>IdProvider</em></strong> to capture the common API for an identity provider and provide two implementations, <strong><em>UrsIdP</em></strong> and <strong><em>TomcatRealmIdP</em></strong>. In theory the <strong><em>TomcatRealmIdP</em></strong> should work the Tomcat Memory Authentication Realm, but this has not been verified in years. The <strong><em>UrsIdP</em></strong> knows how to authenticate user with NASA&#8217;s Earth Data Login (EDL) service. In NASA speak, <strong><em>UrsIdP</em></strong> is an <em>EDL client</em>. The IdFilter provides the core of the authentication functionality and handles saving request information (Like target URL and query string) in a user session so that it can be used to redirect the client to their original request target when the client returns from a <strong><em>Single Sign On</em></strong> authentication journey.</p>
+</div>
+<div class="sect3">
+<h4 id="_edl_tokens">12.2.1. EDL Tokens</h4>
+<div class="paragraph">
+<p>The IdFilter will also accept an HTTP <strong><em>Authorization</em></strong> headers with a token.</p>
+</div>
+<div class="paragraph">
+<p>Typically, <strong><em>Authorization</em></strong> headers look like:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre class="nowrap">Authorization: Bearer A_LONG_STRING_OF_TOKEN_THINGS</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These can be submitted to the OLFS with the request and no trip need be made to EDL by the client. When using authorization tokens, sessions do not need to be maintained by the client, although doing so makes the transaction faster still.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_classes">12.2.2. Classes</h4>
+<div class="paragraph">
+<p>The IdP is composed of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>IdProvider</em></strong> - Theis abstract classes contains common machinery/API is used to parent specific implementations of a provider.</p>
+</li>
+<li>
+<p><strong><em>UrsIdp</em></strong> - Implements an IdProvider that utilizes Earth Data Login (EDL, aka URS) to authenticate a user. All the URS action is in here!</p>
+</li>
+<li>
+<p><strong><em>TomcatRealmIdp</em></strong> - In theory this IdProvider implementation works with Tomcat Realms (like the MemoryRealm). It&#8217;s been a long time since it was tested.</p>
+</li>
+<li>
+<p><strong><em>IdManager</em></strong> - This <strong>singleton</strong> class holds a collection of IdProviders, but in practice only ever has one. If NASA follows through with allowing user to choose between EDL  Google authentication then we&#8217;ll be right in here making this work!</p>
+</li>
+<li>
+<p><strong><em>IdFilter</em></strong> - This class does the heavy lifting of authentication</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_authorization_aka_the_policy_decision_point_pdp">12.3. Authorization - aka the Policy Decision Point (PDP)</h3>
+<div class="paragraph">
+<p>In this software we define users, groups, and roles in order to create role based access policies.
+In <strong><em>user-access.xml</em></strong> configuration file we define a group based on one or more "user" definitions:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre class="nowrap">&lt;!-- Define the group urs_users as all users in the authContext urs --&gt;
+&lt;group id="urs_users" &gt;
+    &lt;user idPattern="^(?!\s*$).+" authContext="urs" /&gt;
+&lt;/group&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A role is defined as one more groups and each policy can be applied to one or more roles.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre class="nowrap">&lt;!-- The only group in the role "users" is the "urs_users" group. --&gt;
+&lt;role id="users"&gt;
+    &lt;group id="urs_users" /&gt;
+&lt;/role&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s a policy that allows anyone to access the image and navigable catalog files in Hyrax.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre class="nowrap">&lt;Policy class="opendap.auth.RegexPolicy"&gt;
+    &lt;role&gt;.*&lt;/role&gt;
+    &lt;resource&gt;^.*((\/docs\/.*)|(\/)|(\.(css|png|jpg|ico|gif|xsl|jsp|svg))|(\/contents\.html)|(\/catalog\.html)|(\/catalog\.xml)|(logout)|(login)|(\/version))$&lt;/resource&gt;
+    &lt;queryString&gt;.*$&lt;/queryString&gt;
+    &lt;allowedAction&gt;HEAD&lt;/allowedAction&gt;
+    &lt;allowedAction&gt;GET&lt;/allowedAction&gt;
+&lt;/Policy&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This allows non-authenticated users to look around , and when something bad happens they get a web page rendered with css and images, which they wouldn&#8217;t if this rule is not included.</p>
+</div>
+<div class="sect3">
+<h4 id="_classes_2">12.3.1. Classes</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><em>Policy</em></strong> - This interface defines the policy API</p>
+</li>
+<li>
+<p><strong><em>RegexPolicy</em></strong> - A policy the uses Regx matching on the URL path and the query string to evaluate access. If the request matches the regex patterns users/groups/roles held by the Policy are allowed access.</p>
+</li>
+<li>
+<p><strong><em>PolicyDecisionPoint</em></strong> - This abstract class is the parent of <strong><em>RemotePDP</em></strong> and <strong><em>SimplePDP</em></strong>.</p>
+</li>
+<li>
+<p><strong><em>PEPFilter</em></strong> - This Filter is an embodiment of a policy enforcement point. It holds an instance of PolicyDecisionPoint which is used to evaluate incoming requests to determine if access will be allowed. If the request is not permitted, and they aren&#8217;t logged in, then they are redirected to the login endpoint (aka IdFilter) to get that sorted.</p>
+</li>
+<li>
+<p><strong><em>PDPService</em></strong> - This child of HttpServlet can be runs as a standalone PDP service, accepting evaluation requests and responding with simple permitted or not permitted.</p>
+</li>
+<li>
+<p><strong><em>RemotePDP</em></strong> - Defines a policy decision point somewhere on the internet. With a remote PDP the server sends the uid,
+authContext, url path, query , and http verb (GET, POST, etc.) and the remote PDP responds with permitted or not permitted.</p>
+</li>
+<li>
+<p><strong><em>SimplePDP</em></strong> - <em>"Simple is often better"</em> - Ned Greene 1984 This is the policy decision point that we use. It is locally hostsed and configured.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_ifh">13. The IFH</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here&#8217;s a simple picture that shows how the DAP4 IFH is produced. The DAP2 IFH production process is nearly identical, but deprecated.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="../images/technical/olfs.jpg" alt="olfs" width="640"></span></p>
+</div>
+<div class="paragraph">
+<p>What this picture does not capture is the hot mess inside the <strong><em>dap4ifh.xsl</em></strong> operation. The XSL takes the DMR and builds a javascript program that enables the form page to operate, and then it wraps an HTML page with controls for selection and subsetting around the dynamically generated javascript code.  One of the tasks is to create javascript variable names for the things in the DMR that can be selected and, if possible, subset. Currently, this includes dap4 Variables and Groups. But hopefully soon will include dap4 Dimensions.</p>
+</div>
+<div class="paragraph">
+<p>There are known issues with the current approach. One such issue: The XSL seeks to use the actual variable names in the DMR as the javascript variable names, and that&#8217;s a problem because the allowed characters in javascript variable names encompass just a small subset of the allowed characters in a DAP4 Variable | Attribute | Dimension name. For example, a variable name containing a space character is allowable in DAP4, but it will break this code because the space isn&#8217;t allowed in javascript variable names. This is a legacy approach that needs to be refactored so that the DMR variable names are available for display purposes, but under the hood the associated javascript variable names are valid. Personally I would like to keep some form of the original DMR name just because reading the resulting code in the Form response is hard enough without anonymizing the variable names!</p>
+</div>
+<div class="sect2">
+<h3 id="_constraint_issues">13.1. Constraint Issues</h3>
+<div class="paragraph">
+<p>There are problems with the way the form builds dap4 constraint expressions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><a href="https://bugs.earthdata.nasa.gov/browse/HYRAX-1070">Special characters</a></strong> - When characters like the space character occur in a variable name, that name must be surrounded by double quotes in the dap4 constraint for the Hyrax constraint expression parser to handle it correctly. The form needs to detect these characters and double quote these names as needed. <a href="https://opendap.github.io/dap4-specification/DAP4.html#_fully_qualified_names">What&#8217;s that?</a> <a href="https://opendap.github.io/dap4-specification/DAP4.html#_constraints">A list?</a> You want List?</p>
+<div class="ulist">
+<ul>
+<li>
+<p>This double quoting business is not mentioned in the DAP4 specifcation. Seems like we need to evaluate our CE parser to see if it really has to have the quotes? The names in used in the <em>dap4.ce</em> are FQNs after all, and if the name is properly escaped then it seems to me that the parser should be able to handle it. (<a href="https://opendap.github.io/dap4-specification/DAP4.html#_fully_qualified_names">see the table at the end of the Fully Qualified Names section of the DAP4 specification</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Dimension based subsetting</strong> - The IFH currently requires that the user provide a subsetting expression for every variable, even if the variables have common shared Dimensions. The form should allow subsetting by Dimension: The user creates a subset expression for just the Dimensions and then all the selected variables are subset based on the Dimension subsets. This would be and advanced IFH assignment.</p>
+</li>
+<li>
+<p><a href="https://bugs.earthdata.nasa.gov/browse/HYRAX-461">Subset expressions can be simplified</a> - If the user selects an array and the subset expression in the form is asking for every element, then the array index subset expression should be elided from the constraint expression.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="testing">14. Testing</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Virtually no unit tests exist for the <strong><em>olfs</em></strong>.</p>
+</li>
+<li>
+<p>There are regression tests. The tests exist in their own GitHub repo, the <a href="https://github.com/OPENDAP/hyrax_regression_tests">hyrax_regression_tests</a> project. They require a fully operational Hyrax in order to be run.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-04-19 02:05:07 UTC
+</div>
+</div>
+</body>
+</html>
