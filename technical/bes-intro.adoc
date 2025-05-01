@@ -93,12 +93,12 @@ methods and the maker() _virtual constructor_ must be included in a Module imple
 
 In addition to the code of the module, the correct entries in the BES Keys must be made. To be
 loaded, a module must have two BES keys set correctly. The first is that the name of the module
-must be included in the comma separated list of names set to the `BES.modules` key. The module
+must be included in the comma-separated list of names set to the `BES.modules` key. The module
 can have any name (assuming valid syntax) so long as it is not already in use. There is one
 Key called BES.Modules for the entire BES. See <<src-mod-keys>>.
 
 The second BES Key is formed using the module name as a suffix to `BES.module`. The value of
-this key is full path to the shared object file that holds the module software and that will
+this key is full path to the shared object file that holds the module software, and that will
 be loaded by the BESModuleApp using the unix/Linux `dload()` system call.
 
 In the example <<src-mod-keys>>, the module name is `nc` so the BES Key that holds the path
@@ -123,7 +123,7 @@ BES.module.nc = /Users/jimg/src/opendap/hyrax_git/build/lib/bes/libnc_module.so
 
 .Source from NCModule.cc
 [#src-nc-module]
-[source,c++]
+[source,c++,linenums]
 ----
 #define NC_CATALOG "catalog"
 
@@ -136,15 +136,15 @@ void NCModule::initialize(const string & modname)
 
     BESDapService::handle_dap_service(modname);
 
-    if (!BESCatalogList::TheCatalogList()->ref_catalog( NC_CATALOG)) {
-        BESCatalogList::TheCatalogList()->add_catalog(new BESCatalogDirectory( NC_CATALOG));
+    if (!BESCatalogList::TheCatalogList()->ref_catalog(NC_CATALOG)) {
+        BESCatalogList::TheCatalogList()->add_catalog(new BESCatalogDirectory(NC_CATALOG));
     }
     else {
         BESDEBUG("nc", "    catalog already exists, skipping" << endl);
     }
 
     if (!BESContainerStorageList::TheList()->ref_persistence( NC_CATALOG)) {
-        BESContainerStorageList::TheList()->add_persistence(new BESFileContainerStorage( NC_CATALOG));
+        BESContainerStorageList::TheList()->add_persistence(new BESFileContainerStorage(NC_CATALOG));
     }
     else {
         BESDEBUG("nc", "    storage already exists, skipping" << endl);
@@ -164,11 +164,7 @@ extern "C" BESAbstractModule * maker()
 ----
 
 == BES Containers and Container Storage
-The BES using the abstraction of _Containers_ that hold data to enable all the BES modules
-that read data to work with all the different kinds of data stores (files, S3, etc.) the BES
-is configured to use. To understand the flow of control the the BES Framework manages,
-it is important to understand how instances of BESContainer are used to abstract different
-types of data.
+The BES (Back End Server) defines a Container abstraction to standardize access to data across different storage backends. This modular interface allows data-handling modules to operate independently of where or how the data is stored—whether it's in local files, S3 buckets, or other systems. The design supports extensibility: new storage types can be integrated by implementing the BESContainer interface without modifying core BES logic. Understanding how BESContainer instances encapsulate and expose data is key to following the control flow within the BES Framework.
 
 === The components
 . A module (a concrete instance of the BESAbstractModule class)

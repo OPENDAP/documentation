@@ -1,0 +1,172 @@
+= VSCode and autotools
+:James Gallagher <jgallagher@opendap.org>:
+{docdate}
+:numbered:
+:docinfo: shared
+:icons: font
+:tabsize: 4
+:indent: 4
+:doctype: article
+:imagesdir: ../images/dev-info
+:toc:
+:toclevels: 3
+:xrefstyle: short
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+:homepage: www.opendap.org
+
+== About
+Generated using the Jet Brains AI tool, James Gallagher, April 30, 2025.
+
+For integrating an autotools-based project with VSCode, I'll help you with the best practices. Let me search for up-to-date information about this.
+Based on the search results, I can provide you with a comprehensive guide on how to integrate an autotools-based project with VS Code. Here's the recommended approach:
+
+== Install Required Extensions
+- Install the "Autotools" extension [[1]](https://marketplace.visualstudio.com/items?itemName=mergesium.autotools)
+- Install the "C/C++" extension for IntelliSense support
+- Install the "Makefile Tools" extension for better Makefile integration
+
+== Configure the Autotools Extension
+- The extension will automatically detect your and files `configure.ac` and `Makefile.am`
+- It provides syntax highlighting and IntelliSense for autotools files
+- Enables build task generation for your project [[6]](https://www.dvlv.co.uk/setting-up-a-c-ide-for-an-autotools-project.html)
+
+== Set up Build Tasks
+Create a `.vscode/tasks.json` file with the following configuration:
+
+.tasks.json
+[source,json,linenum]
+----
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+        "label": "Configure",
+        "type": "shell",
+        "command": "./configure",
+        "problemMatcher": []
+        },
+        {
+        "label": "Build",
+        "type": "shell",
+        "command": "make",
+        "group": {
+        "kind": "build",
+        "isDefault": true
+        },
+        "problemMatcher": ["$gcc"]
+        },
+        {
+        "label": "Clean",
+        "type": "shell",
+        "command": "make clean",
+        "problemMatcher": []
+        }
+    ]
+}
+----
+
+== Configure IntelliSense
+Create a `.vscode/c_cpp_properties.json` file to help VS Code understand your project structure:
+
+.c_cpp_properties.json
+[source,json,linenum]
+----
+{
+    "configurations": [
+    {
+    "name": "Linux",
+    "includePath": [
+    "${workspaceFolder}/**",
+    "${workspaceFolder}/config"
+    ],
+    "defines": [],
+    "compilerPath": "/usr/bin/gcc",
+    "cStandard": "c11",
+    "cppStandard": "c++17",
+    "intelliSenseMode": "gcc-x64"
+    }
+    ],
+    "version": 4
+}
+----
+
+== Workflow
+- Use `Ctrl+Shift+B` (or `Cmd+Shift+B` on macOS) to access the build tasks
+- Run the "Configure" task first to generate the Makefile
+- Use the "Build" task to compile your project
+- Use the "Clean" task when you need to clean the build [[3]](https://medium.com/@willemdejonge/use-visual-studio-code-with-an-autotools-based-c-c-project-22d90118cd22)
+
+== Additional Tips
+- The Makefile Tools extension will automatically detect your Makefile and provide additional features like:
+- Build target detection
+- IntelliSense configuration based on compile commands
+- Integrated debugging support [[4]](https://devblogs.microsoft.com/cppblog/now-announcing-makefile-support-in-visual-studio-code/)
+
+== Debugging Setup
+Create a `.vscode/launch.json` file for debugging configuration:
+
+.launch.json
+[source,json,linenum]
+----
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+        "name": "Debug",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/your_program_name",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+            "description": "Enable pretty-printing for gdb",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+            }
+        ],
+        "preLaunchTask": "Build"
+        }
+    ]
+}
+----
+
+This setup will give you a fully functional development environment for your autotools-based project, including:
+- Syntax highlighting and IntelliSense for both source files and autotools files
+- Integrated build commands
+- Debugging support
+- Error parsing and navigation
+- Build task automation
+
+Remember to adjust the paths and configurations according to your specific project structure and requirements. The integration will work with your existing autotools build system while providing modern IDE features through VS Code.
+
+[appendix]
+== References
+Here are all the reference links from the search results in order:
+
+1. [[1]](https://marketplace.visualstudio.com/items?itemName=mergesium.autotools) - VS Code Autotools Integration - Visual Studio Marketplace
+
+2. [[2]](https://earthly.dev/blog/autoconf/) - Using Autotools to Configure, Make, and Install a Program
+
+3. [[3]](https://medium.com/@willemdejonge/use-visual-studio-code-with-an-autotools-based-c-c-project-22d90118cd22) - Use Visual Studio Code with an autotools based C/C++ project
+
+4. [[4]](https://devblogs.microsoft.com/cppblog/now-announcing-makefile-support-in-visual-studio-code/) - Now announcing: Makefile support in Visual Studio Code!
+
+5. [[5]](https://earthly.dev/blog/vscode-make/) - Building in Visual Studio Code with a Makefile
+
+6. [[6]](https://www.dvlv.co.uk/setting-up-a-c-ide-for-an-autotools-project.html) - Setting up a C IDE for an Autotools Project
+
+7. [](https://www.youtube.com/watch?v=dc1kEJvS248) - Creating a simple Autotools based project (YouTube)
+
+8. [](https://dansanderson.com/lab-notes/autotools-in-2022/) - C projects with GNU Autotools in 2022
+
+9. [](https://stackoverflow.com/questions/65555603/how-to-produce-a-configure-script-for-windows-with-autotools) - How to produce a configure script for windows with autotools
+
+10. [](https://www.reddit.com/r/C_Programming/comments/1d7txde/usage_of_gnu_autotools_for_unit_tests_in_c/) - Usage of GNU Autotools for "unit tests" in C (Reddit)
+
+Note: In my previous response, I directly referenced links [[1]](https://marketplace.visualstudio.com/items?itemName=mergesium.autotools), [[3]](https://medium.com/@willemdejonge/use-visual-studio-code-with-an-autotools-based-c-c-project-22d90118cd22), [[4]](https://devblogs.microsoft.com/cppblog/now-announcing-makefile-support-in-visual-studio-code/), and [[6]](https://www.dvlv.co.uk/setting-up-a-c-ide-for-an-autotools-project.html) while incorporating information from the other sources into the comprehensive guide.
