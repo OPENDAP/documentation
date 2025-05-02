@@ -163,6 +163,9 @@ extern "C" BESAbstractModule * maker()
 }
 ----
 
+[WARNING]
+AI wrote the bulk of this text from here onward, so take it with a grain of salt until it has been verified.
+
 == BES Containers and Container Storage
 The BES (Back End Server) defines a Container abstraction to standardize access to data across different storage backends. This modular interface allows data-handling modules to operate independently of where or how the data is stored—whether it's in local files, S3 buckets, or other systems. The design supports extensibility: new storage types can be integrated by implementing the BESContainer interface without modifying core BES logic. Understanding how BESContainer instances encapsulate and expose data is key to following the control flow within the BES Framework.
 
@@ -183,21 +186,716 @@ image::classBESFileContainerStorage__coll__graph.png[BESFileContainerStorage col
 [#img-file-container]
 image::classBESFileContainer__coll__graph.png[BESFileContainer collaboration diagram]
 
-== BES Lists
+== BES List Classes Overview
 [#sec-bes-lists]
-The BES uses a number of singleton `*List` classes to manage named collections of objects that
-will be used during command planning and evaluation.
+The BES (Back End Server) component of the OPeNDAP Hyrax data server uses a family of List classes to manage and orchestrate the various objects involved in processing data requests. These lists are integral to the BES framework's dynamic and extensible architecture, providing a uniform mechanism for storing, retrieving, and iterating over collections of runtime objects such as containers, modules, commands, and request handlers.
 
-*_TBD_*
+=== General Structure and Purpose
+BES List classes follow a common pattern: they are typically singleton-like registries that manage named objects, which may be added at runtime through configuration files or dynamically loaded modules. Each List class wraps a map-like structure (often keyed by a string identifier) and provides methods for registration, lookup, and iteration.
 
-== BES Response Handlers
+Examples include:
+- `BESContainerList`
+- `BESModuleList`
+- `BESCommandList`
+- `BESRequestHandlerList`
+- `BESInfoList`
+
+These classes provide type-safe access to specific categories of BES components and enforce the lifetime and ownership rules needed by the BES's request/response processing model.
+
+=== Role in BES Orchestration
+At a high level, the BES orchestration framework processes requests through the following sequence:
+
+. *Command Dispatching*
+A client sends a request containing a command name and associated parameters. The BES uses `BESCommandList` to look up the appropriate command handler (`BESCommand` subclass) and execute it.
+
+. *Container Resolution*
+If the command operates on a data object (e.g., a dataset or collection), the BES uses `BESContainerList` to locate the appropriate `BESContainer` instance. These containers abstract access to data regardless of its storage backend (e.g., file system, S3, custom APIs).
+
+. *Module and Handler Discovery*
+The actual processing logic (e.g., generating a DAP response) is delegated to a `BESModule`, which may internally use `BESRequestHandler` instances. These are looked up via `BESModuleList` and `BESRequestHandlerList`, respectively.
+
+. *Extensibility via Registration*
+During startup or module loading, new objects (containers, modules, commands, etc.) are registered with their respective `*List` classes. This registration mechanism enables plugins to extend the BES at runtime without modifying core code.
+
+=== Concurrency and Lifetime
+The `*List` classes are designed to be thread-safe where necessary, typically by enforcing immutable references or by managing concurrent access via internal synchronization. Object lifetimes are often managed via `shared_ptr`, ensuring that list contents are automatically cleaned up when no longer in use.
+
+=== Benefits of the List Pattern in BES
+
+- *Modularity*: Enables dynamic loading and registration of components.
+- *Isolation*: Each component is decoupled from the orchestration logic.
+- *Extensibility*: New features can be added with minimal changes to the core framework.
+- *Introspection*: Lists such as `BESInfoList` support administrative commands that report on the current BES state, including registered modules and containers.
+
+=== Core `*List` Classes in BES
+The following is a list of major `*List` classes used in the BES framework, along with a short description of their purpose:
+
+[cols="1,3",options="header"]
+|===
+| Class Name
+| Description
+
+| BESContainerList
+| Manages instances of BESContainer, which abstract data sources such as files, S3 buckets, or other storage backends. This list allows the BES to resolve and access data containers by name during request processing.
+
+| BESCommandList
+| Registers and dispatches BESCommand objects, each representing a specific operation (e.g., Get, Describe, Version). When a client sends a command, the BES uses this list to locate and execute the corresponding handler.
+
+| BESModuleList
+| Tracks dynamically loaded modules, including data handlers and processing components. This list supports runtime extensibility by allowing new modules to be registered and integrated without modifying the core BES code.
+
+| BESRequestHandlerList
+| Manages BESRequestHandler instances responsible for handling specific types of requests or protocols. This list facilitates the delegation of request processing to appropriate handlers based on the request context.
+
+| BESInfoList
+| Holds informational objects that provide metadata about the BES's current state, configuration, and capabilities. This list is useful for administrative commands and introspection tools that query the server's status.
+
+| BESResponseList
+| Maintains a collection of response objects generated during request processing. This list ensures that responses are properly managed and delivered back to clients in an organized manner.
+
+| BESDataHandlerList
+| Contains data handler instances that interpret and process specific data formats (e.g., NetCDF, HDF). This list enables the BES to select the appropriate handler for a given data source based on its format.
+
+| BESServiceList
+| Registers available services that the BES can perform, such as data subsetting or transformation operations. This list allows the BES to advertise and manage the services it offers to clients.
+
+| BESModuleFactoryList
+| Manages factories responsible for creating instances of modules. This list supports the dynamic instantiation of modules as needed during request processing.
+
+| BESContainerFactoryList
+| Tracks factories that produce BESContainer instances. This list allows the BES to create containers dynamically based on the type of data source being accessed.
+|===
+
+These `*List` classes are integral to the BES's modular and extensible architecture. They provide centralized registries for various components, enabling dynamic discovery, registration, and management of the objects involved in processing client requests. By using these lists, the BES can efficiently orchestrate complex workflows, support a wide range of data formats and services, and facilitate the integration of new functionalities with minimal disruption to existing systems.
+
+== BESRequestHandler and BESResponseHandler Overview
 [#sec-resp-hand]
-*_TBD_*
+The `BESRequestHandler` and `BESResponseHandler` classes are core parts of the BES orchestration framework. They define how the server interprets client requests and delivers responses, enabling flexible protocol handling and output formatting. Together, they form the foundation of how BES connects client commands to output delivery.
 
-== BES Transmitters
+=== BESRequestHandler
+
+The `BESRequestHandler` class provides an interface for components that handle the delivery of responses for specific types of BES commands or protocols. These handlers are responsible for executing logic that reads, transforms, and serializes data in response to a client's request.
+
+==== Responsibilities
+
+- Interpret the `BESRequest` object (which includes command and parameters).
+- Interact with `BESContainer`, `BESCommand`, and potentially `BESDataHandler` instances.
+- Create and populate a `BESResponseObject` (e.g., DAP2 response, error message).
+- Register themselves with the `BESRequestHandlerList` under a symbolic name (e.g., `"dap"` or `"dap4"`).
+
+==== Key Methods
+
+[source,cpp]
+----
+virtual void invoke(const BESRequest& request, BESResponseObject& response) = 0;
+----
+
+This pure virtual method is overridden by subclasses to implement the actual request processing logic. It is called by the BES orchestration layer during request dispatch.
+
+==== Example Subclasses
+
+- `BESDapRequestHandler` – handles DAP2 responses
+- `BESDmrppRequestHandler` – supports DMR++ output generation
+- `BESDap4RequestHandler` – handles DAP4 protocol requests
+
+==== Integration
+
+`BESRequestHandler` instances are registered at runtime with the `BESRequestHandlerList`. The BES uses the symbolic name (often specified by the client or derived from the request path) to locate and invoke the correct handler.
+
+=== BESResponseHandler
+
+The `BESResponseHandler` class defines how response objects are formatted and transmitted to the client. While the `BESRequestHandler` prepares the response content, the `BESResponseHandler` manages the final output step.
+
+This class abstracts the output sink, which might be a socket, a file, or an internal buffer depending on the context (e.g., for testing or aggregation).
+
+==== Responsibilities
+
+- Serialize and write `BESResponseObject` instances.
+- Manage output format (e.g., binary, XML, DAP2 DDS/DAS, DAP4 DMR).
+- Provide hooks for error formatting and status reporting.
+
+==== Key Methods
+
+[source,cpp]
+----
+virtual void send_response(const BESResponseObject& response) = 0;
+----
+
+The subclass implements this method to define how the response is transmitted or stored.
+
+==== Example Subclasses
+
+- `BESXMLResponseHandler` – emits responses as XML.
+- `BESDap2ResponseHandler` – serializes responses in DAP2 format.
+- `BESDap4ResponseHandler` – handles DAP4 responses.
+- `BESDebugResponseHandler` – outputs responses for diagnostics.
+
+==== Collaboration with Request Handlers
+
+A typical execution flow looks like this:
+
+. A `BESRequestHandler` interprets the request and creates a `BESResponseObject`.
+. The BES framework selects a `BESResponseHandler` based on request or configuration context.
+. The response handler is invoked to serialize and transmit the response.
+
+=== Summary
+
+Together, `BESRequestHandler` and `BESResponseHandler` encapsulate the BES’s request-response cycle. This separation of concerns allows developers to introduce new protocols and output formats with minimal impact on the rest of the BES framework. It also simplifies testing, as handlers can be independently instantiated and exercised.
+
+== Handler Registration and the Role of `*List` Classes
+
+The Hyrax BES is built around a modular architecture that uses centralized registries—called `*List` classes—to manage pluggable components like commands, containers, and handlers. This design enables dynamic registration and lookup of components at runtime, allowing the server to be easily extended with new functionality.
+
+This section explains how `BESRequestHandler` and `BESResponseHandler` classes are registered with the BES and describes the role of the relevant `*List` classes in that process.
+
+=== The Registration Pattern
+
+All BES components that are dynamically looked up—such as request handlers, commands, and containers—follow a common pattern:
+
+. A derived class (e.g., `MyRequestHandler`) is implemented.
+. An instance of the class (or a factory for it) is created at runtime.
+. The instance is registered with a `*List` class under a unique string key.
+. Later, the BES uses that key to look up and invoke the registered object.
+
+This allows handlers to be selected by name at runtime (often specified in a request or in BES configuration) without hard-coding behavior.
+
+=== Registering a `BESRequestHandler`
+
+Handlers are typically registered in a module’s initialization function, such as:
+
+[source,cpp]
+----
+void initialize_my_module() {
+    BESRequestHandlerList::TheList()->add_handler(
+        "myformat", std::make_shared<MyRequestHandler>());
+}
+----
+
+This call adds a new handler instance to the global `BESRequestHandlerList`, keyed by the string `"myformat"`. Later, when the BES receives a request that maps to `"myformat"`, it retrieves the corresponding handler and invokes it.
+
+==== Relevant `*List` Class
+
+- `BESRequestHandlerList`:
+Stores all registered `BESRequestHandler` instances. Provides `add_handler()`, `find_handler()`, and iteration utilities.
+
+=== Registering a `BESResponseHandler`
+
+While request handlers are typically registered globally, response handlers are usually selected contextually during request processing (e.g., based on Accept headers or format parameters). However, some modules do register reusable response handlers:
+
+[source,cpp]
+----
+BESResponseHandlerList::TheList()->add_handler(
+    "dap2", std::make_shared<BESDap2ResponseHandler>());
+----
+
+This makes the handler available for use during response dispatching.
+
+==== Relevant `*List` Class
+
+- `BESResponseHandlerList`:
+Stores response handler objects. It supports registration and lookup via symbolic names, enabling dynamic selection of output serializers.
+
+=== Invocation During Request Processing
+
+The orchestration flow tying all of this together looks like this:
+
+. The client sends a request indicating a command and possibly a format or protocol.
+. The BES parses the request and uses `BESCommandList` to find the correct `BESCommand`.
+. The command, in turn, invokes the appropriate `BESRequestHandler` via `BESRequestHandlerList`.
+. The handler generates a `BESResponseObject`, which is serialized using a `BESResponseHandler` from `BESResponseHandlerList`.
+
+This modular structure means that:
+
+- You can introduce new protocols by subclassing `BESRequestHandler` and registering it.
+- You can support new output formats by subclassing `BESResponseHandler`.
+- You can integrate these without touching core BES code.
+
+=== Summary
+
+The `*List` classes act as dynamic registries that decouple the BES framework from specific implementations of request or response logic. This pattern:
+
+- Simplifies extensibility
+- Encourages separation of concerns
+- Enables runtime flexibility
+
+For developers, understanding how to register and retrieve components from `*List` classes is key to effectively extending or customizing the BES.
+
+== Example: Registering a Custom BESRequestHandler and BESResponseHandler
+
+This example demonstrates how to implement and register a custom `BESRequestHandler` and `BESResponseHandler` in a BES module. This pattern is useful for introducing new protocols, data access methods, or response formats.
+
+=== Step 1: Implement a Custom Request Handler
+
+[source,cpp]
+----
+#include "BESRequestHandler.h"
+#include "BESResponseObject.h"
+#include <iostream>
+
+class MyCustomRequestHandler : public BESRequestHandler {
+public:
+    MyCustomRequestHandler() = default;
+    virtual ~MyCustomRequestHandler() = default;
+
+    void invoke(const BESRequest &request, BESResponseObject &response) override {
+        std::string msg = "Handled request by MyCustomRequestHandler\n";
+        response.append_output(msg); // Add content to response stream
+    }
+
+    std::string name() const override {
+        return "MyCustomRequestHandler";
+    }
+
+    void dump(std::ostream &strm) const override {
+        strm << "MyCustomRequestHandler: handles custom format requests";
+    }
+};
+----
+
+=== Step 2: Implement a Custom Response Handler
+
+[source,cpp]
+----
+#include "BESResponseHandler.h"
+#include "BESResponseObject.h"
+
+class MyCustomResponseHandler : public BESResponseHandler {
+public:
+    MyCustomResponseHandler() = default;
+    virtual ~MyCustomResponseHandler() = default;
+
+    void send_response(const BESResponseObject &response) override {
+        std::cout << "== Custom Response Start ==" << std::endl;
+        std::cout << response.get_output();  // Dump content to stdout (or a real output stream)
+        std::cout << "== Custom Response End ==" << std::endl;
+    }
+
+    std::string name() const override {
+        return "MyCustomResponseHandler";
+    }
+
+    void dump(std::ostream &strm) const override {
+        strm << "MyCustomResponseHandler: formats output for custom format";
+    }
+};
+----
+
+=== Step 3: Register the Handlers in a Module Init Function
+
+Create an initialization function that will be called when your module is loaded by the BES.
+
+[source,cpp]
+----
+#include "BESRequestHandlerList.h"
+#include "BESResponseHandlerList.h"
+
+extern "C" void initialize_my_custom_module() {
+    // Register request handler
+    BESRequestHandlerList::TheList()->add_handler(
+        "custom", std::make_shared<MyCustomRequestHandler>());
+
+    // Register response handler
+    BESResponseHandlerList::TheList()->add_handler(
+        "custom", std::make_shared<MyCustomResponseHandler>());
+}
+----
+
+You would typically build this code into a shared object (`.so` or `.dylib`) and configure the BES to load it using a `.mod` file or `bes.conf` entry like:
+
+[source]
+----
+module: my_custom_module /path/to/libmy_custom_module.so
+----
+
+=== Step 4: Using the Handlers
+
+Once registered, your handlers can be triggered by client requests that specify `"custom"` as the protocol or response format, depending on how you hook into the BES command logic.
+
+For example, a request like:
+
+----
+http://server/opendap/data.dap?handler=custom
+----
+
+Could be routed to `MyCustomRequestHandler`, and the output would be formatted by `MyCustomResponseHandler`.
+
+=== Summary
+
+This pattern allows you to cleanly extend the BES with new functionality:
+
+- Define the logic in subclasses of `BESRequestHandler` and `BESResponseHandler`.
+- Register them at module initialization using the appropriate `*List` class.
+- Trigger them using symbolic names in client requests or internal configuration.
+
+This modular design supports protocol evolution, experimentation, and third-party extension without modifying core BES code.
+
+== BESTransmitter Class Hierarchy
 [#sec-bes-trans]
-*_TBD_*
 
-== BES Server Startup
+The `BESTransmitter` class hierarchy is a critical part of the OPeNDAP BES (Back End Server) architecture. It defines how response data—generated by request handlers and serialized by response handlers—is ultimately **delivered to the client** or output stream. While `BESRequestHandler` and `BESResponseHandler` define what content should be produced and how it should be formatted, the `BESTransmitter` controls **where and how that data is sent**.
+
+=== Purpose
+
+`BESTransmitter` provides an abstraction layer between the internal BES processing pipeline and the output mechanism. This allows BES to deliver output:
+
+- To standard output (e.g., for CGI-mode operation)
+- Through a network socket (e.g., in BES Daemon mode)
+- To a file (e.g., for testing or debugging)
+- To a memory buffer (e.g., for aggregating or chaining handlers)
+
+=== Base Class: `BESTransmitter`
+
+The `BESTransmitter` base class defines the virtual interface for transmitting response content.
+
+==== Key Responsibilities
+
+- Accept the output produced by a `BESResponseHandler`
+- Manage the underlying output stream
+- Ensure proper lifecycle of the output resource (e.g., open/close socket)
+
+==== Important Methods
+
+[source,cpp]
+----
+class BESTransmitter {
+public:
+    virtual std::ostream& output_stream() = 0;
+    virtual void flush() = 0;
+    virtual void close() = 0;
+
+    virtual void dump(std::ostream &strm) const = 0;
+    virtual std::string name() const = 0;
+
+    virtual ~BESTransmitter() = default;
+};
+----
+
+These methods provide a consistent interface for writing and managing response data. Implementations wrap the actual destination (e.g., `std::cout`, a socket, a file).
+
+=== Common Subclasses
+
+[cols="1,3",options="header"]
+|===
+| Class
+| Description
+
+| `BESStdoutTransmitter`
+| Sends output to `stdout`. Often used in CGI-based deployments of Hyrax.
+
+| `BESSocketTransmitter`
+| Sends output through a socket. Used when BES runs in daemon mode (e.g., with a front-end server like `besd`).
+
+| `BESTestTransmitter`
+| Captures output in a stringstream or temporary buffer for unit testing or diagnostic logging.
+
+| `BESFileTransmitter`
+| Writes response output to a file. Useful in batch jobs or for intermediate result capture.
+
+| `BESMemoryTransmitter`
+| Stores response in memory, often used internally for transformation or chaining.
+|===
+
+=== Integration with Response Handling
+
+A typical request-response flow involving a `BESTransmitter` looks like this:
+
+. A request arrives at the BES and is handled by a `BESRequestHandler`.
+. The handler generates a `BESResponseObject` containing response content.
+. A `BESResponseHandler` serializes this content to an output stream.
+. The stream is provided by a concrete `BESTransmitter` instance.
+. Once output is complete, `flush()` and `close()` are called on the transmitter.
+
+This separation of concerns allows the BES to adapt its output mechanism to different deployment scenarios without modifying its response logic.
+
+=== Custom Transmitters
+
+Developers can subclass `BESTransmitter` to implement new output mechanisms. For example, output could be:
+
+- Pushed to an HTTP/2 stream
+- Enqueued into a message bus
+- Written into a shared memory segment for IPC
+
+To implement a custom transmitter, override the key methods (`output_stream()`, `flush()`, `close()`) and register or configure it in the BES runtime environment.
+
+[source,cpp]
+----
+class MyTransmitter : public BESTransmitter {
+private:
+    std::ostringstream buffer;
+
+public:
+    std::ostream& output_stream() override {
+        return buffer;
+    }
+
+    void flush() override {
+        // Optionally send or store the buffer content
+    }
+
+    void close() override {
+        // Clean up or finalize delivery
+    }
+
+    void dump(std::ostream &strm) const override {
+        strm << "MyTransmitter: buffered output example";
+    }
+
+    std::string name() const override {
+        return "MyTransmitter";
+    }
+};
+----
+
+=== Summary
+
+The `BESTransmitter` class hierarchy abstracts **how response content is delivered** from the BES to the outside world. It is a vital component in the modular architecture of Hyrax BES, enabling deployment flexibility, testability, and extensibility in response delivery.
+
+Understanding and leveraging `BESTransmitter` is essential for:
+
+- Writing custom BES output modules
+- Supporting new communication protocols
+- Debugging or testing BES components
+
+== Example: Custom BESTransmitter for In-Memory Output
+
+This example shows how to create and use a custom `BESTransmitter` subclass that captures output in a `std::ostringstream`. This is especially useful for unit testing or chaining output into another system.
+
+=== Step 1: Implement a Custom Transmitter
+
+[source,cpp]
+----
+#include "BESTransmitter.h"
+#include <sstream>
+#include <string>
+#include <iostream>
+
+class MyBufferTransmitter : public BESTransmitter {
+private:
+    std::ostringstream d_buffer;
+
+public:
+    std::ostream& output_stream() override {
+        return d_buffer;
+    }
+
+    void flush() override {
+        // In a real use case, this might push to a message queue or HTTP API
+    }
+
+    void close() override {
+        std::cerr << "MyBufferTransmitter closed. Output size = "
+                  << d_buffer.str().size() << " bytes." << std::endl;
+    }
+
+    std::string get_output() const {
+        return d_buffer.str();
+    }
+
+    void dump(std::ostream &strm) const override {
+        strm << "MyBufferTransmitter: captures output in-memory.";
+    }
+
+    std::string name() const override {
+        return "MyBufferTransmitter";
+    }
+};
+----
+
+=== Step 2: Create a Test Harness Using the Transmitter
+
+Below is a simplified harness that invokes a `BESRequestHandler` using your custom transmitter.
+
+[source,cpp]
+----
+#include "BESRequestHandlerList.h"
+#include "BESResponseHandlerList.h"
+#include "BESResponseObject.h"
+#include "BESRequest.h"
+
+void run_custom_test() {
+    // Simulate a BES request (normally parsed from a client request)
+    BESRequest request("custom");  // Uses handler named 'custom'
+    BESResponseObject response;
+
+    // Look up a registered request handler
+    std::shared_ptr<BESRequestHandler> handler =
+        BESRequestHandlerList::TheList()->find_handler("custom");
+
+    if (!handler) {
+        std::cerr << "Handler not found for 'custom'" << std::endl;
+        return;
+    }
+
+    // Run the handler to generate response content
+    handler->invoke(request, response);
+
+    // Set up custom transmitter
+    MyBufferTransmitter tx;
+
+    // Serialize the response using a registered response handler
+    std::shared_ptr<BESResponseHandler> response_handler =
+        BESResponseHandlerList::TheList()->find_handler("custom");
+
+    if (response_handler) {
+        // Redirect response stream to custom transmitter
+        response.set_transmitter(&tx);
+
+        response_handler->send_response(response);
+        tx.flush();
+        tx.close();
+
+        // Use captured output for inspection, chaining, or forwarding
+        std::string captured = tx.get_output();
+        std::cout << "=== Captured Response ===\n" << captured << std::endl;
+    } else {
+        std::cerr << "No response handler for 'custom'" << std::endl;
+    }
+}
+----
+
+=== Step 3: Run in a Test Environment
+
+Make sure the `"custom"` request and response handlers are registered via your module’s `initialize_XXX()` function before calling `run_custom_test()`.
+
+Example:
+
+[source,cpp]
+----
+int main() {
+    initialize_my_custom_module(); // Registers the handlers
+    run_custom_test();
+    return 0;
+}
+----
+
+This setup avoids the need for a full BES daemon or HTTP front-end and is ideal for unit testing or functional test coverage of custom handlers.
+
+=== Summary
+
+This example demonstrates how to:
+
+- Subclass `BESTransmitter` to intercept or redirect BES output.
+- Integrate your transmitter with the BES orchestration flow.
+- Use the mechanism in a standalone test harness for isolated testing.
+
+This same approach can be extended to transmit responses to:
+- Remote APIs
+- Queues (e.g., RabbitMQ, Kafka)
+- Databases
+- Embedded analysis pipelines
+
+== BES Daemon and Master Listener Architecture
 [#sec-startup]
-*_TBD_*
+
+The Back-End Server (BES) of the OPeNDAP Hyrax data server is designed to handle data requests efficiently and securely. The BES operates as a daemon process, initiating master listener processes to manage incoming client connections. This modular architecture allows for scalable and maintainable server operations.
+
+=== Core Classes Involved in BES Startup
+
+The startup sequence of the BES daemon and its master listener processes involves several key classes:
+
+[cols="1,3",options="header"]
+|===
+| Class
+| Description
+
+| `BESDaemon`
+| The main class responsible for initializing the BES daemon. It sets up the server environment, parses configuration files, and starts the master listener processes.
+
+| `BESMasterListener`
+| Manages the listening sockets for incoming client connections. It accepts new connections and delegates them to worker processes or threads for handling.
+
+| `BESProcessManager`
+| Oversees the lifecycle of worker processes or threads that handle client requests. It ensures that resources are allocated efficiently and that processes are recycled as needed.
+
+| `BESConfiguration`
+| Parses and stores configuration parameters from the `bes.conf` file, such as port numbers, user/group settings, and module paths.
+
+| `BESModuleLoader`
+| Dynamically loads BES modules specified in the configuration, allowing for extensible functionality without modifying the core server code.
+|===
+
+=== Startup Sequence Overview
+
+1. **Initialization**: The `BESDaemon` class is instantiated, initializing the server environment and reading configuration settings via the `BESConfiguration` class.
+
+2. **Module Loading**: The `BESModuleLoader` loads all specified modules, registering available commands, handlers, and services.
+
+3. **Listener Setup**: The `BESMasterListener` sets up TCP/IP and/or UNIX domain sockets based on configuration parameters, preparing the server to accept incoming connections.
+
+4. **Process Management**: The `BESProcessManager` initializes the pool of worker processes or threads that will handle client requests.
+
+5. **Daemonization**: The server process detaches from the terminal and runs in the background as a daemon, continuously listening for and handling client requests.
+
+=== UML Class Diagram
+
+Below is a simplified UML class diagram illustrating the relationships between the core classes involved in the BES startup process:
+
+[plantuml]
+----
+@startuml
+class BESDaemon {
+    - BESConfiguration config
+    - BESModuleLoader moduleLoader
+    - BESMasterListener listener
+    - BESProcessManager processManager
+    + start()
+    + stop()
+}
+
+class BESConfiguration {
+    - configFilePath
+    + parseConfig()
+    + getParameter()
+}
+
+class BESModuleLoader {
+    + loadModules()
+}
+
+class BESMasterListener {
+    - socket
+    + setupListener()
+    + acceptConnections()
+}
+
+class BESProcessManager {
+    + initializeWorkers()
+    + manageWorkerLifecycle()
+}
+
+BESDaemon --> BESConfiguration
+BESDaemon --> BESModuleLoader
+BESDaemon --> BESMasterListener
+BESDaemon --> BESProcessManager
+@enduml
+----
+
+=== Configuration Parameters
+
+The `bes.conf` file contains critical parameters that influence the behavior of the BES daemon and its listeners:
+
+- `BES.ServerPort`: Specifies the TCP port on which the BES listens for incoming connections.
+
+- `BES.ServerUnixSocket`: Defines the path for the UNIX domain socket, if used.
+
+- `BES.User` and `BES.Group`: Determine the user and group under which the BES process runs, enhancing security by dropping root privileges after startup.
+
+- `BES.ProcessManagerMethod`: Sets the process management strategy (`single` or `multiple`), controlling how the BES handles concurrent connections.
+
+- `BES.Modules`: Lists the modules to be loaded at startup, enabling dynamic extension of server capabilities.
+
+=== Security Considerations
+
+- **Privilege Dropping**: The BES daemon starts with root privileges to bind to low-numbered ports or create UNIX domain sockets, then drops to a less-privileged user as specified in the configuration.
+
+- **Module Isolation**: By dynamically loading modules, the BES ensures that each module operates within its own namespace, reducing the risk of cross-module interference.
+
+- **Connection Handling**: The `BESMasterListener` can be configured to use secure sockets (e.g., SSL/TLS) to encrypt client-server communications, protecting data in transit.
+
+=== Extensibility
+
+The modular design of the BES allows developers to add new functionality by creating and registering modules without altering the core server code. This is facilitated by the `BESModuleLoader`, which loads modules specified in the configuration at runtime.
+
+=== Summary
+
+The BES daemon and its master listener processes are orchestrated through a series of well-defined classes that manage configuration, module loading, connection handling, and process management. This architecture provides a robust, secure, and extensible foundation for serving data in the Hyrax data server.
