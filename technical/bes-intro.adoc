@@ -163,9 +163,6 @@ extern "C" BESAbstractModule * maker()
 }
 ----
 
-[WARNING]
-AI wrote the bulk of this text from here onward, so take it with a grain of salt until it has been verified.
-
 == BES Containers and Container Storage
 The BES (Back End Server) defines a Container abstraction to standardize access to data across different storage backends. This modular interface allows data-handling modules to operate independently of where or how the data is stored—whether it's in local files, S3 buckets, or other systems. The design supports extensibility: new storage types can be integrated by implementing the BESContainer interface without modifying core BES logic. Understanding how BESContainer instances encapsulate and expose data is key to following the control flow within the BES Framework.
 
@@ -188,12 +185,16 @@ image::classBESFileContainer__coll__graph.png[BESFileContainer collaboration dia
 
 == BES List Classes Overview
 [#sec-bes-lists]
+[WARNING]
+AI wrote the bulk of this text from here onward, so take it with a grain of salt until it has been verified.
+
 The BES (Back End Server) component of the OPeNDAP Hyrax data server uses a family of List classes to manage and orchestrate the various objects involved in processing data requests. These lists are integral to the BES framework's dynamic and extensible architecture, providing a uniform mechanism for storing, retrieving, and iterating over collections of runtime objects such as containers, modules, commands, and request handlers.
 
 === General Structure and Purpose
 BES List classes follow a common pattern: they are typically singleton-like registries that manage named objects, which may be added at runtime through configuration files or dynamically loaded modules. Each List class wraps a map-like structure (often keyed by a string identifier) and provides methods for registration, lookup, and iteration.
 
 Examples include:
+
 - `BESContainerList`
 - `BESModuleList`
 - `BESCommandList`
