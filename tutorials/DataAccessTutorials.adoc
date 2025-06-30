@@ -32,10 +32,10 @@ Among the most stable and widely used within the Python ecosystem are NetCDF and
 Below are a combination of static and interactive resources. You can click the associated image image:badge_logo.svg[fit=line] Binder badge to run the notebooks in your browser.
 
 * PyDAP's https://pydap.github.io/pydap/intro.html[documentation] - Inside you will find static tutorials, mostly with DAP4 protocol. Some of the example include working with Constraint Expressions.
-	- https://pydap.github.io/pydap/notebooks/Authentication.html[Token-based Authentication] (necessary for example to access NASAEarth data).
-	- Tutorial workflows for accesing and plotting various NASA and Non-NASA data product (https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6], https://pydap.github.io/pydap/notebooks/ECCO.html[ECCOv4], https://pydap.github.io/pydap/notebooks/PACE.html[PACE] and https://pydap.github.io/pydap/notebooks/SWOT.html[SWOT]).
+	- https://pydap.github.io/pydap/en/notebooks/Authentication.html[Token-based Authentication] (necessary for example to access NASAEarth data).
+	- Tutorial workflows for accesing and plotting various NASA and Non-NASA data product (https://pydap.github.io/pydap/en/notebooks/CMIP6.html[CMIP6], https://pydap.github.io/pydap/en/notebooks/ECCO.html[ECCOv4], https://pydap.github.io/pydap/en/notebooks/PACE.html[PACE] and https://pydap.github.io/pydap/en/notebooks/SWOT.html[SWOT]).
 
-* link:https://github.com/OPENDAP/ESIP2024/tree/main[Interactive jupyter notebooks] image:badge_logo.svg[link=https://mybinder.org/v2/gh/OPENDAP/ESIP2024/main], showing similar workflows with PyDAP as that of its official documentation. The DAP2 example is that when working with https://pydap.github.io/pydap/notebooks/CMIP6.html[CMIP6] data.
+* link:https://github.com/OPENDAP/ESIP2024/tree/main[Interactive jupyter notebooks] image:badge_logo.svg[link=https://mybinder.org/v2/gh/OPENDAP/ESIP2024/main], showing similar workflows with PyDAP as that of its official documentation. The DAP2 example is that when working with https://pydap.github.io/pydap/en/notebooks/CMIP6.html[CMIP6] data.
 	- *Requirements*: https://urs.earthdata.nasa.gov/home[EDL] account, and create a token for authentication.
 	- *NOTE*: https://github.com/OPENDAP/ESIP2024/blob/main/binder/GetStarted.ipynb[GetStarted.ipynb] notebook should be executed first as it creates local file with https://urs.earthdata.nasa.gov/home[EDL] credentials needed to access data in the all other notebooks.
 
