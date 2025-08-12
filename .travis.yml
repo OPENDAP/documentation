@@ -59,9 +59,9 @@ after_success:
   - git init
   - echo "GH_USER_NAME ${GH_USER_NAME}"
   - git config --global user.name "${GH_USER_NAME}"
-  - echo "GH_USER_NAME ${GH_USER_EMAIL}"
+  - echo "GH_USER_EMAIL ${GH_USER_EMAIL}"
   - git config --global user.email "${GH_USER_EMAIL}"
-  - echo "GH_USER_NAME ${GH_REF}"
+  - echo "GH_REF ${GH_REF}"
   - git add . ; git commit -m "Deploy to GitHub Pages"
   - git branch
   # The URL was "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation"
