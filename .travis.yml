@@ -58,7 +58,7 @@ after_success:
     ls -lRmq
   - git init
   - git config --global user.name "${GH_USER_NAME}"
-  - git config --global user.email "{GH_USER_EMAIL}"
+  - git config --global user.email "${GH_USER_EMAIL}"
   - git add . ; git commit -m "Deploy to GitHub Pages"
   - git branch
   # The URL was "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation"
