@@ -96,7 +96,7 @@ The RequestCache is used by every thread servicing a request. It's an object cac
 The vast majority of the usages of RequestCache are responders caching a MediaType object as a set-up for request execution. This way if an error occurs the error handling apparatus can make good choices about how to encode the error response for the client.
 
 === BesNodeCache
-In order to improve navigation performance the *_olfs_* utilizes an in memory LRU cache called BESNodeCache. This is used by the *_olfs_* to cache the BES responses to showNode commands (which is how the BES exposes it's dynamic navigable catalogs). These entries are held for a configurable period of time before a new request for the cached entry will cause the entry to be refreshed. This is a thread safe cache available to all processing threads.
+To improve navigation performance, the *_olfs_* uses an in-memory LRU cache called BESNodeCache. This is used by the *_olfs_* to cache the BES responses to showNode commands (which is how the BES exposes it's dynamic navigable catalogs). These entries are held for a configurable period of time before a new request for the cached entry will cause the entry to be refreshed. This is a thread safe cache available to all processing threads.
 
 === BesSiteMap Cache
 The BesSiteMap class is used to get and maintain a site map file for use with robots.txt The file is refreshed based on a configurable time period.
