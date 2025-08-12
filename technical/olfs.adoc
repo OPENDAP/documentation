@@ -457,5 +457,5 @@ There are problems with the way the form builds dap4 constraint expressions.
 * There are regression tests. The tests exist in their own GitHub repo, the https://github.com/OPENDAP/hyrax_regression_tests[hyrax_regression_tests] project. They require a fully operational Hyrax in order to be run.
 
 
-= testy
+== testy
 woo! woo!
