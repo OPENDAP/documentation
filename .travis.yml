@@ -57,10 +57,13 @@ after_success:
     cp -R ../images images;
     ls -lRmq
   - git init
+  - echo "GH_USER_NAME ${GH_USER_NAME}"
   - git config --global user.name "${GH_USER_NAME}"
+  - echo "GH_USER_NAME ${GH_USER_EMAIL}"
   - git config --global user.email "${GH_USER_EMAIL}"
+  - echo "GH_USER_NAME ${GH_REF}"
   - git add . ; git commit -m "Deploy to GitHub Pages"
   - git branch
   # The URL was "https://${GIT_UID}:${GIT_TOKEN}@github.com/OPENDAP/documentation"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
+  - git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
   - git status
