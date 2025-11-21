@@ -226,7 +226,6 @@ The `*List` classes are designed to be thread-safe where necessary, typically by
 - *Modularity*: Enables dynamic loading and registration of components.
 - *Isolation*: Each component is decoupled from the orchestration logic.
 - *Extensibility*: New features can be added with minimal changes to the core framework.
-- *Introspection*: Lists such as `BESInfoList` support administrative commands that report on the current BES state, including registered modules and containers.
 
 === Core `*List` Classes in BES
 The following is a list of major `*List` classes used in the BES framework, along with a short description of their purpose:
@@ -249,7 +248,7 @@ The following is a list of major `*List` classes used in the BES framework, alon
 | Manages BESRequestHandler instances responsible for handling specific types of requests or protocols. This list facilitates the delegation of request processing to appropriate handlers based on the request context.
 
 | BESInfoList
-| Holds informational objects that provide metadata about the BES's current state, configuration, and capabilities. This list is useful for administrative commands and introspection tools that query the server's status.
+| Holds informational objects that provide metadata about the BES's current state, configuration, and capabilities.
 
 | BESResponseList
 | Maintains a collection of response objects generated during request processing. This list ensures that responses are properly managed and delivered back to clients in an organized manner.
